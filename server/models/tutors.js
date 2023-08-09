@@ -107,7 +107,33 @@ export const searchTutorsByLocation = (location) => {
 };
 
 // Add tutor
-
+// export const insertTutor = ({
+//   first_name,
+//   last_name,
+//   email,
+//   password, 
+//   birth_date,
+//   location_id,
+//   about,
+//   eduction,
+//   image_url }) => {
+//   return db('tutors')
+//   .insert ({
+//     first_name,
+//     last_name,
+//     email,
+//     password, 
+//     birth_date,
+//     location_id,
+//     about,
+//     eduction,
+//     image_url
+//   })
+//   .join("location", "tutors.location_id", "=", "location.location_id")
+//   .join("tutor_categories", "tutors.tutor_id", "=", "tutor_categories.tutor_id")
+//   .join("subcategories", "tutor_categories.subcategory_id", "=", "subcategories.subcategory_id")
+//   .returning(['id','name','price'])
+// }
 // Update tutor
 
 // delete tutor

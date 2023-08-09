@@ -27,9 +27,6 @@ const Tutor = (props) => {
 
     return (
        <>
-         {/* {
-            tutor.map(tutor => {
-               return ( */}
                   <div key={tutor.tutor_id}>
                      <h1>{tutor.first_name} {tutor.last_name}</h1>
                      <h5>{tutor.category_name}</h5>
@@ -39,9 +36,6 @@ const Tutor = (props) => {
                      <p>{tutor.education}</p>
                      <Button variant="outlined">Chat</Button>
                   </div>
-               {/* )
-            }) */}
-         
        </>
     );
 };   

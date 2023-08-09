@@ -9,14 +9,15 @@ export const getCategories = () => {
       .orderBy("category_name");
 };
 
-export const getSubcategories = () => {
+export const getSubcategories = (catname) => {
   return db("subcategories")
     .select(
       "subcategories.subcategory_id",
       "subcategories.subcategory_name",
       "subcategories.category_id",
-      "categoryies.category_name"
+      "categories.category_name"
     )
     .join("categories", "subcategories.category_id", "=", "categories.category_id")
+    .where("categories.category_name", catname)
     .orderBy("subcategory_name");
 };
