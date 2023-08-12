@@ -49,92 +49,8 @@ export const getTutor = (tutor_id) => {
       .first();
 };
 
-// Search by category
-export const searchTutorsByCategory = (category) => {
-    return db("tutors")
-      .select(
-        "tutors.tutor_id",
-        "tutors.first_name",
-        "tutors.last_name",
-        "tutors.email",
-        "tutors.about",
-        "tutors.education",
-        "tutors.image_url",
-        "tutors.location_id",
-        "location.location_name"
-      )
-      .join("tutor_categories", "tutors.tutor_id", "=", "tutor_categories.tutor_id")
-      .join("categories", "tutor_categories.category_id", "=", "categories.category_id")
-      .join("location", "tutors.location_id", "=", "location.location_id")
-      .where("categories.category_name", category);
-};
+// Register tutor
 
-// Search by subcategory
-export const searchTutorsBySubcategory = (subcategory) => {
-    return db("tutors")
-      .select(
-        "tutors.tutor_id",
-        "tutors.first_name",
-        "tutors.last_name",
-        "tutors.email",
-        "tutors.about",
-        "tutors.education",
-        "tutors.image_url",
-        "tutors.location_id",
-        "location.location_name"
-      )
-      .join("tutor_categories", "tutors.tutor_id", "=", "tutor_categories.tutor_id")
-      .join("subcategories", "tutor_categories.subcategory_id", "=", "subcategories.subcategory_id")
-      .join("location", "tutors.location_id", "=", "location.location_id")
-      .where("subcategories.subcategory_name", subcategory);
-};
-
-export const searchTutorsByLocation = (location) => {
-    return db("tutors")
-      .select(
-        "tutors.tutor_id",
-        "tutors.first_name",
-        "tutors.last_name",
-        "tutors.email",
-        "tutors.about",
-        "tutors.education",
-        "tutors.image_url",
-        "tutors.location_id",
-        "location.location_name"
-      )
-      .join("location", "tutors.location_id", "=", "location.location_id")
-      .where("location.location_name", location);
-};
-
-// Add tutor
-// export const insertTutor = ({
-//   first_name,
-//   last_name,
-//   email,
-//   password, 
-//   birth_date,
-//   location_id,
-//   about,
-//   eduction,
-//   image_url }) => {
-//   return db('tutors')
-//   .insert ({
-//     first_name,
-//     last_name,
-//     email,
-//     password, 
-//     birth_date,
-//     location_id,
-//     about,
-//     eduction,
-//     image_url
-//   })
-//   .join("location", "tutors.location_id", "=", "location.location_id")
-//   .join("tutor_categories", "tutors.tutor_id", "=", "tutor_categories.tutor_id")
-//   .join("subcategories", "tutor_categories.subcategory_id", "=", "subcategories.subcategory_id")
-//   .returning(['id','name','price'])
-// }
-// Update tutor
 
 // delete tutor
 export const deleteTutor = (tutor_id) => {
@@ -142,4 +58,21 @@ export const deleteTutor = (tutor_id) => {
     .where({ tutor_id })
     .del()
     .returning (true); // Success
+};
+
+// Get Reviews
+export const getReviews = (tutor_id) => {
+  return db("reviews")
+    .select(
+      "reviews.student_id",
+      "students.first_name",
+      "students.last_name",
+      "reviews.tutor_id",
+      "reviews.rating",
+      "reviews.comment",
+      "reviews.review_date"
+    )
+    .join("students", "students.student_id", "=", "reviews.student_id")
+    .orderBy("reviews.review_date")
+    .where({ "reviews.tutor_id": tutor_id });
 };

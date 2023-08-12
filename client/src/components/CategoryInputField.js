@@ -3,6 +3,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -48,44 +51,56 @@ const CategoryInputField = () => {
     };
 
     return (
-        <>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="categoryLabel">Subject</InputLabel>
-                <Select
-                    labelId="categoryLabel"
-                    id="category"
-                    label="category"
-                    name="category"
-                    value={selectedCategory}
-                    onChange={handleCategoryChange}
-                >
-                    {categories.map(category => {
-                        return (
-                            <MenuItem key= {category.category_id} value={category.category_name}>{category.category_name}</MenuItem>
-                        )
-                    })}
-                </Select>
-            </FormControl>
-            { selectedCategory ? (
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="subcategoryLabel">Topic</InputLabel>
-                        <Select
-                            labelId="subcategoryLabel"
-                            id="subcategory"
-                            label="subcategory"
-                            name="subcategory"
-                            value={selectedSubcategory}
-                            onChange={handleSubcategoryChange}
+            <Container component="main" maxWidth="xs">
+                    <Box sx={{ display: 'flex', gap: '16px' }}> {/* Flex container for first name and last name */}
+                        <FormControl 
+                            sx={{ minWidth: 200 }} 
+                            margin="normal"
+                            required
+                            fullwidth
                         >
-                            {subcategories.map(subcategory => {
-                                return (
-                                    <MenuItem key={subcategory.subcategory_id} value={subcategory.subcategory_name}>{subcategory.subcategory_name}</MenuItem>
-                                )
-                            })}
-                        </Select>
-                </FormControl>
-            ) : null } 
-        </>
+                            <InputLabel id="categoryLabel">Subject</InputLabel>
+                            <Select
+                                labelId="categoryLabel"
+                                id="category"
+                                label="category"
+                                name="category"
+                                value={selectedCategory}
+                                onChange={handleCategoryChange}
+                            >
+                                {categories.map(category => {
+                                    return (
+                                        <MenuItem key= {category.category_id} value={category.category_name}>{category.category_name}</MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
+                        { selectedCategory ? (
+                            <FormControl 
+                                sx={{ minWidth: 200 }} 
+                                margin="normal"
+                                required
+                                fullwidth
+                            >
+                                <InputLabel id="subcategoryLabel">Topic</InputLabel>
+                                <Select
+                                    labelId="subcategoryLabel"
+                                    id="subcategory"
+                                    label="subcategory"
+                                    name="subcategory"
+                                    value={selectedSubcategory}
+                                    onChange={handleSubcategoryChange}
+                                >
+                                    {subcategories.map(subcategory => {
+                                        return (
+                                            <MenuItem key={subcategory.subcategory_id} value={subcategory.subcategory_name}>{subcategory.subcategory_name}</MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                        ) : null } 
+                    </Box>
+            </Container>                  
     )
 }
 

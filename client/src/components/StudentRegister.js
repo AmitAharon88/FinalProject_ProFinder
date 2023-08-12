@@ -11,6 +11,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -42,63 +47,137 @@ const StudentRegister = () => {
    }
     return (
         <>
-            <h2>Register as a Student!</h2>
-            <form onSubmit={handelSubmit} method="POST">
-                <FormControl variant="standard" sx={{ mr: 2, mb: 2 }}>
-                    <InputLabel htmlFor="firstName">First name</InputLabel>
-                    <Input id="firstName" defaultValue="" name="tutorFirstName" />
-                </FormControl>
-                <FormControl variant="standard" sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="lastName">Last name</InputLabel>
-                    <Input id="lastName" defaultValue="" name="tutorLastName" />
-                </FormControl><br/>
-                <FormControl variant="standard" sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="email">Email</InputLabel>
-                    <Input id="email" defaultValue="" name="tutorEmail" />
-                </FormControl><br/>
-                <LocalizationProvider dateAdapter={AdapterDayjs} sx={{ mb: 2 }}>
-                    <DemoContainer components={['DateField']}>
-                        <DatePicker
-                        name="dob"
-                            label="Date of birth"
-                            slotProps={{ textField: { variant: 'filled' } }}
-                        />
-                    </DemoContainer>
-                </LocalizationProvider>
-                <FormControl variant="standard" sx={{ mb: 2 , minWidth: 165 }}>
-                    <InputLabel id="locationLabel">Location</InputLabel>
-                    <Select
-                        labelId="locationLabel"
-                        id="location"
-                        label="Location"
-                        name="location"
-                        value={selectedLocation}
-                        onChange={handleLocationChange}
-                    >
-                        {location.map(item => {
-                            return (
-                                <MenuItem key= {item.location_id} value={item.location_name}>{item.location_name}</MenuItem>
-                            )
-                        })}
-                    </Select>
-                </FormControl><br/>
-                <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
-                    <p>Set a profile picture:</p>
-                    <Button variant="outlined" component="label">
-                        Upload
-                        <input hidden accept="image/*" multiple type="file" />
-                    </Button>
-                </Stack>
-                <FormControl variant="standard" sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="password">Password</InputLabel>
-                    <Input id="password" defaultValue="" name="tutorPassword" />
-                </FormControl><br/>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                    <Button variant="contained" >
-                        Register
-                    </Button>
-                </Stack>
-            </form>
+            <Typography 
+                component="h2"
+                variant="h2"
+                color="#71797E"
+                fontWeight="bold"
+                sx={{ 
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: 8
+                }}
+            >
+                Register as a Student!
+            </Typography>
+                    <Container component="main" maxWidth="xs">
+                        <Box
+                        sx={{
+                            marginTop: 4,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                        >
+                            <Box component="form" onSubmit={handelSubmit} noValidate sx={{ mt: 1 }}>
+                                <Box sx={{ display: 'flex', gap: '16px' }}> {/* Flex container for first name and last name */}
+                                    <TextField
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="first_name"
+                                        label="First name"
+                                        type="text"
+                                        id="first_name"
+                                    />
+                                    <TextField
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="last_name"
+                                        label="Last name"
+                                        type="text"
+                                        id="last_name"
+                                    />
+                                </Box>
+                                <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                />
+                                <Box sx={{ display: 'flex', gap: '16px'}}>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DemoContainer components={['DateField']} sx={{ mt:1 }} >
+                                            <DatePicker
+                                                name="dob"
+                                                label="Date of birth"
+                                                slotProps={{ textField: { variant: 'outlined' } }}
+                                            />
+                                        </DemoContainer>
+                                    </LocalizationProvider>
+                                    <FormControl 
+                                        sx={{ minWidth: 220 }} 
+                                        margin="normal"
+                                        required
+                                        fullwidth
+                                    >
+                                        <InputLabel id="locationLabel">Location</InputLabel>
+                                        <Select
+                                            labelId="locationLabel"
+                                            id="location"
+                                            label="Location"
+                                            name="location"
+                                            value={selectedLocation}
+                                            onChange={handleLocationChange}
+                                        >
+                                            {location.map(item => {
+                                                return (
+                                                    <MenuItem key= {item.location_id} value={item.location_name}>{item.location_name}</MenuItem>
+                                                )
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                </Box>
+                                <Stack direction="row" alignItems="center" spacing={2} sx={{ mt:2 }}>
+                                    <Typography component="body1" variant="p" color="#71797E">
+                                        Set a profile picture:
+                                    </Typography>
+                                    <Button variant="outlined" component="label">
+                                        Upload
+                                        <input hidden accept="image/*" multiple type="file" />
+                                    </Button>
+                                </Stack>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ 
+                                        mt: 3, 
+                                        mb: 2, 
+                                        bgcolor: "#009688",
+                                        '&:hover': {
+                                          bgcolor: "#00695f",
+                                        },
+                                    }}
+                                >
+                                    Register
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Container>
+
+
+
+
+
+
+
+    
         </>
     )
 };
