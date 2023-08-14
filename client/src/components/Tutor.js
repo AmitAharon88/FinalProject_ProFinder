@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import ReviewForm from './ReviewForm'
+import ReviewForm from './ReviewForm';
+import ContactForm from './ContactForm';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -18,6 +19,7 @@ const Tutor = (props) => {
    const[tutor, setTutor] = useState({});
    const[reviews, setReviews] = useState([]);
    const[showReviewForm, setShowReviewForm] = useState(false);
+   const[showContactForm, setShowContactForm] = useState(false);
 
    const params = useParams();
    console.log(params);
@@ -80,8 +82,12 @@ const Tutor = (props) => {
       return Math.round(averageRating * 2) / 2;
    };
 
-   const handleAddReview = () => {
+   const handleAddReviewForm = () => {
       setShowReviewForm(true);
+   };
+
+   const handleAddContactForm = () => {
+      setShowContactForm(true);
    }
 
    return (
@@ -294,7 +300,6 @@ const Tutor = (props) => {
                   {!showReviewForm && (
                      <Button
                         type="submit"
-                        // fullWidth
                         variant="contained"
                         sx={{
                            mt: 3, 
@@ -304,7 +309,7 @@ const Tutor = (props) => {
                               bgcolor: "#00695f",
                            },
                         }}
-                        onClick={handleAddReview}
+                        onClick={handleAddReviewForm}
                      >
                         Add review
                      </Button>
@@ -312,23 +317,27 @@ const Tutor = (props) => {
                </Box>
                {showReviewForm ? <ReviewForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} /> : null}
             </CardContent>
-         </Card>      
-         <Button
-            type="submit"
-            // fullWidth
-            variant="contained"
-            sx={{
-               width: "80vw" ,
-               mt: 3, 
-               mb: 2, 
-               bgcolor: "#009688",
-               '&:hover': {
-                  bgcolor: "#00695f",
-               },
-            }}
-         >
-            Connect
-         </Button>
+         </Card>
+         {!showContactForm && (     
+            <Button
+               type="submit"
+               // fullWidth
+               variant="contained"
+               sx={{
+                  width: "80vw",
+                  mt: 3, 
+                  mb: 2, 
+                  bgcolor: "#009688",
+                  '&:hover': {
+                     bgcolor: "#00695f",
+                  },
+               }}
+               onClick={handleAddContactForm}
+            >
+               Connect
+            </Button>
+         )}
+         {showContactForm ? <ContactForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} /> : null}
       </Box>
     );
 };   

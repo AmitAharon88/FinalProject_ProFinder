@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -25,8 +26,10 @@ const TutorRegister = () => {
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
     const [categoryInputFields, setCategoryInputFields] = useState([]);
-    const [cat_SubcatObj, setCat_SubcatObj] = useState([])
+    const [cat_SubcatObj, setCat_SubcatObj] = useState([]);
+    const [requiredFields, setRequiredFields] = useState(false);
 
+    const navigate = useNavigate();
  
     useEffect(() => {
          getLocation();
@@ -74,9 +77,9 @@ const TutorRegister = () => {
         tutorData.categories = cat_SubcatObj;
         tutorData.birth_day = formatDateString(selectedDate);
 
-
         console.log(tutorData)
         console.log(cat_SubcatObj)
+
         try {
             const res = await fetch(`${BASE_URL}/api/tutors/register`, {
                 method: 'POST',
@@ -85,10 +88,14 @@ const TutorRegister = () => {
                 },
                 body: JSON.stringify(tutorData),
             });
-            if (Response.ok) {
-                console.log(Response.msg);
+            if (res.ok) {
+                const response = await res.json();
+                console.log(response.msg);
+                navigate('/signin');
             } else {
-                console.log('Tutor register handle error');
+                const errorResponse = await res.json();
+                console.log('Error:', errorResponse.msg);
+                setRequiredFields(true);
             }
         } catch (e) {
             console.log(e);
@@ -284,6 +291,10 @@ const TutorRegister = () => {
                                     id="password"
                                     autoComplete="current-password"
                                 />
+                                {requiredFields ? (
+                                <Typography component="body1" variant="p" color="red">
+                                        * Fill in all required field
+                                </Typography> ) : null}
                                 <Button
                                     type="submit"
                                     fullWidth

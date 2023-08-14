@@ -1,18 +1,3 @@
-// import { Link } from "react-router-dom";
-// import Avatar from '@mui/material/Button';
-
-// const Nav = () => {
-//     return (
-//         <nav>
-//             <Link to="/">Home</Link>
-//             <Link to="/profile">Profile</Link>
-//             <Link to="/register">Register</Link>
-//             <Avatar alt="User thumbnail" src="#" />
-//         </nav>
-//     )
-// };
-
-// export default Nav;
 import * as React from 'react';
 import { Link } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
@@ -81,12 +66,12 @@ const Nav = () => {
 
                 <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                     <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={handleOpenNavMenu}
-                    color="inherit"
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleOpenNavMenu}
+                        color="inherit"
                     >
                         <MenuIcon />
                     </IconButton>

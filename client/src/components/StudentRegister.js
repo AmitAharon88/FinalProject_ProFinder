@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Input from '@mui/material/Input';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -15,13 +15,15 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const StudentRegister = () => {
     const [location, setLocation] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
+    const [requiredFields, setRequiredFields] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getLocation();
@@ -55,16 +57,16 @@ const StudentRegister = () => {
         event.preventDefault();
         
         const formData = new FormData(event.target);
-        const tutorData = {};
+        const studentData = {};
 
         formData.forEach((value, key) => {
-            tutorData[key] = value;
+            studentData[key] = value;
         });
 
-        tutorData.location = selectedLocation;
-        tutorData.birth_day = formatDateString(selectedDate);
+        studentData.location = selectedLocation;
+        studentData.birth_day = formatDateString(selectedDate);
 
-        console.log(tutorData)
+        console.log(studentData);
 
         try {
             const res = await fetch(`${BASE_URL}/api/students/register`, {
@@ -72,12 +74,16 @@ const StudentRegister = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(tutorData),
+                body: JSON.stringify(studentData),
             });
-            if (Response.ok) {
-                console.log(Response.msg);
+            if (res.ok) {
+                const response = await res.json();
+                console.log(response.msg);
+                navigate('/signin');
             } else {
-                console.log('Tutor register handle error');
+                const errorResponse = await res.json();
+                console.log('Error:', errorResponse.msg); 
+                setRequiredFields(true);
             }
         } catch (e) {
             console.log(e);
@@ -190,6 +196,10 @@ const StudentRegister = () => {
                                     id="password"
                                     autoComplete="current-password"
                                 />
+                                {requiredFields ? (
+                                <Typography component="body1" variant="p" color="red">
+                                        * Fill in all required field
+                                </Typography> ) : null}
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -208,14 +218,6 @@ const StudentRegister = () => {
                             </Box>
                         </Box>
                     </Container>
-
-
-
-
-
-
-
-    
         </>
     )
 };

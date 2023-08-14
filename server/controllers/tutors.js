@@ -40,7 +40,7 @@ export const _registerTutor = async (req, res) => {
             password: hash   //Use hash password
         });
         console.log(req.body);
-        res.status(200).json({ msg: "Regited success!" });
+        res.status(200).json({ msg: "Registered successfully!" });
     } catch (e) {
         console.log(e);
         res.status(404).json({ msg: e.message });
