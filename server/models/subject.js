@@ -9,7 +9,7 @@ export const getCategories = () => {
       .orderBy("category_name");
 };
 
-export const getSubcategories = (catname) => {
+export const getSubcategories = (catid) => {
   return db("subcategories")
     .select(
       "subcategories.subcategory_id",
@@ -18,6 +18,6 @@ export const getSubcategories = (catname) => {
       "categories.category_name"
     )
     .join("categories", "subcategories.category_id", "=", "categories.category_id")
-    .where("categories.category_name", catname)
+    .where("categories.category_id", catid)
     .orderBy("subcategory_name");
 };

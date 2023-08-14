@@ -24,6 +24,7 @@ const Register = () => {
                     component={Link} 
                     to="/register/student"
                     variant="contained"
+                    size="large"
                     sx= {{
                         bgcolor: "#009688",
                         '&:hover': {
@@ -37,6 +38,7 @@ const Register = () => {
                     component={Link}
                     to="/register/tutor"
                     variant="contained"
+                    size="large"
                     sx= {{
                         bgcolor: "#009688",
                         '&:hover': {

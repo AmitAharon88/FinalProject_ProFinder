@@ -9,11 +9,11 @@ import Container from '@mui/material/Container';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const CategoryInputField = () => {
+const CategoryInputField = ({setCat_SubcatObj}) => {
     const[categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedSubcategory, setSelectedSubcategory] = useState("");
-    const[subcategories, setSubcategories] = useState([]);
+    const [subcategories, setSubcategories] = useState([]);
 
     useEffect(() => {
         getCategories();
@@ -35,9 +35,9 @@ const CategoryInputField = () => {
         getSubcategories(event.target.value);
     };
 
-    const getSubcategories = async (category) => {
+    const getSubcategories = async (categoryId) => {
         try {
-            const res = await fetch(`${BASE_URL}/api/subject/subcategories?catname=${category}`);
+            const res = await fetch(`${BASE_URL}/api/subject/subcategories?catid=${categoryId}`);
             const data = await res.json();
             console.log(data);
             setSubcategories(data);
@@ -46,8 +46,13 @@ const CategoryInputField = () => {
         };
     };
 
+    // const handleSubcategoryChange = (event) => {
+    //     setSelectedSubcategory(event.target.value);
+    // };
+
     const handleSubcategoryChange = (event) => {
         setSelectedSubcategory(event.target.value);
+        setCat_SubcatObj(prevArray => [...prevArray, {cat_id:selectedCategory, sub_id:event.target.value}]);
     };
 
     return (
@@ -59,18 +64,18 @@ const CategoryInputField = () => {
                             required
                             fullwidth
                         >
-                            <InputLabel id="categoryLabel">Subject</InputLabel>
+                            <InputLabel required id="categoryLabel">Subject</InputLabel>
                             <Select
                                 labelId="categoryLabel"
                                 id="category"
                                 label="category"
-                                name="category"
+                                name="category_id"
                                 value={selectedCategory}
                                 onChange={handleCategoryChange}
                             >
                                 {categories.map(category => {
                                     return (
-                                        <MenuItem key= {category.category_id} value={category.category_name}>{category.category_name}</MenuItem>
+                                        <MenuItem key= {category.category_id} value={category.category_id}>{category.category_name}</MenuItem>
                                     )
                                 })}
                             </Select>
@@ -82,18 +87,18 @@ const CategoryInputField = () => {
                                 required
                                 fullwidth
                             >
-                                <InputLabel id="subcategoryLabel">Topic</InputLabel>
+                                <InputLabel required id="subcategoryLabel">Topic</InputLabel>
                                 <Select
                                     labelId="subcategoryLabel"
                                     id="subcategory"
                                     label="subcategory"
-                                    name="subcategory"
+                                    name="subcategory_id"
                                     value={selectedSubcategory}
                                     onChange={handleSubcategoryChange}
                                 >
                                     {subcategories.map(subcategory => {
                                         return (
-                                            <MenuItem key={subcategory.subcategory_id} value={subcategory.subcategory_name}>{subcategory.subcategory_name}</MenuItem>
+                                            <MenuItem key={subcategory.subcategory_id} value={subcategory.subcategory_id}>{subcategory.subcategory_name}</MenuItem>
                                         )
                                     })}
                                 </Select>

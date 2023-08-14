@@ -12,9 +12,9 @@ export const _getCategories = async (req, res) => {
 };
 
 export const _getSubcategories = async (req, res) => {
-    const {catname} = req.query
+    const {catid} = req.query
     try {
-        const data = await getSubcategories(catname);
+        const data = await getSubcategories(catid);
         res.json(data);
     } catch (e) {
         console.log(e);

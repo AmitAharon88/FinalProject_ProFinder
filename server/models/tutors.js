@@ -49,16 +49,38 @@ export const getTutor = (tutor_id) => {
       .first();
 };
 
-// Register tutor
-
+export const registerTutor = async (data) => {
+  const newUser = await db("tutors")
+    .insert({
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      birth_date: data.birth_day,
+      location_id: data.location_id,
+      // image_url: data.image_url, // Uncomment this line if needed
+      education: data.education,
+      about: data.about,
+      password: data.password,
+      last_logged_in: new Date()
+    }).returning("tutor_id")
+    console.log(newUser)
+    data.categories.forEach( async(category) => {
+      await db("tutor_categories")
+      .insert({
+        tutor_id: newUser[0].tutor_id,
+        category_id: category.cat_id,
+        subcategory_id: category.sub_id,
+      })
+    })
+};
 
 // delete tutor
-export const deleteTutor = (tutor_id) => {
-    return db ("tutors")
-    .where({ tutor_id })
-    .del()
-    .returning (true); // Success
-};
+// export const deleteTutor = (tutor_id) => {
+//     return db ("tutors")
+//     .where({ tutor_id })
+//     .del()
+//     .returning (true); // Success
+// };
 
 // Get Reviews
 export const getReviews = (tutor_id) => {
@@ -76,3 +98,15 @@ export const getReviews = (tutor_id) => {
     .orderBy("reviews.review_date")
     .where({ "reviews.tutor_id": tutor_id });
 };
+
+// Write review
+// export const writeReview = async (data, tutor_id, student_id) => {
+//   const newUser = await db("review")
+//     .insert({
+//       tutor_id: tutor_id,
+//       student_id: student_id,
+//       rating: data.rating,
+//       comment: data.comment,
+//     })
+//     console.log(newUser)
+// };

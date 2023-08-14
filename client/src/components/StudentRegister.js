@@ -10,7 +10,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
@@ -22,6 +21,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const StudentRegister = () => {
     const [location, setLocation] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedDate, setSelectedDate] = useState("");
 
     useEffect(() => {
         getLocation();
@@ -42,9 +42,48 @@ const StudentRegister = () => {
        setSelectedLocation(event.target.value);
    };
 
-   const handelSubmit = async (event) => {
-       event.preventDefault();
-   }
+    function formatDateString(inputDateStr) {
+        const inputDate = new Date(inputDateStr);
+        const year = inputDate.getFullYear();
+        const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+        const day = String(inputDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}/${month}/${day}`;
+        return formattedDate;
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
+        const formData = new FormData(event.target);
+        const tutorData = {};
+
+        formData.forEach((value, key) => {
+            tutorData[key] = value;
+        });
+
+        tutorData.location = selectedLocation;
+        tutorData.birth_day = formatDateString(selectedDate);
+
+        console.log(tutorData)
+
+        try {
+            const res = await fetch(`${BASE_URL}/api/students/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tutorData),
+            });
+            if (Response.ok) {
+                console.log(Response.msg);
+            } else {
+                console.log('Tutor register handle error');
+            }
+        } catch (e) {
+            console.log(e);
+        };
+    };
+
     return (
         <>
             <Typography 
@@ -69,7 +108,7 @@ const StudentRegister = () => {
                             alignItems: 'center',
                         }}
                         >
-                            <Box component="form" onSubmit={handelSubmit} noValidate sx={{ mt: 1 }}>
+                            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                                 <Box sx={{ display: 'flex', gap: '16px' }}> {/* Flex container for first name and last name */}
                                     <TextField
                                         margin="normal"
@@ -97,15 +136,14 @@ const StudentRegister = () => {
                                 id="email"
                                 label="Email Address"
                                 name="email"
-                                autoComplete="email"
-                                autoFocus
                                 />
                                 <Box sx={{ display: 'flex', gap: '16px'}}>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['DateField']} sx={{ mt:1 }} >
                                             <DatePicker
-                                                name="dob"
+                                                name="birth_day"
                                                 label="Date of birth"
+                                                onChange={(newValue) => setSelectedDate(newValue.$d)}
                                                 slotProps={{ textField: { variant: 'outlined' } }}
                                             />
                                         </DemoContainer>
@@ -116,18 +154,18 @@ const StudentRegister = () => {
                                         required
                                         fullwidth
                                     >
-                                        <InputLabel id="locationLabel">Location</InputLabel>
+                                        <InputLabel required id="locationLabel">Location</InputLabel>
                                         <Select
                                             labelId="locationLabel"
                                             id="location"
                                             label="Location"
-                                            name="location"
+                                            name="location_id"
                                             value={selectedLocation}
                                             onChange={handleLocationChange}
                                         >
                                             {location.map(item => {
                                                 return (
-                                                    <MenuItem key= {item.location_id} value={item.location_name}>{item.location_name}</MenuItem>
+                                                    <MenuItem key= {item.location_id} value={item.location_id}>{item.location_name}</MenuItem>
                                                 )
                                             })}
                                         </Select>

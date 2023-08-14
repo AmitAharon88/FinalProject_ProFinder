@@ -23,7 +23,10 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const TutorRegister = () => {
     const [location, setLocation] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedDate, setSelectedDate] = useState("");
     const [categoryInputFields, setCategoryInputFields] = useState([]);
+    const [cat_SubcatObj, setCat_SubcatObj] = useState([])
+
  
     useEffect(() => {
          getLocation();
@@ -45,12 +48,21 @@ const TutorRegister = () => {
     };
 
     const addCategoryInputField = () => {
-        setCategoryInputFields(prevFields => [...prevFields, <CategoryInputField />]);
+        setCategoryInputFields(prevFields => [...prevFields, <CategoryInputField setCat_SubcatObj={setCat_SubcatObj}/>]);
     };
 
-    const handelSubmit = async (event) => {
-        event.preventDefault();
+    function formatDateString(inputDateStr) {
+        const inputDate = new Date(inputDateStr);
+        const year = inputDate.getFullYear();
+        const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+        const day = String(inputDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}/${month}/${day}`;
+        return formattedDate;
+    };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
         const formData = new FormData(event.target);
         const tutorData = {};
 
@@ -59,8 +71,12 @@ const TutorRegister = () => {
         });
 
         tutorData.location = selectedLocation;
-        tutorData.categories = categoryInputFields;
+        tutorData.categories = cat_SubcatObj;
+        tutorData.birth_day = formatDateString(selectedDate);
 
+
+        console.log(tutorData)
+        console.log(cat_SubcatObj)
         try {
             const res = await fetch(`${BASE_URL}/api/tutors/register`, {
                 method: 'POST',
@@ -70,9 +86,9 @@ const TutorRegister = () => {
                 body: JSON.stringify(tutorData),
             });
             if (Response.ok) {
-                console.log('Tutor register handle Success');
+                console.log(Response.msg);
             } else {
-                console.log('Tutor register handle error')
+                console.log('Tutor register handle error');
             }
         } catch (e) {
             console.log(e);
@@ -94,7 +110,7 @@ const TutorRegister = () => {
             >
                 Register as a Tutor!
             </Typography>
-            {/* <form onSubmit={handelSubmit}> */}
+          
                 {/* <ThemeProvider theme={defaultTheme}> */}
                     <Container component="main" maxWidth="xs">
                         <Box
@@ -105,7 +121,7 @@ const TutorRegister = () => {
                             alignItems: 'center',
                         }}
                         >
-                            <Box component="form" onSubmit={handelSubmit} noValidate sx={{ mt: 1 }}>
+                            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                                 <Typography 
                                     component="h5"
                                     variant="h5"
@@ -148,13 +164,14 @@ const TutorRegister = () => {
                                 autoComplete="email"
                                 autoFocus
                                 />
-                                <Box sx={{ display: 'flex', gap: '16px'}}>
+                                <Box sx={{ display: "flex", gap: "16px"}}>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DemoContainer components={['DateField']} sx={{ mt:1 }} >
+                                        <DemoContainer components={["DateField"]} sx={{ mt:1 }} >
                                             <DatePicker
-                                                name="dob"
+                                                name="birth_day"
                                                 label="Date of birth"
-                                                slotProps={{ textField: { variant: 'outlined' } }}
+                                                onChange={(newValue) => setSelectedDate(newValue.$d)}
+                                                slotProps={{ textField: { variant: "outlined" } }}
                                             />
                                         </DemoContainer>
                                     </LocalizationProvider>
@@ -164,18 +181,18 @@ const TutorRegister = () => {
                                         required
                                         fullwidth
                                     >
-                                        <InputLabel id="locationLabel">Location</InputLabel>
+                                        <InputLabel required id="locationLabel">Location</InputLabel>
                                         <Select
                                             labelId="locationLabel"
                                             id="location"
                                             label="Location"
-                                            name="location"
+                                            name="location_id"
                                             value={selectedLocation}
                                             onChange={handleLocationChange}
                                         >
                                             {location.map(item => {
                                                 return (
-                                                    <MenuItem key= {item.location_id} value={item.location_name}>{item.location_name}</MenuItem>
+                                                    <MenuItem key= {item.location_id} value={item.location_id}>{item.location_name}</MenuItem>
                                                 )
                                             })}
                                         </Select>

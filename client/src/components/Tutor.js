@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import ReviewForm from './ReviewForm'
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -16,6 +17,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const Tutor = (props) => {
    const[tutor, setTutor] = useState({});
    const[reviews, setReviews] = useState([]);
+   const[showReviewForm, setShowReviewForm] = useState(false);
 
    const params = useParams();
    console.log(params);
@@ -77,6 +79,10 @@ const Tutor = (props) => {
       const averageRating = totalRating / reviews.length;
       return Math.round(averageRating * 2) / 2;
    };
+
+   const handleAddReview = () => {
+      setShowReviewForm(true);
+   }
 
    return (
       <Box 
@@ -151,7 +157,9 @@ const Tutor = (props) => {
                <Typography 
                   component="h5"
                   variant="h5"
-                  color="#71797E"         
+                  color="#71797E"
+                  fontWeight="bold"
+                  marginBottom={2}     
                >
                   About Me:
                </Typography>
@@ -185,6 +193,7 @@ const Tutor = (props) => {
                      component="h5"
                      variant="h5"
                      color="#71797E"
+                     fontWeight="bold"
                   >
                      Reviews:
                   </Typography>
@@ -275,7 +284,33 @@ const Tutor = (props) => {
                   >
                      No reviews available.
                   </Typography>
-               )}  
+               )}
+               <Box
+                  sx={{
+                     display: "flex",
+                     justifyContent: "center",
+                  }}
+               >
+                  {!showReviewForm && (
+                     <Button
+                        type="submit"
+                        // fullWidth
+                        variant="contained"
+                        sx={{
+                           mt: 3, 
+                           mb: 2, 
+                           bgcolor: "#009688",
+                           '&:hover': {
+                              bgcolor: "#00695f",
+                           },
+                        }}
+                        onClick={handleAddReview}
+                     >
+                        Add review
+                     </Button>
+                  )}
+               </Box>
+               {showReviewForm ? <ReviewForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} /> : null}
             </CardContent>
          </Card>      
          <Button

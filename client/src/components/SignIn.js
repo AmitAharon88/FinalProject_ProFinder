@@ -1,7 +1,8 @@
-import * as React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -10,27 +11,78 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
-const Copyright = (props) => {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © ProFinder '}{new Date().getFullYear()}{'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const defaultTheme = createTheme();
 
 const SignIn = () => {
-  const handleSubmit = (event) => {
+  const [role, setRole] = useState('');
+  const [msg, setMsg] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    setRole(event.target.value);
+    console.log(event.target.value)
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+
+    const formData = new FormData(event.target);
+    const userData = {};
+
+    formData.forEach((value, key) => {
+        userData[key] = value;
     });
+
+    console.log(userData)
+
+    if (userData.role === "students") { 
+      try {
+        const res = await fetch(`${BASE_URL}/api/students/signin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+        if (res.status === 200) {
+          console.log(res.data);
+          setMsg("");
+          navigate("/");
+        } else {
+            console.log('Student sign in handle error');
+        }
+      } catch (e) {
+          console.log(e);
+          setMsg(e.response.data.msg)
+      };
+    } else { 
+      try {
+        const res = await fetch(`${BASE_URL}/api/tutors/signin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+        if (res.status === 200) {
+            console.log(res.data);
+            setMsg("")
+            navigate("/");
+        } else {
+            console.log('Tutor sign in handle error');
+        }
+      } catch (e) {
+          console.log(e);
+          setMsg(e.response.data.msg)
+      };
+    };
   };
 
   return (
@@ -60,7 +112,6 @@ const SignIn = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
             />
             <TextField
               margin="normal"
@@ -72,10 +123,31 @@ const SignIn = () => {
               id="password"
               autoComplete="current-password"
             />
+            <FormControl fullWidth margin="normal">
+              <InputLabel required id="roleLabel">Role</InputLabel>
+              <Select
+                labelId="roleLabel"
+                id="role"
+                name="role"
+                value={role}
+                label="Role"
+                onChange={handleChange}
+              >
+                <MenuItem value="students">Student</MenuItem>
+                <MenuItem value="tutors">Tutor</MenuItem>
+              </Select>
+            </FormControl>
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" sx={{
+                '&.Mui-checked': {
+                  color: "#009688", // color when checkbox is checked
+                },
+              }} />}
               label="Remember me"
             />
+            <Typography component="h1" variant="h5">
+            {msg}
+          </Typography>
             <Button
               type="submit"
               fullWidth
@@ -105,7 +177,6 @@ const SignIn = () => {
             </Grid> */}
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
