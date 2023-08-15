@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { AppContext } from '../App';
 import ReviewForm from './ReviewForm';
 import ContactForm from './ContactForm';
 import Button from '@mui/material/Button';
@@ -15,14 +16,15 @@ import StarIcon from '@mui/icons-material/Star';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const Tutor = (props) => {
+const Tutor = () => {
    const[tutor, setTutor] = useState({});
    const[reviews, setReviews] = useState([]);
    const[showReviewForm, setShowReviewForm] = useState(false);
    const[showContactForm, setShowContactForm] = useState(false);
 
+   const { userRole, setUserRole } = useContext(AppContext);
+
    const params = useParams();
-   console.log(params);
 
    const labels = {
       0.5: 'Useless',
@@ -46,7 +48,6 @@ const Tutor = (props) => {
       try {
           const res = await fetch(`${BASE_URL}/api/tutors/${params.id}`);
           const data = await res.json();
-          console.log(data);
           setTutor(data);
       } catch (e) {
           console.log(e);
@@ -55,25 +56,41 @@ const Tutor = (props) => {
 
    const getReviews = async () => {
       try {
-          const res = await fetch(`${BASE_URL}/api/tutors/${params.id}/reviews`);
-          const data = await res.json();
-          console.log(data);
-          setReviews(data)
+         const res = await fetch(`${BASE_URL}/api/tutors/${params.id}/reviews`);
+         const data = await res.json();
+         // console.log(`fetched data: ${JSON.stringify(data)}`);
+         const transformedData = data.map((review) => ({
+            ...review,
+            review_date: new Date(review.review_date),
+         }));
+         setReviews(transformedData)
       } catch (e) {
           console.log(e);
       };
    };
 
-   const reviewsWithFormattedDate = reviews.map((review) => {
-      return {
-        ...review,
-        review_date: new Date(review.review_date), // Convert to Date object
-      };
-    });
+   // useEffect(() => {
+   //    // Transform the reviews and set the state
+   //    const transformedReviews = reviews.map((review) => ({
+   //      ...review,
+   //      review_date: new Date(review.review_date),
+   //    }));
+   //    setReviewsWithFormattedDate(transformedReviews);
+   // }, []);
 
+   // const transformedDate = reviews.map((review) => {
+   //    return {
+   //      ...review,
+   //      review_date: new Date(review.review_date), // Convert to Date object
+   //    };
+   //  });
+   
    const formatDate = (date) => {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return date.toLocaleDateString(undefined, options);
+      if (date) {
+         const options = { year: 'numeric', month: 'long', day: 'numeric' };
+         return date.toLocaleDateString(undefined, options);
+      }
+      return "";
    };
 
    const calculateAverageRating = (reviews) => {
@@ -84,6 +101,13 @@ const Tutor = (props) => {
 
    const handleAddReviewForm = () => {
       setShowReviewForm(true);
+   };
+
+   const handleReviewFormSubmission = (newReview) => {
+      // Update reviews state with the new review
+      setReviews([...reviews, newReview]);
+      // Fetch reviews again to ensure you have the latest data
+      getReviews();
    };
 
    const handleAddContactForm = () => {
@@ -123,29 +147,37 @@ const Tutor = (props) => {
                         <Typography 
                            component="h4"
                            variant="h4"
-                           color="#71797E"
                            fontWeight="bold"
+                           sx={{
+                              color: "#71797E"
+                           }}
                         >
                            {tutor.first_name} {tutor.last_name}
                         </Typography>
                         <Typography 
                            component="p"
                            variant="body1"
-                           color="#71797E"         
+                           sx={{
+                              color: "#71797E"
+                           }}         
                         >
                            {tutor.category_name} tutor specializing in {tutor.subcategory_name}
                         </Typography>
                            <Typography 
                            component="p"
                            variant="body1"
-                           color="#71797E"         
+                           sx={{
+                              color: "#71797E"
+                           }}        
                         >
                            Located in {tutor.location_name}
                         </Typography>
                         <Typography 
                            component="p"
                            variant="body1"
-                           color="#71797E"         
+                           sx={{
+                              color: "#71797E"
+                           }}         
                         >
                            Academia: {tutor.education}
                         </Typography>
@@ -163,16 +195,20 @@ const Tutor = (props) => {
                <Typography 
                   component="h5"
                   variant="h5"
-                  color="#71797E"
                   fontWeight="bold"
-                  marginBottom={2}     
+                  marginBottom={2}
+                  sx={{
+                     color: "#71797E"
+                  }}   
                >
                   About Me:
                </Typography>
                <Typography 
                   component="p"
                   variant="body1"
-                  color="#71797E"         
+                  sx={{
+                     color: "#71797E"
+                  }}        
                >
                   {tutor.about}
                </Typography>
@@ -198,8 +234,10 @@ const Tutor = (props) => {
                   <Typography 
                      component="h5"
                      variant="h5"
-                     color="#71797E"
                      fontWeight="bold"
+                     sx={{
+                        color: "#71797E"
+                     }}
                   >
                      Reviews:
                   </Typography>
@@ -212,34 +250,36 @@ const Tutor = (props) => {
                   >
                      <Rating
                         name="average-rating"
-                        value={calculateAverageRating(reviewsWithFormattedDate)}
+                        value={calculateAverageRating(reviews)}
                         readOnly
                         precision={0.5}
                         emptyIcon={<StarIcon sx={{ opacity: 0.55 }} fontSize="inherit" />}
                      />
-                     <Box sx={{ ml: 2 }}>{labels[calculateAverageRating(reviewsWithFormattedDate)]}</Box>
+                     <Box sx={{ ml: 2 }}>{labels[calculateAverageRating(reviews)]}</Box>
                   </Box>
                </Box>
-
                {reviews.length > 0 ? (
-                  reviewsWithFormattedDate.map((review, review_id) => {
+                  reviews.map((review, review_id) => {
                      return (
                         <Box
                         key={review_id}
                         >
-                           
                            <Typography
                               component="p"
                               variant="body1"
-                              color="#71797E"         
+                              sx={{
+                                 color: "#71797E"
+                              }}        
                            >
                               {review.first_name} {review.last_name}
                            </Typography>
                            <Typography
                               component="p"
                               variant="body1"
-                              color="#71797E"
-                              marginTop={1}         
+                              marginTop={1}
+                              sx={{
+                                 color: "#71797E"
+                              }}       
                            >
                               {review.comment}
                            </Typography>
@@ -252,13 +292,13 @@ const Tutor = (props) => {
                                  }}
                               >
                                  <Rating
-                                    name="review-feedback"
+                                    name={`review-feedback-${review_id}`}
                                     value={review.rating}
                                     readOnly
                                     precision={0.5}
                                     emptyIcon={<StarIcon sx={{ opacity: 0.55 }} fontSize="inherit" />}
-                                 />
-                                 {/* <Box sx={{ ml: 2 }}>{labels[review.rating]}</Box> */}
+                              />
+                                 <Box sx={{ ml: 2 }}>{labels[review.rating]}</Box>
                               </Box>
                            <Box
                               sx={{
@@ -270,7 +310,9 @@ const Tutor = (props) => {
                               <Typography
                                  component="p"
                                  variant="body1"
-                                 color="#71797E"
+                                 sx={{
+                                    color: "#71797E"
+                                 }}
                               >
                                  {formatDate(review.review_date)}
                               </Typography>
@@ -286,56 +328,62 @@ const Tutor = (props) => {
                   <Typography
                      component="p"
                      variant="body1"
-                     color="#71797E"         
+                     sx={{
+                        color: "#71797E"
+                     }}        
                   >
                      No reviews available.
                   </Typography>
                )}
-               <Box
-                  sx={{
-                     display: "flex",
-                     justifyContent: "center",
-                  }}
-               >
-                  {!showReviewForm && (
-                     <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                           mt: 3, 
-                           mb: 2, 
-                           bgcolor: "#009688",
-                           '&:hover': {
-                              bgcolor: "#00695f",
-                           },
-                        }}
-                        onClick={handleAddReviewForm}
-                     >
-                        Add review
-                     </Button>
-                  )}
-               </Box>
-               {showReviewForm ? <ReviewForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} /> : null}
+               {userRole === "students" &&(
+                  <Box
+                     sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                     }}
+                  >
+                     {!showReviewForm && (
+                        <Button
+                           type="submit"
+                           variant="contained"
+                           sx={{
+                              mt: 3, 
+                              mb: 2, 
+                              bgcolor: "#009688",
+                              '&:hover': {
+                                 bgcolor: "#00695f",
+                              },
+                           }}
+                           onClick={handleAddReviewForm}
+                        >
+                           Add review
+                        </Button>
+                     )}
+                  </Box>
+               )}
+               {showReviewForm ? <ReviewForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} handleReviewFormSubmission={handleReviewFormSubmission} /> : null}
             </CardContent>
          </Card>
-         {!showContactForm && (     
-            <Button
-               type="submit"
-               // fullWidth
-               variant="contained"
-               sx={{
-                  width: "80vw",
-                  mt: 3, 
-                  mb: 2, 
-                  bgcolor: "#009688",
-                  '&:hover': {
-                     bgcolor: "#00695f",
-                  },
-               }}
-               onClick={handleAddContactForm}
-            >
-               Connect
-            </Button>
+         {userRole === "students" && (
+            !showContactForm && (     
+               <Button
+                  type="submit"
+                  // fullWidth
+                  variant="contained"
+                  sx={{
+                     width: "80vw",
+                     mt: 3, 
+                     mb: 2, 
+                     bgcolor: "#009688",
+                     '&:hover': {
+                        bgcolor: "#00695f",
+                     },
+                  }}
+                  onClick={handleAddContactForm}
+               >
+                  Connect
+               </Button>
+            )
          )}
          {showContactForm ? <ContactForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} /> : null}
       </Box>

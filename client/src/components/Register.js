@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from '@mui/material/Typography';
-
+import Box from '@mui/material/Box';
 
 const Register = () => {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
             <Typography
                 variant="h2"
                 color="#71797E"
@@ -49,7 +49,7 @@ const Register = () => {
                     Tutor
                 </Button>
             </Stack>
-        </div>
+        </Box>
     )
 };
 

@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
+import { useContext } from 'react';
+import { AppContext } from '../App';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -8,8 +11,13 @@ import Rating from '@mui/material/Rating';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const ReviewForm = ({tutorFN}) => {
+const ReviewForm = ({tutorFN, handleReviewFormSubmission}) => {
     const [value, setValue] = React.useState(0);
+
+    const { studentId, setStudentId } = useContext(AppContext);
+
+    const params = useParams();
+    console.log(`Params: ${params.id}`);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -20,23 +28,27 @@ const ReviewForm = ({tutorFN}) => {
         formData.forEach((value, key) => {
             userData[key] = value;
         });
+
+        userData.tutor_id = params.id;
+        userData.student_id = studentId
     
-        console.log(userData)
+        console.log(`Submitted data: ${JSON.stringify(userData)}`)
     
-        if (userData.role === "students") { 
-          try {
-            const res = await fetch(`${BASE_URL}/api/reviews/write`, {
+        try {
+            const res = await fetch(`${BASE_URL}/api/tutors/${params.id}/reviews/write`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(userData),
             });
-            
-          } catch (e) {
-              console.log(e);
-          };
-        
+            const newReview = await res.json();
+            console.log(`RF NR: ${newReview.data}`)
+            handleReviewFormSubmission(newReview);
+            // Close the review form
+            // setShowReviewForm(false);
+        } catch (e) {
+            console.log(e);
         };
     };
 
@@ -58,7 +70,7 @@ const ReviewForm = ({tutorFN}) => {
             >
                 Write Review
             </Typography>
-            <Box component="form"  noValidate sx={{ mt: 1 }}>
+            <Box component="form"  onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <Typography
                     component="legend"
                     color="#71797E" 

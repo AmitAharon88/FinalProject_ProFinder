@@ -6,7 +6,7 @@ dotenv.config();
 
 export const VerifyToken = (req, res, next) => {
     // Get the name of the cookie from either the token
-    const accessToken = req.cookies.token;
+    const accessToken = req.cookies.token || req.headers['x-access-token'];
     console.log('my token:', accessToken);
 
     // see if we have a token

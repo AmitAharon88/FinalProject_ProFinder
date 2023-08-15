@@ -1,11 +1,9 @@
-import { useState } from 'react';
+import { useState, createContext, useContext } from 'react';
+import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
-
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -17,17 +15,24 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const defaultTheme = createTheme();
 
 const SignIn = () => {
   const [role, setRole] = useState('');
   const [msg, setMsg] = useState('');
 
+  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
+  const { userFN, setUserFN } = useContext(AppContext);
+  const { studentId, setStudentId } = useContext(AppContext);
+  const { userRole, setUserRole } = useContext(AppContext);
+
+
   const navigate = useNavigate();
 
   const handleChange = (event) => {
     setRole(event.target.value);
-    console.log(event.target.value)
+    // console.log(event.target.value)
   };
 
   const handleSubmit = async (event) => {
@@ -41,6 +46,7 @@ const SignIn = () => {
     });
 
     console.log(userData)
+    setUserRole(role)
 
     if (userData.role === "students") { 
       try {
@@ -52,15 +58,20 @@ const SignIn = () => {
             body: JSON.stringify(userData),
         });
         if (res.status === 200) {
-          console.log(res.data);
-          setMsg("");
+          const response = await res.json();
+          setIsAuthenticated(true);
+          setUserFN(response.first_name);
+          setStudentId(response.student_id);
+          console.log(response);
+          setMsg('');
           navigate("/");
         } else {
-            console.log('Student sign in handle error');
+            const errorResponse = await res.json();
+            console.log('Error:', errorResponse.msg);
+            setMsg(errorResponse.msg)
         }
       } catch (e) {
           console.log(e);
-          setMsg(e.response.data.msg)
       };
     } else { 
       try {
@@ -72,15 +83,18 @@ const SignIn = () => {
             body: JSON.stringify(userData),
         });
         if (res.status === 200) {
-            console.log(res.data);
-            setMsg("")
-            navigate("/");
+          const response = await res.json();
+          setIsAuthenticated(true);
+          setUserFN(response.first_name);
+          setMsg('');
+          navigate("/");
         } else {
-            console.log('Tutor sign in handle error');
+            const errorResponse = await res.json();
+            console.log('Error:', errorResponse.msg);
+            setMsg(errorResponse.msg)
         }
       } catch (e) {
           console.log(e);
-          setMsg(e.response.data.msg)
       };
     };
   };
@@ -137,17 +151,19 @@ const SignIn = () => {
                 <MenuItem value="tutors">Tutor</MenuItem>
               </Select>
             </FormControl>
-            <FormControlLabel
+            {msg && (
+              <Typography component="body1" variant="p" color="red">
+                * {msg}
+              </Typography>
+            )}
+            {/* <FormControlLabel
               control={<Checkbox value="remember" sx={{
                 '&.Mui-checked': {
                   color: "#009688", // color when checkbox is checked
                 },
               }} />}
               label="Remember me"
-            />
-            <Typography component="h1" variant="h5">
-            {msg}
-          </Typography>
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -163,18 +179,6 @@ const SignIn = () => {
             >
               Sign In
             </Button>
-            {/* <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid> */}
           </Box>
         </Box>
       </Container>

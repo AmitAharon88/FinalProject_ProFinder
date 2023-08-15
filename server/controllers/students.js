@@ -1,4 +1,4 @@
-import { registerStudent, signIn } from "../models/students.js";
+import { registerStudent, signInStudent } from "../models/students.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -25,35 +25,36 @@ export const _registerStudent = async (req, res) => {
     };
 };
 
-export const _signIn = async (req, res) => {
+export const _signInStudent = async (req, res) => {
     try{
-        const data = await signIn(req.body.email.toLowerCase());
+        const data = await signInStudent(req.body.email.toLowerCase());
         // console.log(req.body.email.toLowerCase())
         console.log(data)
         if (data.length === 0)
-           return res.status(404).json({msg: 'email not found'});
+           return res.status(404).json({msg: 'Email not found'});
     
         const match = await bcrypt.compare(req.body.password+'', data[0].password);
            if(!match)
-              return res.status(404).json({msg: 'wrong password'});
+              return res.status(404).json({msg: 'Incorrect password'});
         // Successful login
-        const userid = data[0].id;
-        const email = data[0].email;
+        const {student_id, first_name, email } = data[0];
+        // const email = data[0].email;
      
         const secret = process.env.ACCESS_TOKEN_SECRET;
 
         // Create a token
         const accessToken = jwt.sign(
-            {userid, email},
+            {student_id, email},
             secret,
-            {expiresIn: '60s'});
+            {expiresIn: '180s'});
         
-        res.cookie('token', accessToken, {httpOnly: true, maxAge: 60 * 1000})
+        res.cookie('token', accessToken, {httpOnly: true, maxAge: 180 * 1000})
 
-        res.json({ token: accessToken })
+        res.json({ token: accessToken, student_id: student_id, first_name: first_name })
 
     } catch(e) {
         console.log(e);
-        res.status(404).json({msg: 'Something went wrong!!'})
+        res.status(404).json({msg: 'Something went wrong'})
     };
 };
+    

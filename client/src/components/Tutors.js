@@ -1,6 +1,5 @@
 import { useState, useEffect,useRef } from 'react';
 import { Link } from 'react-router-dom';
-// import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
@@ -11,8 +10,9 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const Tutors = (props) => {
+const Tutors = () => {
    const[filteredTutors, setFilteredTutors] = useState([]);
+
    const tutors = useRef()
 
    useEffect(() => {

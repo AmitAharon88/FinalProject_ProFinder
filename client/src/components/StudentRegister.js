@@ -33,7 +33,7 @@ const StudentRegister = () => {
        try {
            const res = await fetch(`${BASE_URL}/api/location`);
            const data = await res.json();
-           console.log(data);
+        //    console.log(data);
            setLocation(data);
        } catch (e) {
            console.log(e);
@@ -178,7 +178,7 @@ const StudentRegister = () => {
                                     </FormControl>
                                 </Box>
                                 <Stack direction="row" alignItems="center" spacing={2} sx={{ mt:2 }}>
-                                    <Typography component="body1" variant="p" color="#71797E">
+                                    <Typography component="p" variant="body1" color="#71797E">
                                         Set a profile picture:
                                     </Typography>
                                     <Button variant="outlined" component="label">
@@ -197,7 +197,7 @@ const StudentRegister = () => {
                                     autoComplete="current-password"
                                 />
                                 {requiredFields ? (
-                                <Typography component="body1" variant="p" color="red">
+                                <Typography component="p" variant="body1" color="red">
                                         * Fill in all required field
                                 </Typography> ) : null}
                                 <Button

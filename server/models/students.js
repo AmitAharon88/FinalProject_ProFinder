@@ -14,7 +14,7 @@ export const registerStudent = async (data) => {
       });
   };
 
-export const signIn = (email) => {
+export const signInStudent = (email) => {
   return db('students')
   .select('student_id', 'first_name', 'last_name', 'email', 'password')
   .where({email})

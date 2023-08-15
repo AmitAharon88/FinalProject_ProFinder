@@ -5,6 +5,7 @@ import trouter from "./routes/tutors.js";
 import srouter from "./routes/students.js";
 import subjectrouter from "./routes/subject.js";
 import lrouter from "./routes/location.js";
+import logoutrouter from "./routes/location.js";
 import multer from 'multer';
 import cookieParser from 'cookie-parser';
 
@@ -28,3 +29,4 @@ app.use("/api/tutors", trouter);
 app.use("/api/students", srouter);
 app.use("/api/subject", subjectrouter);
 app.use("/api/location", lrouter);
+app.use("/api/logout", logoutrouter);

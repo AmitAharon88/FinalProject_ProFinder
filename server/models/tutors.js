@@ -74,6 +74,12 @@ export const registerTutor = async (data) => {
     })
 };
 
+export const signInTutor = (email) => {
+  return db('tutors')
+  .select('tutor_id', 'first_name', 'last_name', 'email', 'password')
+  .where({email})
+};
+
 // delete tutor
 // export const deleteTutor = (tutor_id) => {
 //     return db ("tutors")
@@ -100,13 +106,13 @@ export const getReviews = (tutor_id) => {
 };
 
 // Write review
-// export const writeReview = async (data, tutor_id, student_id) => {
-//   const newUser = await db("review")
-//     .insert({
-//       tutor_id: tutor_id,
-//       student_id: student_id,
-//       rating: data.rating,
-//       comment: data.comment,
-//     })
-//     console.log(newUser)
-// };
+export const writeReview = async (data, tutor_id) => {
+  const newUser = await db("reviews")
+    .insert({
+      tutor_id: tutor_id,
+      student_id: data.student_id,
+      rating: data.rating,
+      comment: data.comment,
+    })
+    return { newUser }
+};

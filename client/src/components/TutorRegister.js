@@ -39,7 +39,7 @@ const TutorRegister = () => {
         try {
             const res = await fetch(`${BASE_URL}/api/location`);
             const data = await res.json();
-            console.log(data);
+            // console.log(data);
             setLocation(data);
         } catch (e) {
             console.log(e);
@@ -117,7 +117,7 @@ const TutorRegister = () => {
             >
                 Register as a Tutor!
             </Typography>
-          
+        
                 {/* <ThemeProvider theme={defaultTheme}> */}
                     <Container component="main" maxWidth="xs">
                         <Box
@@ -206,7 +206,7 @@ const TutorRegister = () => {
                                     </FormControl>
                                 </Box>
                                 <Stack direction="row" alignItems="center" spacing={2} sx={{ mt:2 }}>
-                                    <Typography component="body1" variant="p" color="#71797E">
+                                    <Typography component="p" variant="body1" color="#71797E">
                                         Set a profile picture:
                                     </Typography>
                                     <Button variant="outlined" component="label">
@@ -247,8 +247,8 @@ const TutorRegister = () => {
                                     placeholder="Tell us about yourself"
                                 />
                                 <Typography
-                                    component="body1"
-                                    variant="p"
+                                    component="p"
+                                    variant="body1"
                                     color="#71797E"
                                     sx={{ 
                                         display: 'flex',
@@ -292,7 +292,7 @@ const TutorRegister = () => {
                                     autoComplete="current-password"
                                 />
                                 {requiredFields ? (
-                                <Typography component="body1" variant="p" color="red">
+                                <Typography component="p" variant="body1" color="red">
                                         * Fill in all required field
                                 </Typography> ) : null}
                                 <Button
