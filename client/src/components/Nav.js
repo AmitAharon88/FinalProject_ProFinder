@@ -16,6 +16,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import SchoolIcon from '@mui/icons-material/School';
 import { styled } from "@mui/system";
+import Badge from '@mui/material/Badge';
+import MailIcon from '@mui/icons-material/Mail';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -32,6 +36,14 @@ const Nav = () => {
     const { userFN, setUserFN } = useContext(AppContext);
 
     const navigate = useNavigate();
+
+    const theme = createTheme({
+        palette: {
+          primary: {
+            main: '#8BA69C',
+          },
+        },
+    });
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -187,7 +199,7 @@ const Nav = () => {
                                 flexDirection: "column",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                mr: 1
+                                mr: 2
                             }}
                         
                         >
@@ -198,12 +210,35 @@ const Nav = () => {
                                 {userFN}
                             </Typography>
                         </Box>
+                        <ThemeProvider theme={theme}>
+                            <StyledLink to="/messageboard">
+                                <Badge badgeContent={4} color="primary" sx= {{ mr: 3 }}>
+                                    <MailIcon sx={{ color: 'white' }} />
+                                </Badge>
+                            </StyledLink>
+                        </ThemeProvider>
                         <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <SvgIcon fontSize="large" onClick={handleOpenUserMenu}>
+                                {/* credit: plus icon from https://heroicons.com/ */}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495"
+                                    />
+                                </svg>
+                            </SvgIcon>
+                            {/* <Tooltip title="Open settings">
+                                <IconButton fontSize="small" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
                             <Menu
                                 sx={{ mt: '45px' }}
                                 id="menu-appbar"
@@ -221,7 +256,6 @@ const Nav = () => {
                                 onClose={handleCloseUserMenu}
                             >
                                 <MenuItem key="profile" onClick={handleCloseUserMenu}>
-                                    {/* <Typography textAlign="center">{profile}</Typography> */}
                                     <StyledLink to="/profile">
                                         <Typography textAlign="center">Profile</Typography>
                                     </StyledLink>

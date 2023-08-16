@@ -19,11 +19,15 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const defaultTheme = createTheme();
 
 const SignIn = () => {
-  const [role, setRole] = useState('');
-  const [msg, setMsg] = useState('');
+  const [role, setRole] = useState("");
+  const [msg, setMsg] = useState("");
+  const [selectedEmail, setSelectedEmail] = useState("");
+  const [selectedPassword, setSelectedPassword] = useState("");
 
   const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
   const { userFN, setUserFN } = useContext(AppContext);
+  const { userLN, setUserLN } = useContext(AppContext);
+  const { userEmail, setUserEmail } = useContext(AppContext);
   const { studentId, setStudentId } = useContext(AppContext);
   const { userRole, setUserRole } = useContext(AppContext);
 
@@ -45,7 +49,10 @@ const SignIn = () => {
         userData[key] = value;
     });
 
-    console.log(userData)
+    userData.email = selectedEmail.trim().toLocaleLowerCase();
+    userData.password = selectedPassword.trim();
+
+    // console.log(userData)
     setUserRole(role)
 
     if (userData.role === "students") { 
@@ -61,6 +68,8 @@ const SignIn = () => {
           const response = await res.json();
           setIsAuthenticated(true);
           setUserFN(response.first_name);
+          setUserLN(response.last_name);
+          setUserEmail(response.email);
           setStudentId(response.student_id);
           console.log(response);
           setMsg('');
@@ -125,6 +134,7 @@ const SignIn = () => {
               id="email"
               label="Email Address"
               name="email"
+              onChange={(e) => {setSelectedEmail(e.target.value)}}
               autoComplete="email"
             />
             <TextField
@@ -135,6 +145,7 @@ const SignIn = () => {
               label="Password"
               type="password"
               id="password"
+              onChange={(e) => {setSelectedPassword(e.target.value)}}
               autoComplete="current-password"
             />
             <FormControl fullWidth margin="normal">

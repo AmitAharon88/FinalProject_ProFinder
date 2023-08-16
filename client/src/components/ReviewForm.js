@@ -43,7 +43,6 @@ const ReviewForm = ({tutorFN, handleReviewFormSubmission}) => {
                 body: JSON.stringify(userData),
             });
             const newReview = await res.json();
-            console.log(`RF NR: ${newReview.data}`)
             handleReviewFormSubmission(newReview);
             // Close the review form
             // setShowReviewForm(false);

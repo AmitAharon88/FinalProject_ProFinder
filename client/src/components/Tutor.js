@@ -13,6 +13,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Divider from "@mui/material/Divider";
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
+import { v4 as uuidv4 } from 'uuid';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -21,9 +22,11 @@ const Tutor = () => {
    const[reviews, setReviews] = useState([]);
    const[showReviewForm, setShowReviewForm] = useState(false);
    const[showContactForm, setShowContactForm] = useState(false);
+   const[wroteReview, setWroteReview] = useState(false);
 
    const { userRole, setUserRole } = useContext(AppContext);
-
+   const { studentId, setStudentId } = useContext(AppContext);
+   
    const params = useParams();
 
    const labels = {
@@ -64,26 +67,16 @@ const Tutor = () => {
             review_date: new Date(review.review_date),
          }));
          setReviews(transformedData)
+
+         const hasWrittenReview = transformedData.some(review => review.student_id === studentId);
+         setWroteReview(hasWrittenReview);
+         // console.log(reviews)
+         // console.log(studentId)
+         // console.log(wroteReview);
       } catch (e) {
           console.log(e);
       };
    };
-
-   // useEffect(() => {
-   //    // Transform the reviews and set the state
-   //    const transformedReviews = reviews.map((review) => ({
-   //      ...review,
-   //      review_date: new Date(review.review_date),
-   //    }));
-   //    setReviewsWithFormattedDate(transformedReviews);
-   // }, []);
-
-   // const transformedDate = reviews.map((review) => {
-   //    return {
-   //      ...review,
-   //      review_date: new Date(review.review_date), // Convert to Date object
-   //    };
-   //  });
    
    const formatDate = (date) => {
       if (date) {
@@ -108,6 +101,7 @@ const Tutor = () => {
       setReviews([...reviews, newReview]);
       // Fetch reviews again to ensure you have the latest data
       getReviews();
+      setWroteReview(true);
    };
 
    const handleAddContactForm = () => {
@@ -292,13 +286,14 @@ const Tutor = () => {
                                  }}
                               >
                                  <Rating
+                                    key={uuidv4()}
                                     name={`review-feedback-${review_id}`}
                                     value={review.rating}
                                     readOnly
                                     precision={0.5}
                                     emptyIcon={<StarIcon sx={{ opacity: 0.55 }} fontSize="inherit" />}
                               />
-                                 <Box sx={{ ml: 2 }}>{labels[review.rating]}</Box>
+                                 {/* <Box sx={{ ml: 2 }}>{labels[review.rating]}</Box> */}
                               </Box>
                            <Box
                               sx={{
@@ -335,33 +330,35 @@ const Tutor = () => {
                      No reviews available.
                   </Typography>
                )}
-               {userRole === "students" &&(
-                  <Box
-                     sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                     }}
-                  >
-                     {!showReviewForm && (
-                        <Button
-                           type="submit"
-                           variant="contained"
-                           sx={{
-                              mt: 3, 
-                              mb: 2, 
-                              bgcolor: "#009688",
-                              '&:hover': {
-                                 bgcolor: "#00695f",
-                              },
-                           }}
-                           onClick={handleAddReviewForm}
-                        >
-                           Add review
-                        </Button>
-                     )}
-                  </Box>
+               {userRole === "students" && (
+                  !wroteReview && (
+                     <Box
+                        sx={{
+                           display: "flex",
+                           justifyContent: "center",
+                        }}
+                     >
+                        {!showReviewForm && (
+                           <Button
+                              type="submit"
+                              variant="contained"
+                              sx={{
+                                 mt: 3, 
+                                 mb: 2, 
+                                 bgcolor: "#009688",
+                                 '&:hover': {
+                                    bgcolor: "#00695f",
+                                 },
+                              }}
+                              onClick={handleAddReviewForm}
+                           >
+                              Add review
+                           </Button>
+                        )}
+                     </Box>
+                  )
                )}
-               {showReviewForm ? <ReviewForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} handleReviewFormSubmission={handleReviewFormSubmission} /> : null}
+               {showReviewForm && !wroteReview ? <ReviewForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} handleReviewFormSubmission={handleReviewFormSubmission} /> : null}
             </CardContent>
          </Card>
          {userRole === "students" && (

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AppContext } from '../App';
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -12,35 +13,45 @@ const ContactForm = ({ tutorFN, tutorEmail }) => {
     const [message, setMessage] = useState('');
     const [requiredFields, setRequiredFields] = useState(false);
 
+    const { userFN, setUserFN } = useContext(AppContext);
+    const { userLN, setUserLN } = useContext(AppContext);
+    const { userEmail, setUserEmail } = useContext(AppContext);
+  
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // try {
-        //     const res = await fetch('/api/send-email', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             recipient: tutorEmail,
-        //             from: ,
-        //             subject,
-        //             content,
-        //         }),
-        //     });
-            
-        //     if (res.ok) {
-        //         const response = await res.json();
-        //         console.log(response.msg);
-        //     } else {
-        //         const errorResponse = await res.json();
-        //         console.log('Error:', errorResponse.msg); 
-        //         setRequiredFields(true);
-        //     }
-        // } catch (e) {
-        //     console.log(e);
-        // }
+        const formData = new FormData(event.target);
+        const emailData = {};
+    
+        formData.forEach((value, key) => {
+            emailData[key] = value;
+        });
+
+        emailData.studentEmail = userEmail
+        emailData.tutorEmail = tutorEmail
+        emailData.userFN = userFN
+        emailData.userLN = userLN
+
+        try {
+            const res = await fetch('/api/tutors/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(emailData),
+            });
+            if (res.ok) {
+                const response = await res.json();
+                console.log(response.msg);
+            } else {
+                const errorResponse = await res.json();
+                console.log('Error:', errorResponse.msg); 
+                setRequiredFields(true);
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
@@ -75,7 +86,7 @@ const ContactForm = ({ tutorFN, tutorEmail }) => {
                         }}
                     >
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                            <TextField
+                            {/* <TextField
                                 margin="normal"
                                 required
                                 fullWidth
@@ -83,7 +94,7 @@ const ContactForm = ({ tutorFN, tutorEmail }) => {
                                 label="Subject"
                                 type="text"
                                 id="subject"
-                            />
+                            /> */}
                             <TextField
                                     margin="normal"
                                     required

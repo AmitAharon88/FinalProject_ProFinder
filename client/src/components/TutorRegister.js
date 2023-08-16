@@ -25,6 +25,8 @@ const TutorRegister = () => {
     const [location, setLocation] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
+    const [selectedEmail, setSelectedEmail] = useState("");
+    const [selectedPassword, setSelectedPassword] = useState("");
     const [categoryInputFields, setCategoryInputFields] = useState([]);
     const [cat_SubcatObj, setCat_SubcatObj] = useState([]);
     const [requiredFields, setRequiredFields] = useState(false);
@@ -76,6 +78,8 @@ const TutorRegister = () => {
         tutorData.location = selectedLocation;
         tutorData.categories = cat_SubcatObj;
         tutorData.birth_day = formatDateString(selectedDate);
+        tutorData.email= selectedEmail.trim().toLocaleLowerCase();
+        tutorData.password= selectedPassword.trim();
 
         console.log(tutorData)
         console.log(cat_SubcatObj)
@@ -168,8 +172,8 @@ const TutorRegister = () => {
                                 id="email"
                                 label="Email Address"
                                 name="email"
+                                onChange={(e) => {setSelectedEmail(e.target.value)}}
                                 autoComplete="email"
-                                autoFocus
                                 />
                                 <Box sx={{ display: "flex", gap: "16px"}}>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -290,6 +294,7 @@ const TutorRegister = () => {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    onChange={(e) => {setSelectedPassword(e.target.value)}}
                                 />
                                 {requiredFields ? (
                                 <Typography component="p" variant="body1" color="red">

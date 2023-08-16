@@ -21,6 +21,8 @@ const StudentRegister = () => {
     const [location, setLocation] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
+    const [selectedEmail, setSelectedEmail] = useState("");
+    const [selectedPassword, setSelectedPassword] = useState("");
     const [requiredFields, setRequiredFields] = useState(false);
 
     const navigate = useNavigate();
@@ -65,6 +67,8 @@ const StudentRegister = () => {
 
         studentData.location = selectedLocation;
         studentData.birth_day = formatDateString(selectedDate);
+        studentData.email= selectedEmail.trim().toLocaleLowerCase();
+        studentData.password= selectedPassword.trim();
 
         console.log(studentData);
 
@@ -142,6 +146,7 @@ const StudentRegister = () => {
                                 id="email"
                                 label="Email Address"
                                 name="email"
+                                onChange={(e) => {setSelectedEmail(e.target.value)}}
                                 />
                                 <Box sx={{ display: 'flex', gap: '16px'}}>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -194,6 +199,7 @@ const StudentRegister = () => {
                                     label="Password"
                                     type="password"
                                     id="password"
+                                    onChange={(e) => {setSelectedPassword(e.target.value)}}
                                     autoComplete="current-password"
                                 />
                                 {requiredFields ? (

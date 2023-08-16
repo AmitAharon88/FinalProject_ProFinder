@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 
 const Register = () => {
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 9 }}>
             <Typography
                 variant="h2"
                 color="#71797E"

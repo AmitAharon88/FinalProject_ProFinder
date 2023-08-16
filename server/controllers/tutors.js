@@ -49,8 +49,8 @@ export const _registerTutor = async (req, res) => {
 
 export const _signInTutor = async (req, res) => {
     try{
-        const data = await signInTutor(req.body.email.toLowerCase());
-        // console.log(req.body.email.toLowerCase())
+        const data = await signInTutor(req.body.email);
+        // console.log(req.body.email)
         console.log(data)
         if (data.length === 0)
            return res.status(404).json({msg: 'Email not found'});
@@ -67,9 +67,9 @@ export const _signInTutor = async (req, res) => {
         const accessToken = jwt.sign(
             {tutor_id, email},
             secret,
-            {expiresIn: '180s'});
+            {expiresIn: '1hr'});
         
-        res.cookie('token', accessToken, {httpOnly: true, maxAge: 180 * 1000})
+        res.cookie('token', accessToken, {httpOnly: true, maxAge: 3600 * 1000})
 
         res.json({ token: accessToken, first_name: first_name })
 

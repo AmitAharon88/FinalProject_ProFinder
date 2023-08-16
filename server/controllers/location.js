@@ -1,6 +1,5 @@
 import { getLocation } from "../models/location.js";
 
-
 export const _getLocation = async (req, res) => {
     try {
         const data = await getLocation();
