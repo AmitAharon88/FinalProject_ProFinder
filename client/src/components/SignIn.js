@@ -27,8 +27,7 @@ const SignIn = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
   const { userFN, setUserFN } = useContext(AppContext);
   const { userLN, setUserLN } = useContext(AppContext);
-  const { userEmail, setUserEmail } = useContext(AppContext);
-  const { studentId, setStudentId } = useContext(AppContext);
+  const { userId, setUserId } = useContext(AppContext);
   const { userRole, setUserRole } = useContext(AppContext);
 
 
@@ -69,8 +68,7 @@ const SignIn = () => {
           setIsAuthenticated(true);
           setUserFN(response.first_name);
           setUserLN(response.last_name);
-          setUserEmail(response.email);
-          setStudentId(response.student_id);
+          setUserId(response.student_id);
           console.log(response);
           setMsg('');
           navigate("/");
@@ -95,6 +93,8 @@ const SignIn = () => {
           const response = await res.json();
           setIsAuthenticated(true);
           setUserFN(response.first_name);
+          setUserLN(response.last_name);
+          setUserId(response.tutor_id);
           setMsg('');
           navigate("/");
         } else {

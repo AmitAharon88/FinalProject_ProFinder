@@ -17,13 +17,12 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userFN, setUserFN] = useState("");
   const [userLN, setUserLN] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [studentId, setStudentId] = useState("");
+  const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
 
   return (
     <div className="App">
-      <AppContext.Provider value={{isAuthenticated, setIsAuthenticated, userFN, setUserFN, userLN, setUserLN, userEmail, setUserEmail, studentId, setStudentId, userRole, setUserRole}}>
+      <AppContext.Provider value={{isAuthenticated, setIsAuthenticated, userFN, setUserFN, userLN, setUserLN, userId, setUserId, userRole, setUserRole}}>
         <Nav />
         <main className="main">
             <Routes>
@@ -33,7 +32,7 @@ function App() {
               <Route path="/register/tutor" element={<TutorRegister />} />
               <Route path="/register/student" element={<StudentRegister />} />
               <Route path="/signin" element={<SignIn />} />
-              <Route path="/messageboard" element={<MessageBoard />} />
+              <Route path="/:id/messageboard" element={<MessageBoard />} />
             </Routes>
           </main>
         </AppContext.Provider>

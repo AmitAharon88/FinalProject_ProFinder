@@ -116,3 +116,29 @@ export const writeReview = async (data, tutor_id) => {
     })
     return { newUser }
 };
+
+// Get contact message
+export const getContactMessage = (tutor_id) => {
+  return db("message_board")
+    .select(
+      "message_board.student_id",
+      "message_board.tutor_id",
+      "message_board.message",
+      "message_board.message_sent_date"
+    )
+    // .join("students", "students.student_id", "=", "reviews.student_id")
+    .orderBy("reviews.review_date")
+    .where({ "message-board.tutor_id": tutor_id });
+};
+
+// Write contact message
+export const writeContactMessage = async (data, tutor_id) => {
+  const newMessage = await db("message_board")
+    .insert({
+      tutor_id: tutor_id,
+      student_id: data.student_id,
+      sender: data.sender,
+      message: data.message,
+    })
+    return { newMessage }
+};

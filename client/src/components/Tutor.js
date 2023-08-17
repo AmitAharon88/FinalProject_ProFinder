@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppContext } from '../App';
 import ReviewForm from './ReviewForm';
-import ContactForm from './ContactForm';
+import ContactForm from './TutorContactForm';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -25,7 +25,7 @@ const Tutor = () => {
    const[wroteReview, setWroteReview] = useState(false);
 
    const { userRole, setUserRole } = useContext(AppContext);
-   const { studentId, setStudentId } = useContext(AppContext);
+   const { userId, setUserId } = useContext(AppContext);
    
    const params = useParams();
 
@@ -68,10 +68,10 @@ const Tutor = () => {
          }));
          setReviews(transformedData)
 
-         const hasWrittenReview = transformedData.some(review => review.student_id === studentId);
+         const hasWrittenReview = transformedData.some(review => review.student_id === userId);
          setWroteReview(hasWrittenReview);
          // console.log(reviews)
-         // console.log(studentId)
+         // console.log(userId)
          // console.log(wroteReview);
       } catch (e) {
           console.log(e);
@@ -382,7 +382,7 @@ const Tutor = () => {
                </Button>
             )
          )}
-         {showContactForm ? <ContactForm tutorFN={tutor.first_name} tutorLN={tutor.last_name} /> : null}
+         {showContactForm ? <ContactForm tutor_id={tutor.tutor_id} tutorFN={tutor.first_name} student_id={userId} /> : null}
       </Box>
     );
 };   

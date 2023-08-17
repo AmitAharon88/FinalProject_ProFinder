@@ -14,7 +14,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const ReviewForm = ({tutorFN, handleReviewFormSubmission}) => {
     const [value, setValue] = React.useState(0);
 
-    const { studentId, setStudentId } = useContext(AppContext);
+    const { userId, setUserId } = useContext(AppContext);
 
     const params = useParams();
     console.log(`Params: ${params.id}`);
@@ -30,7 +30,7 @@ const ReviewForm = ({tutorFN, handleReviewFormSubmission}) => {
         });
 
         userData.tutor_id = params.id;
-        userData.student_id = studentId
+        userData.student_id = userId
     
         console.log(`Submitted data: ${JSON.stringify(userData)}`)
     

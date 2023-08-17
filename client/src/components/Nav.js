@@ -34,6 +34,7 @@ const Nav = () => {
 
     const {isAuthenticated, setIsAuthenticated} = useContext(AppContext);
     const { userFN, setUserFN } = useContext(AppContext);
+    const { userId, setUserId } = useContext(AppContext);
 
     const navigate = useNavigate();
 
@@ -211,7 +212,7 @@ const Nav = () => {
                             </Typography>
                         </Box>
                         <ThemeProvider theme={theme}>
-                            <StyledLink to="/messageboard">
+                            <StyledLink to={`/${userId}/messageboard`}>
                                 <Badge badgeContent={4} color="primary" sx= {{ mr: 3 }}>
                                     <MailIcon sx={{ color: 'white' }} />
                                 </Badge>

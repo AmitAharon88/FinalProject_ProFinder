@@ -1,4 +1,4 @@
-import { registerStudent, signInStudent } from "../models/students.js";
+import { registerStudent, signInStudent, getContactMessage, writeContactMessage } from "../models/students.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -37,7 +37,7 @@ export const _signInStudent = async (req, res) => {
            if(!match)
               return res.status(404).json({msg: 'Incorrect password'});
         // Successful login
-        const {student_id, first_name, email } = data[0];
+        const {student_id, first_name, last_name, email } = data[0];
         // const email = data[0].email;
      
         const secret = process.env.ACCESS_TOKEN_SECRET;
@@ -50,11 +50,34 @@ export const _signInStudent = async (req, res) => {
         
         res.cookie('token', accessToken, {httpOnly: true, maxAge: 3600 * 1000})
 
-        res.json({ token: accessToken, student_id: student_id, first_name: first_name })
+        res.json({ token: accessToken, student_id: student_id, first_name: first_name, last_name: last_name })
 
     } catch(e) {
         console.log(e);
         res.status(404).json({msg: 'Something went wrong'})
     };
+};
+
+// READ - GET - get contact message
+export const _getContactMessage = async (req, res) => {
+    try {
+        const data = await getContactMessage(req.params.id);
+        res.json(data);
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+// WRITE - POST - write a contact message
+export const _writeContactMessage = async (req, res) => {
+    try {
+        const data = await writeContactMessage(req.body, req.params.id);
+        console.log(req.body);
+        res.status(200).json({ data: data, msg: 'Your message has been sent successfully!' });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
 };
     

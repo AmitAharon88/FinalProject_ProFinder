@@ -19,4 +19,33 @@ export const signInStudent = (email) => {
   .select('student_id', 'first_name', 'last_name', 'email', 'password')
   .where({email})
 };
+
+// Get contact message
+export const getContactMessage = (student_id) => {
+  return db("message_board")
+    .select(
+      "message_board.student_id",
+      "message_board.tutor_id",
+      "message_board.sender",
+      "tutors.first_name",
+      "tutors.last_name",
+      "message_board.message",
+      "message_board.message_date"
+    )
+    .join("tutors", "tutors.tutor_id", "=", "message_board.tutor_id")
+    .orderBy("message_date")
+    .where({ "student_id": student_id });
+};
+
+// Write contact message
+export const writeContactMessage = async (data) => {
+  const newMessage = await db("message_board")
+    .insert({
+      tutor_id: data.tutor_id,
+      student_id: data.student_id,
+      sender: data.sender,
+      message: data.message,
+    })
+    return { newMessage }
+};
     
