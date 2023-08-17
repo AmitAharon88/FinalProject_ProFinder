@@ -72,7 +72,7 @@ export const _getContactMessage = async (req, res) => {
 // WRITE - POST - write a contact message
 export const _writeContactMessage = async (req, res) => {
     try {
-        const data = await writeContactMessage(req.body, req.params.id);
+        const data = await writeContactMessage(req.body);
         console.log(req.body);
         res.status(200).json({ data: data, msg: 'Your message has been sent successfully!' });
     } catch (e) {

@@ -7,6 +7,7 @@ import TutorRegister from "./components/TutorRegister";
 import StudentRegister from "./components/StudentRegister";
 import SignIn from "./components/SignIn";
 import MessageBoard from "./components/MessageBoard";
+import Communication from "./components/Communication";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import "./App.css";
@@ -33,6 +34,7 @@ function App() {
               <Route path="/register/student" element={<StudentRegister />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/:id/messageboard" element={<MessageBoard />} />
+              <Route path="/:id/messageboard/:recipientid" element={<Communication />} />
             </Routes>
           </main>
         </AppContext.Provider>

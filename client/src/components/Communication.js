@@ -11,19 +11,16 @@ import Button from '@mui/material/Button';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const MessageBoard = () => {
+const Communication = () => {
    const [messages, setMessages] = useState([]);
    const[showContactForm, setShowContactForm] = useState(false);
 
-
    const { userRole, setUserRole } = useContext(AppContext);
-
-   // const { userFN, setUserFN } = useContext(AppContext);
-   // const { userLN, setUserLN } = useContext(AppContext); 
    const { userId, setUserId } = useContext(AppContext);
- 
 
    const params = useParams();
+   console.log(params.id)
+   console.log(params.recipientid)
 
    useEffect(() => {
       getContactMessages()
@@ -42,13 +39,20 @@ const MessageBoard = () => {
 
             const res = await fetch(url);
             const data = await res.json();
-            console.log(`fetched data: ${JSON.stringify(data)}`);
+            // console.log(`fetched data: ${JSON.stringify(data)}`);
             const transformedData = data.map((message) => ({
                ...message,
                message_date: new Date(message.message_date),
             }));
-            setMessages(transformedData)
-            console.log(transformedData)
+
+            const recipientId = parseInt(params.recipientid); // Convert to integer
+
+            const filteredData = transformedData.filter(message => message.tutor_id === recipientId);
+            setMessages(filteredData)
+
+            console.log(`transformed data: ${transformedData}`)
+            console.log(`filtered data: ${filteredData}`)
+            
          } catch (e) {
             console.log(e);
          };
@@ -135,33 +139,6 @@ const MessageBoard = () => {
                            <Divider 
                               sx= {{mt: 2, mb: 2}}
                            />
-                           {userRole === "students" && (
-                               <Button
-                               type="submit"
-                               // fullWidth
-                               variant="contained"
-                               sx={{
-                                  width: "80vw",
-                                  mt: 3, 
-                                  mb: 2, 
-                                  bgcolor: "#009688",
-                                  '&:hover': {
-                                     bgcolor: "#00695f",
-                                  },
-                               }}
-                               onClick={handleAddContactForm}
-                            >
-                               Respond
-                            </Button>
-                           )}
-                           {showContactForm && 
-                              userRole === "students" ? (
-                                 <MessageContactForm tutor_id={message.tutor_id} student_id={userId} handelFormSubmission={handelFormSubmission} />
-                              ) : (
-                                 null
-                                 //  <ContactForm tutor_id={userId} recipientFN={} student_id={} />
-
-                           )}
                         </Box>  
                      )
                   })
@@ -176,7 +153,32 @@ const MessageBoard = () => {
                      No messages found.
                   </Typography>
                )}
-               
+               {!showContactForm && (
+                  <Button
+                     type="submit"
+                     // fullWidth
+                     variant="contained"
+                     sx={{
+                        width: "80vw",
+                        mt: 3, 
+                         mb: 2, 
+                         bgcolor: "#009688",
+                        '&:hover': {
+                           bgcolor: "#00695f",
+                         },
+                     }}
+                     onClick={handleAddContactForm}
+                  >
+                     Respond
+                  </Button>
+               )}
+               {showContactForm && 
+                  userRole === "students" ? (
+                     <MessageContactForm tutor_id={params.recipientid} student_id={userId} handelFormSubmission={handelFormSubmission} />
+                  ) : (
+                     null
+                     //  <ContactForm tutor_id={userId} recipientFN={} student_id={} />
+               )}
             </CardContent>
          </Card>
       </Box>
@@ -184,4 +186,4 @@ const MessageBoard = () => {
 };   
 
     
-export default MessageBoard;
+export default Communication;
