@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const Communication = () => {
+const MessageBoardChat = () => {
    const [messages, setMessages] = useState([]);
    const[showContactForm, setShowContactForm] = useState(false);
 
@@ -39,7 +39,7 @@ const Communication = () => {
 
             const res = await fetch(url);
             const data = await res.json();
-            // console.log(`fetched data: ${JSON.stringify(data)}`);
+            console.log(`fetched data: ${JSON.stringify(data)}`);
             const transformedData = data.map((message) => ({
                ...message,
                message_date: new Date(message.message_date),
@@ -47,7 +47,12 @@ const Communication = () => {
 
             const recipientId = parseInt(params.recipientid); // Convert to integer
 
-            const filteredData = transformedData.filter(message => message.tutor_id === recipientId);
+            let filteredData = []
+            if (userRole === "students") {
+               filteredData = transformedData.filter(message => message.tutor_id === recipientId);
+            } else {
+               filteredData = transformedData.filter(message => message.student_id === recipientId);
+            }
             setMessages(filteredData)
 
             console.log(`transformed data: ${transformedData}`)
@@ -60,7 +65,7 @@ const Communication = () => {
 
    const formatDate = (date) => {
       if (date) {
-         const options = { year: 'numeric', month: 'long', day: 'numeric' };
+         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
          return date.toLocaleDateString(undefined, options);
       }
       return "";
@@ -154,30 +159,36 @@ const Communication = () => {
                   </Typography>
                )}
                {!showContactForm && (
-                  <Button
-                     type="submit"
-                     // fullWidth
-                     variant="contained"
+                  <Box
                      sx={{
-                        width: "80vw",
-                        mt: 3, 
-                         mb: 2, 
-                         bgcolor: "#009688",
-                        '&:hover': {
-                           bgcolor: "#00695f",
-                         },
+                        display: "flex",
+                        justifyContent: "center"
                      }}
-                     onClick={handleAddContactForm}
                   >
-                     Respond
-                  </Button>
+                     <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                           // width: "30vw",
+                           mt: 3, 
+                           mb: 2, 
+                           bgcolor: "#009688",
+                           '&:hover': {
+                              bgcolor: "#00695f",
+                           },
+                        }}
+                        onClick={handleAddContactForm}
+                     >
+                        Respond
+                     </Button>
+                  </Box>
                )}
-               {showContactForm && 
+               {showContactForm && (
                   userRole === "students" ? (
                      <MessageContactForm tutor_id={params.recipientid} student_id={userId} handelFormSubmission={handelFormSubmission} />
                   ) : (
-                     null
-                     //  <ContactForm tutor_id={userId} recipientFN={} student_id={} />
+                      <MessageContactForm tutor_id={userId} student_id={params.recipientid} handelFormSubmission={handelFormSubmission} />
+                  )
                )}
             </CardContent>
          </Card>
@@ -186,4 +197,4 @@ const Communication = () => {
 };   
 
     
-export default Communication;
+export default MessageBoardChat;

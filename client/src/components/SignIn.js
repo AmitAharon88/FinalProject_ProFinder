@@ -95,6 +95,8 @@ const SignIn = () => {
           setUserFN(response.first_name);
           setUserLN(response.last_name);
           setUserId(response.tutor_id);
+          console.log(response.tutor_id)
+          console.log(response)
           setMsg('');
           navigate("/");
         } else {

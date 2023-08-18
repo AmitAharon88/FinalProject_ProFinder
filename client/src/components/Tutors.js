@@ -74,6 +74,11 @@ const Tutors = () => {
           align="center"
           color="text.secondary"
           component="h2"
+          sx={{
+            mt: 4,
+            mb: 4,
+            fontWeight: "bold"
+         }}
         >Find your Pro Today</Typography>
          <Box
             component="form"
@@ -82,6 +87,7 @@ const Tutors = () => {
                alignItems: "center", // Center vertically
                justifyContent: "center",
                '& > :not(style)': { m: 1, width: '25ch' },
+               mb: 2
             }}
             noValidate
             autoComplete="off"
@@ -105,7 +111,7 @@ const Tutors = () => {
                            sx={{
                               width: 340, // Set the width of the card
                               // height: 600, // Set the height of the card
-                              margin: '10px', // Adjust margin as needed
+                              margin: 1, // Adjust margin as needed
                           }}
                         >
                            <CardActionArea 
@@ -121,10 +127,15 @@ const Tutors = () => {
                               <CardMedia
                                  component="img"
                                  // height="340" // Adjust the height as needed
-                                 sx={{ borderRadius: '50%' }}
-                                 image="https://cdn4.vectorstock.com/i/1000x1000/06/18/male-avatar-profile-picture-vector-10210618.jpg"
-                                 // image="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80"
-                                 alt="avitar profile image"
+                                 sx={{
+                                    width: 200, // Adjust the size as needed
+                                    height: 200,
+                                    borderRadius: '50%',
+                                    mt: 2
+                                 }}
+                                 // image="https://cdn4.vectorstock.com/i/1000x1000/06/18/male-avatar-profile-picture-vector-10210618.jpg"
+                                 image="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80"
+                                 alt="profile image"
                               />
                               <CardContent
                                  sx={{
@@ -149,7 +160,21 @@ const Tutors = () => {
                               </CardContent>
                               <CardActions>
                                  <Link to={`/${tutor.tutor_id}`}>
-                                    <Button variant="outlined">More Info</Button>
+                                    <Button 
+                                       variant="outlined"
+                                       sx={{ 
+                                          color: "#00695f",
+                                          bgcolor: "#FFFFFF",
+                                          borderColor: "#00695f",
+                                          '&:hover': {
+                                             color: "#FFFFFF",
+                                             bgcolor: "#00695f",
+                                             borderColor: "#00695f",
+                                          },
+                                       }}
+                                    >
+                                       More Info
+                                    </Button>
                                  </Link>
                               </CardActions>
                            </CardActionArea>

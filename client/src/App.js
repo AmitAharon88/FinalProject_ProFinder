@@ -7,7 +7,7 @@ import TutorRegister from "./components/TutorRegister";
 import StudentRegister from "./components/StudentRegister";
 import SignIn from "./components/SignIn";
 import MessageBoard from "./components/MessageBoard";
-import Communication from "./components/Communication";
+import MessageBoardChat from "./components/MessageBoardChat";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import "./App.css";
@@ -34,7 +34,7 @@ function App() {
               <Route path="/register/student" element={<StudentRegister />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/:id/messageboard" element={<MessageBoard />} />
-              <Route path="/:id/messageboard/:recipientid" element={<Communication />} />
+              <Route path="/:id/messageboard/:recipientid" element={<MessageBoardChat />} />
             </Routes>
           </main>
         </AppContext.Provider>

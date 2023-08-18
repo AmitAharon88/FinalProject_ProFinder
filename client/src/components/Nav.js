@@ -200,7 +200,7 @@ const Nav = () => {
                                 flexDirection: "column",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                mr: 2
+                                mr: 3
                             }}
                         
                         >
@@ -213,9 +213,9 @@ const Nav = () => {
                         </Box>
                         <ThemeProvider theme={theme}>
                             <StyledLink to={`/${userId}/messageboard`}>
-                                <Badge badgeContent={4} color="primary" sx= {{ mr: 3 }}>
-                                    <MailIcon sx={{ color: 'white' }} />
-                                </Badge>
+                                {/* <Badge badgeContent={4} color="primary" sx= {{ mr: 3 }}> */}
+                                    <MailIcon sx={{ color: 'white', mr: 3 }} />
+                                {/* </Badge> */}
                             </StyledLink>
                         </ThemeProvider>
                         <Box sx={{ flexGrow: 0 }}>
@@ -235,11 +235,6 @@ const Nav = () => {
                                     />
                                 </svg>
                             </SvgIcon>
-                            {/* <Tooltip title="Open settings">
-                                <IconButton fontSize="small" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                                </IconButton>
-                            </Tooltip> */}
                             <Menu
                                 sx={{ mt: '45px' }}
                                 id="menu-appbar"
@@ -256,11 +251,11 @@ const Nav = () => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <MenuItem key="profile" onClick={handleCloseUserMenu}>
+                                {/* <MenuItem key="profile" onClick={handleCloseUserMenu}>
                                     <StyledLink to="/profile">
                                         <Typography textAlign="center">Profile</Typography>
                                     </StyledLink>
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem key="logout" onClick={logout}>
                                     <Typography textAlign="center">Log Out</Typography>
                                 </MenuItem>

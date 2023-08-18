@@ -71,7 +71,7 @@ export const _signInTutor = async (req, res) => {
         
         res.cookie('token', accessToken, {httpOnly: true, maxAge: 3600 * 1000})
 
-        res.json({ token: accessToken, first_name: first_name, last_name: last_name })
+        res.json({ token: accessToken, tutor_id: tutor_id,first_name: first_name, last_name: last_name })
 
     } catch(e) {
         console.log(e);
@@ -129,7 +129,7 @@ export const _writeContactMessage = async (req, res) => {
     try {
         const data = await writeContactMessage(req.body, req.params.id);
         console.log(req.body);
-        res.status(200).json({ msg: 'Your message has been sent successfully!' });
+        res.status(200).json({ data: data, msg: 'Your message has been sent successfully!' });
     } catch (e) {
         console.log(e);
         res.status(404).json({ msg: e.message });
