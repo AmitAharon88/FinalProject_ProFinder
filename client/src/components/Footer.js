@@ -9,7 +9,8 @@ const Footer = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 2,
+        paddingTop: 2,
+        paddingBottom: 2,
         marginTop: 2,
         backgroundColor: '#f5f5f5', // Set your footer background color
         color: '#333', // Set your footer text color
