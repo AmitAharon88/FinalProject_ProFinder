@@ -10,11 +10,12 @@ export const getAllTutors = () => {
         "tutors.password",
         "tutors.about",
         "tutors.education",
-        "tutors.image_url",
+        "tutors.image_id",
         "tutors.location_id",
         "location.location_name",
         "subcategories.subcategory_name",
-        "categories.category_name"
+        "categories.category_name",
+        "tutor_categories.tutor_cat_id"
       )
       .join("location", "tutors.location_id", "=", "location.location_id")
       .join("tutor_categories", "tutors.tutor_id", "=", "tutor_categories.tutor_id")
@@ -31,22 +32,25 @@ export const getTutor = (tutor_id) => {
         "tutors.first_name",
         "tutors.last_name",
         "tutors.email",
+        "tutors.birth_date",
         "tutors.password",
         "tutors.about",
         "tutors.education",
-        "tutors.image_url",
+        "tutors.image_id",
         "tutors.location_id",
         "location.location_name",
         "subcategories.subcategory_name",
-        "categories.category_name"
+        "subcategories.subcategory_id",
+        "categories.category_name",
+        "categories.category_id",
+        "tutor_categories.tutor_cat_id"
       )
       .join("location", "tutors.location_id", "=", "location.location_id")
       .join("tutor_categories", "tutors.tutor_id", "=", "tutor_categories.tutor_id")
       .join("subcategories", "tutor_categories.subcategory_id", "=", "subcategories.subcategory_id")
       .join("categories", "tutor_categories.category_id", "=", "categories.category_id")
-      .orderBy("tutors.first_name")
+      // .orderBy("tutors.first_name")
       .where({ "tutors.tutor_id": tutor_id })
-      .first();
 };
 
 export const registerTutor = async (data) => {
@@ -79,14 +83,6 @@ export const signInTutor = (email) => {
   .select('tutor_id', 'first_name', 'last_name', 'email', 'password')
   .where({email})
 };
-
-// delete tutor
-// export const deleteTutor = (tutor_id) => {
-//     return db ("tutors")
-//     .where({ tutor_id })
-//     .del()
-//     .returning (true); // Success
-// };
 
 // Get Reviews
 export const getReviews = (tutor_id) => {
@@ -145,3 +141,61 @@ export const writeContactMessage = async (data) => {
     })
     return { newMessage }
 };
+
+export const updateProfileName = (body, id) => {
+  return db('tutors')
+  .update({first_name: body.first_name, last_name: body.last_name})
+  .where({tutor_id: id})
+  .returning(['tutor_id','first_name', 'last_name'])
+};
+
+export const updateProfileEmail = (body, id) => {
+  return db('tutors')
+  .update({email: body.email})
+  .where({tutor_id: id})
+  .returning(['tutor_id','email'])
+};
+
+export const updateProfileDate = (body, id) => {
+  return db('tutors')
+  .update({birth_date: body.birth_date})
+  .where({tutor_id: id})
+  .returning(['tutor_id', 'birth_date'])
+};
+
+export const updateProfileLocation = (body, id) => {
+  return db('tutors')
+  .update({location_id: body.location_id})
+  .where({tutor_id: id})
+  .returning(['tutor_id','location_id'])
+};
+
+export const updateProfileEducation = (body, id) => {
+  return db('tutors')
+  .update({education: body.education})
+  .where({tutor_id: id})
+  .returning(['tutor_id', 'education'])
+};
+
+export const updateProfileAbout = (body, id) => {
+  return db('tutors')
+  .update({about: body.about})
+  .where({tutor_id: id})
+  .returning(['tutor_id', 'about'])
+};
+
+
+
+
+export const updateProfilePassword = (body, id) => {
+  return db('tutors')
+  .update({password: body.password})
+  .where({tutor_id: id})
+  .returning(['tutor_id'])
+};
+
+export const deleteTutor = (id) => {
+  return db('tutors')
+  .where({tutor_id: id})
+  .del()
+}

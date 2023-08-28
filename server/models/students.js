@@ -48,4 +48,63 @@ export const writeContactMessage = async (data) => {
     })
     return { newMessage }
 };
-    
+
+// tutor by id
+export const getStudent = (student_id) => {
+  return db("students")
+  .select(
+      "students.student_id",
+      "students.first_name",
+      "students.last_name",
+      "students.email",
+      "students.birth_date",
+      "students.location_id",
+      "location.location_name",
+      "students.image_id",
+    )
+    .join("location", "students.location_id", "=", "location.location_id")
+    .where({ "students.student_id": student_id })
+    // .first();
+};
+
+export const updateProfileName = (body, id) => {
+  return db('students')
+  .update({first_name: body.first_name, last_name: body.last_name})
+  .where({student_id: id})
+  .returning(['student_id','first_name', 'last_name'])
+};
+
+export const updateProfileEmail = (body, id) => {
+  return db('students')
+  .update({email: body.email})
+  .where({student_id: id})
+  .returning(['student_id','email'])
+};
+
+export const updateProfileDate = (body, id) => {
+  return db('students')
+  .update({birth_date: body.birth_date})
+  .where({student_id: id})
+  .returning(['student_id', 'birth_date'])
+};
+
+
+export const updateProfileLocation = (body, id) => {
+  return db('students')
+  .update({location_id: body.location_id})
+  .where({student_id: id})
+  .returning(['student_id','location_id'])
+};
+
+export const updateProfilePassword = (body, id) => {
+  return db('students')
+  .update({password: body.password})
+  .where({student_id: id})
+  .returning(['student_id'])
+};
+
+export const deleteStudent = (id) => {
+  return db('students')
+  .where({student_id: id})
+  .del()
+}

@@ -24,8 +24,44 @@ const Tutors = () => {
           const res = await fetch(`${BASE_URL}/api/tutors`);
           const data = await res.json();
           console.log(data);
-         tutors.current = data;
-          setFilteredTutors(data)
+
+          const tutorsObj = {}
+
+          data.forEach(row => {
+            const {
+               tutor_id,
+               first_name,
+               last_name,
+               email,
+               location_name,
+               category_name,
+               subcategory_name,
+               tutor_cat_id
+             } = row;
+
+             if (tutorsObj[tutor_id]) {
+               // Tutor already exists in the object, append category and subcategory
+               tutorsObj[tutor_id].cat_subcat.push([category_name, subcategory_name, tutor_cat_id]);
+             } else {
+               // Create a new tutor object and initialize categories and subcategories arrays
+               tutorsObj[tutor_id] = {
+                 tutor_id,
+                 first_name,
+                 last_name,
+                 email,
+                 location_name,
+                 cat_subcat: [[category_name, subcategory_name, tutor_cat_id]],
+               };
+             }
+
+            //  console.log(tutorsObj)
+
+             const tutorsArray = Object.values(tutorsObj);
+             console.log(tutorsArray);
+
+             tutors.current = tutorsArray;
+             setFilteredTutors(tutorsArray)
+          })
       } catch (e) {
           console.log(e);
       };
@@ -33,26 +69,30 @@ const Tutors = () => {
 
    const onCategoryChange = (event) => {
       event.preventDefault();
-      const searchInput= event.target.value;
-      console.log(searchInput)
-       
-      const filteredTutors = tutors.current.filter(tutor =>{
-         return tutor.category_name.toLowerCase().includes(searchInput.toLowerCase());
-      });
-      console.log(filteredTutors);
-      setFilteredTutors(filteredTutors); // Update the state with the filtered tutors
+      const searchInput= event.target.value.toLowerCase().trim();
+      console.log(`input search: ${searchInput}`)
+
+      const filtered = tutors.current.filter(tutor => {
+         return tutor.cat_subcat.some(item => {
+            return item[0].toLowerCase().includes(searchInput) 
+         })
+      })
+      console.log('filtered:', filtered);
+      setFilteredTutors(filtered); // Update the state with the filtered tutors
    };
 
    const onSubcategoryChange = (event) => {
       event.preventDefault();
-      const searchInput= event.target.value;
-      console.log(searchInput)
-       
-      const filteredTutors = tutors.current.filter(tutor =>{
-         return tutor.subcategory_name.toLowerCase().includes(searchInput.toLowerCase());
-      });
-      console.log(filteredTutors);
-      setFilteredTutors(filteredTutors); // Update the state with the filtered tutors
+      const searchInput= event.target.value.toLowerCase().trim();
+      console.log(`input search: ${searchInput}`)
+
+      const filtered = tutors.current.filter(tutor => {
+         return tutor.cat_subcat.some(item => {
+            return item[1].toLowerCase().includes(searchInput) 
+         })
+      })
+      console.log('filtered:', filtered);
+      setFilteredTutors(filtered); // Update the state with the filtered tutors
    };
 
    const onLocationChange = (event) => {
@@ -148,12 +188,18 @@ const Tutors = () => {
                                  <Typography gutterBottom variant="h5" component="div">
                                     {tutor.first_name} {tutor.last_name}
                                  </Typography>
-                                 <Typography gutterBottom variant="h6" component="div">
-                                    {tutor.category_name}
-                                 </Typography>
-                                 <Typography gutterBottom variant="body1" component="div">
-                                    {tutor.subcategory_name}
-                                 </Typography>
+
+
+                                 {tutor.cat_subcat.map((subject,i) => {
+                                    return (
+                                       <>
+                                       
+                                          <Typography gutterBottom variant="h6" component="div">
+                                             {subject[0]}: {subject[1]}
+                                          </Typography>
+                                       </>
+                                    )
+                                 })}
                                  <Typography variant="body2" color="text.secondary">
                                     {tutor.location_name}
                                  </Typography>   

@@ -1,4 +1,22 @@
-import { getAllTutors, getTutor, registerTutor, signInTutor, getReviews, writeReview, getContactMessage, writeContactMessage } from "../models/tutors.js";
+import {
+    getAllTutors,
+    getTutor,
+    registerTutor,
+    signInTutor,
+    getReviews,
+    writeReview,
+    getContactMessage,
+    writeContactMessage,
+    updateProfileName,
+    updateProfileEmail,
+    updateProfileDate,
+    updateProfileLocation,
+    updateProfileEducation,
+    updateProfileAbout,
+    // updateProfileCatSubcat,
+    updateProfilePassword,
+    deleteTutor
+} from "../models/tutors.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -130,6 +148,107 @@ export const _writeContactMessage = async (req, res) => {
         const data = await writeContactMessage(req.body, req.params.id);
         console.log(req.body);
         res.status(200).json({ data: data, msg: 'Your message has been sent successfully!' });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+export const _updateProfileName = async (req, res) => {
+    try {
+        const data = await updateProfileName(req.body, req.params.id);
+        res.status(200).json({ data: data, msg: 'Your name has been updated!' });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+export const _updateProfileEmail = async (req, res) => {
+    try {
+        const data = await updateProfileEmail(req.body, req.params.id);
+        res.status(200).json({ data: data, msg: 'Your email has been updated!' });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+export const _updateProfileDate = async (req, res) => {
+    try {
+        const data = await updateProfileDate(req.body, req.params.id);
+        res.status(200).json({ data: data, msg: 'Your date of birth has been updated!' });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+export const _updateProfileLocation = async (req, res) => {
+    try {
+        const data = await updateProfileLocation(req.body, req.params.id);
+        console.log(req.body)
+        res.status(200).json({ data: data, msg: "Your location has been updated!" });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+export const _updateProfileEducation = async (req, res) => {
+    try {
+        const data = await updateProfileEducation(req.body, req.params.id);
+        res.status(200).json({ data: data, msg: "Your education has been updated!" });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+export const _updateProfileAbout = async (req, res) => {
+    try {
+        const data = await updateProfileAbout(req.body, req.params.id);
+        res.status(200).json({ data: data, msg: "Your about section has been updated!" });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+// export const _updateProfileCatSubcat = async (req, res) => {
+//     try {
+//         const data = await updateProfileAbout(req.body, req.params.id);
+//         res.status(200).json({ data: data, msg: "Your subjects have been updated!" });
+//     } catch (e) {
+//         console.log(e);
+//         res.status(404).json({ msg: e.message });
+//     }
+// };
+
+export const _updateProfilePassword = async (req, res) => {
+    // Extract the password from req.body
+    const { password } = req.body;
+    // Generate a salt and hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password+'', salt)
+
+    try {
+        const data = await updateProfilePassword({
+            // ...req.body,
+            password: hash   //Use hash password
+        }, req.params.id);
+        console.log(req.body);
+        res.status(200).json({ msg: "Your password has been updated!" });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    };
+};
+
+export const _deleteTutor = async (req, res) => {
+    try {
+        const data = await deleteTutor(req.params.id);
+        res.status(200).json({ data: data, msg: "Your account has been deleted!" });
     } catch (e) {
         console.log(e);
         res.status(404).json({ msg: e.message });

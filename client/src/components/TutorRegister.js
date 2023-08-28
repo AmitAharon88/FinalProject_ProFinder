@@ -30,6 +30,8 @@ const TutorRegister = () => {
     const [categoryInputFields, setCategoryInputFields] = useState([]);
     const [cat_SubcatObj, setCat_SubcatObj] = useState([]);
     const [requiredFields, setRequiredFields] = useState(false);
+    // added for upload
+    // const [file, setFile] = useState(null);
 
     const navigate = useNavigate();
  
@@ -64,6 +66,20 @@ const TutorRegister = () => {
         const formattedDate = `${year}/${month}/${day}`;
         return formattedDate;
     };
+
+    // const uploadFile = async () => {
+    //     const formImage = new FormData();
+    //     formImage.append("file", file);
+    //     try {
+    //       const res = await fetch (`${BASE_URL}/api/upload/`, {
+
+    //       });
+    //       setFileData(res.data);
+    //     } catch (e) {
+    //       console.log(e.response.data.msg);
+    //     }
+    //   };
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -213,9 +229,22 @@ const TutorRegister = () => {
                                     <Typography component="p" variant="body1" color="#71797E">
                                         Set a profile picture:
                                     </Typography>
+
+                                    
+
+
                                     <Button variant="outlined" component="label">
                                         Upload
                                         <input hidden accept="image/*" multiple type="file" />
+                                        {/* copied for code for uploading */}
+                                        {/* <input
+                                            type="file"
+                                            name="file"
+                                            id="contained-button-file"
+                                            accept=""
+                                            onChange={(e) => setFile(e.target.files[0])}
+                                            hidden
+                                        /> */}
                                     </Button>
                                 </Stack>
                                 <Typography 

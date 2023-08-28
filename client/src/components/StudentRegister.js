@@ -24,6 +24,9 @@ const StudentRegister = () => {
     const [selectedEmail, setSelectedEmail] = useState("");
     const [selectedPassword, setSelectedPassword] = useState("");
     const [requiredFields, setRequiredFields] = useState(false);
+    // for uploading files
+    const [file, setFile] = useState(null);
+    const [fileData, setFileData] = useState(null);
 
     const navigate = useNavigate();
 
@@ -186,10 +189,19 @@ const StudentRegister = () => {
                                     <Typography component="p" variant="body1" color="#71797E">
                                         Set a profile picture:
                                     </Typography>
-                                    <Button variant="outlined" component="label">
-                                        Upload
-                                        <input hidden accept="image/*" multiple type="file" />
-                                    </Button>
+                                    <label htmlFor="contained-button-file">
+                                        <input
+                                            type="file"
+                                            name="file"
+                                            id="contained-button-file"
+                                            accept="*/*"
+                                            onChange={(e) => setFile(e.target.files[0])}
+                                            // hidden
+                                        />
+                                        {/* <Button variant="contained" component="span">
+                                        Choose File
+                                        </Button> */}
+                                    </label>
                                 </Stack>
                                 <TextField
                                     margin="normal"

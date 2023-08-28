@@ -251,11 +251,11 @@ const Nav = () => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {/* <MenuItem key="profile" onClick={handleCloseUserMenu}>
-                                    <StyledLink to="/profile">
+                                <MenuItem key="profile" onClick={handleCloseUserMenu}>
+                                    <StyledLink to={`/${userId}/profile`}>
                                         <Typography textAlign="center">Profile</Typography>
                                     </StyledLink>
-                                </MenuItem> */}
+                                </MenuItem>
                                 <MenuItem key="logout" onClick={logout}>
                                     <Typography textAlign="center">Log Out</Typography>
                                 </MenuItem>

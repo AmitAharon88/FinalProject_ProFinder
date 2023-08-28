@@ -8,6 +8,7 @@ import StudentRegister from "./components/StudentRegister";
 import SignIn from "./components/SignIn";
 import MessageBoard from "./components/MessageBoard";
 import MessageBoardChat from "./components/MessageBoardChat";
+import Profile from "./components/Profile";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import "./App.css";
@@ -35,6 +36,7 @@ function App() {
               <Route path="/signin" element={<SignIn />} />
               <Route path="/:id/messageboard" element={<MessageBoard />} />
               <Route path="/:id/messageboard/:recipientid" element={<MessageBoardChat />} />
+              <Route path="/:id/profile" element={<Profile />} />
             </Routes>
           </main>
         </AppContext.Provider>

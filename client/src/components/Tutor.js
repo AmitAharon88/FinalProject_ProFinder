@@ -18,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Tutor = () => {
-   const[tutor, setTutor] = useState({});
+   const[tutor, setTutor] = useState([]);
    const[reviews, setReviews] = useState([]);
    const[showReviewForm, setShowReviewForm] = useState(false);
    const[showContactForm, setShowContactForm] = useState(false);
@@ -51,7 +51,47 @@ const Tutor = () => {
       try {
           const res = await fetch(`${BASE_URL}/api/tutors/${params.id}`);
           const data = await res.json();
-          setTutor(data);
+          console.log('data:', data)
+
+          const tutorObj = {}
+
+          data.forEach(row => {
+            const {
+               tutor_id,
+               first_name,
+               last_name,
+               email,
+               education,
+               about,
+               location_name,
+               category_name,
+               subcategory_name
+             } = row;
+
+             if (tutorObj[tutor_id]) {
+               // Tutor already exists in the object, append category and subcategory
+               tutorObj[tutor_id].cat_subcat.push([category_name, subcategory_name]);
+             } else {
+               // Create a new tutor object and initialize categories and subcategories arrays
+               tutorObj[tutor_id] = {
+                 tutor_id,
+                 first_name,
+                 last_name,
+                 email,
+                 education,
+                 about,
+                 location_name,
+                 cat_subcat: [[category_name, subcategory_name]],
+               };
+             }
+
+             console.log('tutorObj:',tutorObj)
+
+             const tutorArray = Object.values(tutorObj);
+             console.log('tutorArray:', tutorArray);
+             setTutor(tutorArray);
+
+            });
       } catch (e) {
           console.log(e);
       };
@@ -110,7 +150,7 @@ const Tutor = () => {
 
    return (
       <Box 
-         key={tutor.tutor_id}
+         key={uuidv4()}
          sx={{
             display: "flex",
             flexDirection: "column",
@@ -146,7 +186,7 @@ const Tutor = () => {
                               color: "#71797E"
                            }}
                         >
-                           {tutor.first_name} {tutor.last_name}
+                           {tutor[0] ? tutor[0].first_name + " " + tutor[0].last_name : null}
                         </Typography>
                         <Typography 
                            component="p"
@@ -155,25 +195,33 @@ const Tutor = () => {
                               color: "#71797E"
                            }}         
                         >
-                           {tutor.category_name} tutor specializing in {tutor.subcategory_name}
+
+                           {tutor[0] ? 
+                           tutor[0].cat_subcat.map(cat_subcat => {
+                              return <> {cat_subcat[0]} tutor specializing in {cat_subcat[1]} <br/> </>
+                           }) : null}
                         </Typography>
-                           <Typography 
+                        <Typography
                            component="p"
                            variant="body1"
                            sx={{
-                              color: "#71797E"
+                              color: "#71797E",
+                              mt:0.5
                            }}        
                         >
-                           Located in {tutor.location_name}
+                           {tutor[0] ? 
+                              `Located in ${tutor[0].location_name}` : null}
                         </Typography>
                         <Typography 
                            component="p"
                            variant="body1"
                            sx={{
-                              color: "#71797E"
+                              color: "#71797E",
+                              mt:0.5
                            }}         
                         >
-                           Academia: {tutor.education}
+                           {tutor[0] ?
+                              `Academia: ${tutor[0].education}` : null}
                         </Typography>
                   </Grid>
                </Grid>
@@ -204,7 +252,8 @@ const Tutor = () => {
                      color: "#71797E"
                   }}        
                >
-                  {tutor.about}
+                  {tutor[0] ?
+                     tutor[0].about : null}
                </Typography>
             </CardContent>
          </Card>
