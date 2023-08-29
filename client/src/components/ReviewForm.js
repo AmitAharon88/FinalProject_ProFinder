@@ -9,8 +9,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Rating from '@mui/material/Rating';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const ReviewForm = ({tutorFN, handleReviewFormSubmission}) => {
     const [value, setValue] = React.useState(0);
 
@@ -35,7 +33,7 @@ const ReviewForm = ({tutorFN, handleReviewFormSubmission}) => {
         console.log(`Submitted data: ${JSON.stringify(userData)}`)
     
         try {
-            const res = await fetch(`${BASE_URL}/api/tutors/${params.id}/reviews/write`, {
+            const res = await fetch(`/api/tutors/${params.id}/reviews/write`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

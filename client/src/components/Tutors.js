@@ -8,8 +8,6 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const Tutors = () => {
    const[filteredTutors, setFilteredTutors] = useState([]);
 
@@ -21,9 +19,9 @@ const Tutors = () => {
 
    const getTutors = async () => {
       try {
-          const res = await fetch(`${BASE_URL}/api/tutors`);
+          const res = await fetch(`/api/tutors`);
           const data = await res.json();
-          console.log(data);
+         //  console.log('data:', data);
 
           const tutorsObj = {}
 
@@ -57,10 +55,12 @@ const Tutors = () => {
             //  console.log(tutorsObj)
 
              const tutorsArray = Object.values(tutorsObj);
-             console.log(tutorsArray);
+            //  console.log('tutors array:', tutorsArray);
+             const orderedTutorsArray = tutorsArray.sort((a, b) => a.first_name.localeCompare(b.first_name));
+            //  console.log('sorted tutors array:', orderedTutorsArray);
 
-             tutors.current = tutorsArray;
-             setFilteredTutors(tutorsArray)
+             tutors.current = orderedTutorsArray;
+             setFilteredTutors(orderedTutorsArray)
           })
       } catch (e) {
           console.log(e);
@@ -141,16 +141,14 @@ const Tutors = () => {
                display: "flex",
                flexWrap: "wrap",
                justifyContent: 'center',
-               alignItems: 'center' }}>
+            }}>
             {
                filteredTutors.length > 0 ? (
-                  filteredTutors.map((tutor,i) => {
+                  filteredTutors.map((tutor) => {
                      return (
                         <Card
-                           key={i}
+                           key={tutor.tutor_id}
                            sx={{
-                              width: 340, // Set the width of the card
-                              // height: 600, // Set the height of the card
                               margin: 1, // Adjust margin as needed
                           }}
                         >
@@ -161,12 +159,13 @@ const Tutors = () => {
                                  display: "flex",
                                  flexDirection: "column",
                                  alignItems: "center", // Center vertically
-                                 justifyContent: "center"
+                                 justifyContent: "flex-start",
+                                 width: 340, // Set the width of the card
+                                 height: 500
                               }}
                            >
                               <CardMedia
                                  component="img"
-                                 // height="340" // Adjust the height as needed
                                  sx={{
                                     width: 200, // Adjust the size as needed
                                     height: 200,
@@ -182,10 +181,9 @@ const Tutors = () => {
                                     display: "flex",   // Add this line to use flex display
                                     flexDirection: "column",
                                     alignItems: "center", // Center vertically
-                                    justifyContent: "center"
                                  }}
                               >
-                                 <Typography gutterBottom variant="h5" component="div">
+                                 <Typography gutterBottom variant="h5" component="div" color="text.secondary" sx={{fontWeight: 'bold', mb: 2}}>
                                     {tutor.first_name} {tutor.last_name}
                                  </Typography>
 
@@ -193,8 +191,7 @@ const Tutors = () => {
                                  {tutor.cat_subcat.map((subject,i) => {
                                     return (
                                        <>
-                                       
-                                          <Typography gutterBottom variant="h6" component="div">
+                                          <Typography gutterBottom variant="body2" component="div" color="text.secondary" sx={{fontSize: '18px', textAlign: 'center', mb: 2 }}>
                                              {subject[0]}: {subject[1]}
                                           </Typography>
                                        </>

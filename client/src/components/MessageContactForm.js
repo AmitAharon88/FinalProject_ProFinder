@@ -6,8 +6,6 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const MessageContactForm = ({ tutor_id, student_id, handelFormSubmission }) => {
     const [resMessage, setResMessage] = useState('');
     const [requiredFields, setRequiredFields] = useState(false);
@@ -44,10 +42,10 @@ const MessageContactForm = ({ tutor_id, student_id, handelFormSubmission }) => {
             let url;
             userRole === "students" ? (
                // student id
-               url = `${BASE_URL}/api/students/${userId}/messageboard/write`
+               url = `/api/students/${userId}/messageboard/write`
             ):(
                // tutor id
-               url = `${BASE_URL}/api/tutors/${userId}/messageboard/write`
+               url = `/api/tutors/${userId}/messageboard/write`
             )
             const res = await fetch(url, {
                 method: 'POST',

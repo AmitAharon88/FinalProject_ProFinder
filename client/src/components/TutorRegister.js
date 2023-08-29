@@ -18,9 +18,6 @@ import CategoryInputField from "./CategoryInputField"
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const TutorRegister = () => {
     const [location, setLocation] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
@@ -41,7 +38,7 @@ const TutorRegister = () => {
 
     const getLocation = async () => {
         try {
-            const res = await fetch(`${BASE_URL}/api/location`);
+            const res = await fetch(`/api/location`);
             const data = await res.json();
             // console.log(data);
             setLocation(data);
@@ -71,7 +68,7 @@ const TutorRegister = () => {
     //     const formImage = new FormData();
     //     formImage.append("file", file);
     //     try {
-    //       const res = await fetch (`${BASE_URL}/api/upload/`, {
+    //       const res = await fetch (`/api/upload/`, {
 
     //       });
     //       setFileData(res.data);
@@ -101,7 +98,7 @@ const TutorRegister = () => {
         console.log(cat_SubcatObj)
 
         try {
-            const res = await fetch(`${BASE_URL}/api/tutors/register`, {
+            const res = await fetch(`/api/tutors/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -199,6 +196,7 @@ const TutorRegister = () => {
                                                 label="Date of birth"
                                                 onChange={(newValue) => setSelectedDate(newValue.$d)}
                                                 slotProps={{ textField: { variant: "outlined" } }}
+                                                disableFuture
                                             />
                                         </DemoContainer>
                                     </LocalizationProvider>

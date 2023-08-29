@@ -21,8 +21,6 @@ import MailIcon from '@mui/icons-material/Mail';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import SvgIcon from '@mui/material/SvgIcon';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const Nav = () => {
     const StyledLink = styled(Link)`
         text-decoration: none;
@@ -64,7 +62,7 @@ const Nav = () => {
 
     const logout = async () => {
         try {
-            const res = await fetch(`${BASE_URL}/api/logout`);
+            const res = await fetch(`/api/logout`);
             if (res.status === 200) {
                 setIsAuthenticated(false);
                 navigate('/signin');

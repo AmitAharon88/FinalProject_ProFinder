@@ -6,9 +6,6 @@ import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const CategoryInputField = ({setCat_SubcatObj}) => {
     const[categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
@@ -21,7 +18,7 @@ const CategoryInputField = ({setCat_SubcatObj}) => {
 
     const getCategories = async () => {
         try {
-            const res = await fetch(`${BASE_URL}/api/subject/categories`);
+            const res = await fetch(`/api/subject/categories`);
             const data = await res.json();
             console.log(data);
             setCategories(data);
@@ -37,7 +34,7 @@ const CategoryInputField = ({setCat_SubcatObj}) => {
 
     const getSubcategories = async (categoryId) => {
         try {
-            const res = await fetch(`${BASE_URL}/api/subject/subcategories?catid=${categoryId}`);
+            const res = await fetch(`/api/subject/subcategories?catid=${categoryId}`);
             const data = await res.json();
             console.log(data);
             setSubcategories(data);

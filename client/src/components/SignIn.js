@@ -14,8 +14,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const defaultTheme = createTheme();
 
 const SignIn = () => {
@@ -56,7 +54,7 @@ const SignIn = () => {
 
     if (userData.role === "students") { 
       try {
-        const res = await fetch(`${BASE_URL}/api/students/signin`, {
+        const res = await fetch(`/api/students/signin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -82,7 +80,7 @@ const SignIn = () => {
       };
     } else { 
       try {
-        const res = await fetch(`${BASE_URL}/api/tutors/signin`, {
+        const res = await fetch(`/api/tutors/signin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

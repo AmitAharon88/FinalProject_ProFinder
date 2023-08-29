@@ -9,8 +9,6 @@ import Divider from "@mui/material/Divider";
 import MessageContactForm from './MessageContactForm';
 import Button from '@mui/material/Button';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const MessageBoardChat = () => {
    const [messages, setMessages] = useState([]);
    const[showContactForm, setShowContactForm] = useState(false);
@@ -31,10 +29,10 @@ const MessageBoardChat = () => {
             let url;
             userRole === "students" ? (
                // the params.id is the student id
-               url = `${BASE_URL}/api/students/${params.id}/messageboard`
+               url = `/api/students/${params.id}/messageboard`
             ):(
                // the params.id is the tutor id
-               url = `${BASE_URL}/api/tutors/${params.id}/messageboard`
+               url = `/api/tutors/${params.id}/messageboard`
             )
 
             const res = await fetch(url);

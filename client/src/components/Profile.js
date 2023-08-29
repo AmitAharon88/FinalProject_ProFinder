@@ -32,9 +32,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const Profile = () => {
    const [userInfo, setUserInfo] = useState({});
    const [updatedFirstName, setUpdatedFirstName] = useState("");
@@ -45,13 +42,13 @@ const Profile = () => {
    const [updatedLocationId, setUpdatedLocationId] = useState("");
    const [updatedEducation, setUpdatedEducation] = useState("");
    const [updatedAbout, setUpdatedAbout] = useState("");
-   const [updatedCatSubcat, setUpdatedCatSubcat] = useState([]);
+   // const [updatedCatSubcat, setUpdatedCatSubcat] = useState([]);
    const [updatedPassword, setUpdatedPassword] = useState("");
    const [successMsg, setSuccessMsg] = useState("");
    const [errorMsg, setErrorMsg] = useState("");
    const[categories, setCategories] = useState([]);
-   const [selectedCategory, setSelectedCategory] = useState("");
-   // const [selectedSubcategory, setSelectedSubcategory] = useState("");
+   const [updatedCategoryId, setUpdatedCategoryId] = useState("");
+   const [updatedSubcategoryId, setUpdatedSubcategoryId] = useState("");
    const [subcategories, setSubcategories] = useState([]);
    // const [categoryInputFields, setCategoryInputFields] = useState([]);
    // const [cat_SubcatObj, setCat_SubcatObj] = useState([]);
@@ -95,9 +92,8 @@ const Profile = () => {
    //  }, [successMsg]);
 
    const getProfileInfo = async () => {
-      // if (userRole === 'students') {
          try {
-            const res = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile`);
+            const res = await fetch(`/api/${userRole}/${params.id}/profile`);
             const data = await res.json();
             // console.log('data:', data);
 
@@ -162,9 +158,7 @@ const Profile = () => {
          };
       };
    
-
    console.log('userInfor:', userInfo)
-   console.log('updatedCatSubcat:', updatedCatSubcat)
 
    const formatDate = (date) => {
       if (date) {
@@ -176,50 +170,61 @@ const Profile = () => {
 
    const getLocation = async () => {
       try {
-          const res = await fetch(`${BASE_URL}/api/location`);
+          const res = await fetch(`/api/location`);
           const data = await res.json();
           console.log('location:',data);
           setLocation(data);
       } catch (e) {
           console.log(e);
       };
-  };
-
-  const getCategories = async () => {
-   try {
-       const res = await fetch(`${BASE_URL}/api/subject/categories`);
-       const data = await res.json();
-       console.log('categories:',data);
-       setCategories(data);
-   } catch (e) {
-       console.log(e);
    };
-};
 
-const handleCategoryChange = (event) => {
-   setSelectedCategory(event.target.value);
-   getSubcategories(event.target.value);
-};
-
-const getSubcategories = async (categoryId) => {
-   try {
-       const res = await fetch(`${BASE_URL}/api/subject/subcategories?catid=${categoryId}`);
-       const data = await res.json();
-       console.log(data);
-       setSubcategories(data);
-   } catch (e) {
-       console.log(e);
+   const getCategories = async () => {
+      try {
+         const res = await fetch(`/api/subject/categories`);
+         const data = await res.json();
+         console.log('categories:',data);
+         setCategories(data);
+      } catch (e) {
+         console.log(e);
+      };
    };
-};
+
+   // const handleCategorySet = (category_id) => {
+   //    getSubcategories(category_id);
+   // };
+
+   const handleCategoryChange = (event) => {
+      setUpdatedCategoryId(event.target.value);
+      getSubcategories(event.target.value);
+   };
+
+   const getSubcategories = async (categoryId) => {
+      try {
+         const res = await fetch(`/api/subject/subcategories?catid=${categoryId}`);
+         const data = await res.json();
+         console.log('subcategories:', data);
+         setSubcategories(data);
+      } catch (e) {
+         console.log(e);
+      };
+   };
+
+   const handleSubcategoryChange = (event) => {
+      setUpdatedSubcategoryId(event.target.value);
+   };
 
    const handleClose = () => {
       setOpenName(false);
       setOpenEmail(false);
       setOpenDate(false);
       setOpenLocation(false);
+      setUpdatedLocationId(userInfo.location_id);
       setOpenEducation(false);
       setOpenAbout(false);
       setOpenCategory(false);
+      setUpdatedCategoryId("");
+      setUpdatedSubcategoryId("");
       setOpenPassword(false);
       setOpenDelete(false);
    };
@@ -234,7 +239,7 @@ const getSubcategories = async (categoryId) => {
       setUserLN(updatedLastName);
 
       try {
-         const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile/name`, {
+         const response = await fetch(`/api/${userRole}/${params.id}/profile/name`, {
            method: 'PATCH',
            headers: {
              'Content-Type': 'application/json',
@@ -264,7 +269,7 @@ const getSubcategories = async (categoryId) => {
       setOpenEmail(false);
 
       try {
-         const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile/email`, {
+         const response = await fetch(`/api/${userRole}/${params.id}/profile/email`, {
            method: 'PATCH',
            headers: {
              'Content-Type': 'application/json',
@@ -298,7 +303,7 @@ const getSubcategories = async (categoryId) => {
       console.log(isoDate)
 
       try {
-         const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile/date`, {
+         const response = await fetch(`/api/${userRole}/${params.id}/profile/date`, {
            method: 'PATCH',
            headers: {
              'Content-Type': 'application/json',
@@ -325,7 +330,7 @@ const getSubcategories = async (categoryId) => {
    const handleCloseAndUpdateLocation = async () => {
       setOpenLocation(false);
       try {
-         const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile/location`, {
+         const response = await fetch(`/api/${userRole}/${params.id}/profile/location`, {
            method: 'PATCH',
            headers: {
              'Content-Type': 'application/json',
@@ -358,7 +363,7 @@ const getSubcategories = async (categoryId) => {
       setOpenEducation(false);
 
       try {
-         const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile/education`, {
+         const response = await fetch(`/api/${userRole}/${params.id}/profile/education`, {
            method: 'PATCH',
            headers: {
              'Content-Type': 'application/json',
@@ -387,7 +392,7 @@ const getSubcategories = async (categoryId) => {
       setOpenAbout(false);
 
       try {
-         const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile/about`, {
+         const response = await fetch(`/api/${userRole}/${params.id}/profile/about`, {
            method: 'PATCH',
            headers: {
              'Content-Type': 'application/json',
@@ -411,6 +416,9 @@ const getSubcategories = async (categoryId) => {
    const handleOpenCategory = async () => {
       setOpenCategory(true);
       getCategories();
+
+      // thought this could set the categories
+      // getSubcategories(category_id);
    };
 
 //    const addCategoryInputField = () => {
@@ -420,9 +428,12 @@ const getSubcategories = async (categoryId) => {
 
    const handleCloseAndUpdateCategory = async () => {
       setOpenAbout(false);
+      // Refresh Id's
+      setUpdatedCategoryId("");
+      setUpdatedSubcategoryId("");
 
       // try {
-      //    const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile/category`, {
+      //    const response = await fetch(`/api/${userRole}/${params.id}/profile/category`, {
       //      method: 'PATCH',
       //      headers: {
       //        'Content-Type': 'application/json',
@@ -451,7 +462,7 @@ const getSubcategories = async (categoryId) => {
       setOpenPassword(false);
 
       try {
-         const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/profile/password`, {
+         const response = await fetch(`/api/${userRole}/${params.id}/profile/password`, {
            method: 'PATCH',
            headers: {
              'Content-Type': 'application/json',
@@ -480,7 +491,7 @@ const getSubcategories = async (categoryId) => {
       setOpenDelete(false);
 
       try {
-         const response = await fetch(`${BASE_URL}/api/${userRole}/${params.id}/delete`, {
+         const response = await fetch(`/api/${userRole}/${params.id}/delete`, {
            method: 'DELETE',
            headers: {
              'Content-Type': 'application/json',
@@ -857,6 +868,7 @@ const getSubcategories = async (categoryId) => {
                                        label="Date of birth"
                                        onChange={(newValue) => setUpdatedDate(newValue.$d)}
                                        slotProps={{ textField: { variant: "outlined" } }}
+                                       disableFuture
                                     />
                                  </DemoContainer>
                               </LocalizationProvider>  
@@ -1226,9 +1238,6 @@ const getSubcategories = async (categoryId) => {
                                           color: "#71797E"
                                        }}
                                     >
-                                       {/* {userInfo.cat_subcat ? userInfo.cat_subcat.map(cat_subcat => {
-                                          return <> {cat_subcat.category_name}: {cat_subcat.subcategory_name} <br/> </>
-                                       }): null } */}
                                        {cat_subcat.category_name}: {cat_subcat.subcategory_name}
                                     </Typography>
                                  </CardContent>
@@ -1251,7 +1260,6 @@ const getSubcategories = async (categoryId) => {
                                     <Dialog open={openCategory} onClose={handleClose}>
                                        <DialogTitle>Update Subject</DialogTitle>
                                        <DialogContent ref={formRef} sx={{dislay: 'flex', flexDirection: 'column'}}>
-                                          {/* {userInfo.cat_subcat ? userInfo.cat_subcat.map(cat_subcat => ( */}
                                                 <>
                                                    <Box
                                                       key={cat_subcat.tutor_cat_id}
@@ -1262,39 +1270,36 @@ const getSubcategories = async (categoryId) => {
                                                       {/* <InputLabel id="categoryLabel">Subject</InputLabel> */}
                                                       <Select
                                                          labelId="categoryLabel"
-                                                         id={cat_subcat.tutor_cat_id}
+                                                         id={`category${cat_subcat.tutor_cat_id}`}
                                                          label="Subject"
-                                                         name={`category${cat_subcat.tutor_cat_id}`}
-                                                         // value={selectedCategory??cat_subcat.category_id}
+                                                         name={`categoryname${cat_subcat.tutor_cat_id}`}
+                                                         value={updatedCategoryId || cat_subcat.category_id}
                                                          onChange={(e) => handleCategoryChange(e)}
                                                       >
                                                          {categories.map(category => {
-                                                            console.log('updatedCatSubcat', updatedCatSubcat)
                                                             return (
                                                                <MenuItem key= {category.category_id} value={category.category_id}>{category.category_name}</MenuItem>
                                                             )
                                                          })}
                                                       </Select>
                                                       {/* <InputLabel id="subcategoryLabel">Topic</InputLabel> */}
-                                                      {/* <Select
+                                                      {console.log(cat_subcat)}
+                                                      <Select
                                                          labelId="subcategoryLabel"
-                                                         id={5}
+                                                         id={`subcategory${cat_subcat.tutor_cat_id}`}
                                                          label="subcategory"
-                                                         name="subcategory"
-                                                         value={cat_subcat.subcategory_name}
-                                                         // onChange={(e) => setUpdatedLocation(e.target.value)}
+                                                         name={`subcategoryname${cat_subcat.tutor_cat_id}`}
+                                                         value={updatedSubcategoryId || cat_subcat.subcategory_id}
+                                                         onChange={(e) => handleSubcategoryChange(e)}
                                                       >
                                                          {subcategories.map(subcategory => {
-                                                            console.log(subcategories)
                                                             return (
-                                                               <MenuItem key= {subcategory} value={subcategory}>{subcategory}</MenuItem>
+                                                               <MenuItem key= {subcategory.subcategory_id} value={subcategory.subcategory_id}>{subcategory.subcategory_name}</MenuItem>
                                                             )
                                                          })}
-                                                      </Select> */}
+                                                      </Select>
                                                    </Box>
-                                                </>
-                                             {/* )): null } */}
-                                          
+                                                </>                                          
                                        </DialogContent>
                                        <DialogActions>
                                           <Button

@@ -15,8 +15,6 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const StudentRegister = () => {
     const [location, setLocation] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
@@ -36,7 +34,7 @@ const StudentRegister = () => {
 
    const getLocation = async () => {
        try {
-           const res = await fetch(`${BASE_URL}/api/location`);
+           const res = await fetch(`/api/location`);
            const data = await res.json();
         //    console.log(data);
            setLocation(data);
@@ -76,7 +74,7 @@ const StudentRegister = () => {
         console.log(studentData);
 
         try {
-            const res = await fetch(`${BASE_URL}/api/students/register`, {
+            const res = await fetch(`/api/students/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -159,6 +157,7 @@ const StudentRegister = () => {
                                                 label="Date of birth"
                                                 onChange={(newValue) => setSelectedDate(newValue.$d)}
                                                 slotProps={{ textField: { variant: 'outlined' } }}
+                                                disableFuture
                                             />
                                         </DemoContainer>
                                     </LocalizationProvider>

@@ -15,8 +15,6 @@ import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import { v4 as uuidv4 } from 'uuid';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const Tutor = () => {
    const[tutor, setTutor] = useState([]);
    const[reviews, setReviews] = useState([]);
@@ -49,7 +47,7 @@ const Tutor = () => {
 
    const getTutor = async () => {
       try {
-          const res = await fetch(`${BASE_URL}/api/tutors/${params.id}`);
+          const res = await fetch(`/api/tutors/${params.id}`);
           const data = await res.json();
           console.log('data:', data)
 
@@ -99,7 +97,7 @@ const Tutor = () => {
 
    const getReviews = async () => {
       try {
-         const res = await fetch(`${BASE_URL}/api/tutors/${params.id}/reviews`);
+         const res = await fetch(`/api/tutors/${params.id}/reviews`);
          const data = await res.json();
          // console.log(`fetched data: ${JSON.stringify(data)}`);
          const transformedData = data.map((review) => ({

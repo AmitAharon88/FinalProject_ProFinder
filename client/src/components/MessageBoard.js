@@ -6,8 +6,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const MessageBoard = () => {
 
     const [messageBoard, setMessageBoard] = useState([]);
@@ -32,10 +30,10 @@ const MessageBoard = () => {
                 let url;
                 userRole === "students" ? (
                 // the params.id is the student id
-                url = `${BASE_URL}/api/students/${params.id}/messageboard`
+                url = `/api/students/${params.id}/messageboard`
                 ):(
                 // the params.id is the tutor id
-                url = `${BASE_URL}/api/tutors/${params.id}/messageboard`
+                url = `/api/tutors/${params.id}/messageboard`
                 )
 
                 const res = await fetch(url);

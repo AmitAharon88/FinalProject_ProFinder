@@ -9,9 +9,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-const ContactForm = ({ tutor_id, tutorFN, student_id, studentFN, studentLN }) => {
+const ContactForm = ({ tutor_id, tutorFN, student_id }) => {
     const [resMessage, setResMessage] = useState('');
     const [requiredFields, setRequiredFields] = useState(false);
     const [messageSent, setmessageSent] = useState(false);
@@ -41,7 +39,7 @@ const ContactForm = ({ tutor_id, tutorFN, student_id, studentFN, studentLN }) =>
         console.log(messageData)
 
         try {
-            const res = await fetch(`${BASE_URL}/api/tutors/${params.id}/messageboard/write`, {
+            const res = await fetch(`/api/tutors/${params.id}/messageboard/write`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
