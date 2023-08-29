@@ -222,6 +222,7 @@ const Profile = () => {
       setUpdatedLocationId(userInfo.location_id);
       setOpenEducation(false);
       setOpenAbout(false);
+      setUpdatedAbout(userInfo.about);
       setOpenCategory(false);
       setUpdatedCategoryId("");
       setUpdatedSubcategoryId("");
