@@ -21,10 +21,13 @@ function App() {
   const [userLN, setUserLN] = useState("");
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
+  const [successDeleteMsg, setSuccessDeleteMsg] = useState("");
+  const [successRegisterMsg, setSuccessRegisterMsg] = useState("");
+
 
   return (
     <div className="App">
-      <AppContext.Provider value={{isAuthenticated, setIsAuthenticated, userFN, setUserFN, userLN, setUserLN, userId, setUserId, userRole, setUserRole}}>
+      <AppContext.Provider value={{isAuthenticated, setIsAuthenticated, userFN, setUserFN, userLN, setUserLN, userId, setUserId, userRole, setUserRole, successDeleteMsg, setSuccessDeleteMsg, successRegisterMsg, setSuccessRegisterMsg}}>
         <Nav />
         <main className="main">
             <Routes>

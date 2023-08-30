@@ -1,10 +1,28 @@
 import { Link } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { AppContext } from '../App';
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 
 const Register = () => {
+
+    const { successDeleteMsg, setSuccessDeleteMsg } = useContext(AppContext);
+
+    console.log('successDeleteMsg:', successDeleteMsg)
+
+    useEffect(() => {
+        // Clear success message after a certain time
+        if (successDeleteMsg) {
+          const timer = setTimeout(() => {
+            setSuccessDeleteMsg("");
+          }, 5000); // Clear after 5 seconds
+          return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+        }
+      }, []);
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 9 }}>
             <Typography
@@ -49,6 +67,20 @@ const Register = () => {
                     Tutor
                 </Button>
             </Stack>
+            <Box
+                sx={{
+                position: "fixed",
+                bottom: "20px",
+                left: "2vw",
+                width: '80vw'
+                }}
+            >
+                <Stack sx={{ width: '60%', marginTop: 2 }}>
+                {successDeleteMsg ? (
+                    <Alert severity="success">{successDeleteMsg}</Alert>
+                ) : (null)}
+                </Stack>
+            </Box>
         </Box>
     )
 };

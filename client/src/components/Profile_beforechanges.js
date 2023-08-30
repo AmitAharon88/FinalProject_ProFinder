@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useContext, useState, useEffect, useRef } from 'react';
 import { AppContext } from '../App';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import CategoryProfile from "./CategoryProfile"
 
 import CategoryInputField from "./CategoryInputField"
 
@@ -47,11 +46,12 @@ const Profile = () => {
    const [updatedPassword, setUpdatedPassword] = useState("");
    const [successMsg, setSuccessMsg] = useState("");
    const [errorMsg, setErrorMsg] = useState("");
-   // const[categories, setCategories] = useState([]);
-   // const [updatedCategoryId, setUpdatedCategoryId] = useState("");
-   // const [updatedSubcategoryId, setUpdatedSubcategoryId] = useState("");
-   // const [subcategories, setSubcategories] = useState([]);
-
+   const[categories, setCategories] = useState([]);
+   const [updatedCategoryId, setUpdatedCategoryId] = useState("");
+   const [updatedSubcategoryId, setUpdatedSubcategoryId] = useState("");
+   const [subcategories, setSubcategories] = useState([]);
+   // const [categoryInputFields, setCategoryInputFields] = useState([]);
+   // const [cat_SubcatObj, setCat_SubcatObj] = useState([]);
 
 
    const [openName, setOpenName] = useState(false);
@@ -60,7 +60,7 @@ const Profile = () => {
    const [openLocation, setOpenLocation] = useState(false);
    const [openEducation, setOpenEducation] = useState(false);
    const [openAbout, setOpenAbout] = useState(false);
-   // const [openCategory, setOpenCategory] = useState(false);
+   const [openCategory, setOpenCategory] = useState(false);
    const [openPassword, setOpenPassword] = useState(false);
    const [openDelete, setOpenDelete] = useState(false);
 
@@ -79,7 +79,7 @@ const Profile = () => {
    useEffect(() => {
       getProfileInfo()
       getLocation()
-      // getCategories()
+      getCategories()
    }, []);
 
    useEffect(() => {
@@ -189,35 +189,39 @@ const Profile = () => {
       };
    };
 
-   // const getCategories = async () => {
-   //    try {
-   //       const res = await fetch(`/api/subject/categories`);
-   //       const data = await res.json();
-   //       setCategories(data);
-   //    } catch (e) {
-   //       console.log(e);
-   //    };
+   const getCategories = async () => {
+      try {
+         const res = await fetch(`/api/subject/categories`);
+         const data = await res.json();
+         setCategories(data);
+      } catch (e) {
+         console.log(e);
+      };
+   };
+
+   // const handleCategorySet = (category_id) => {
+   //    getSubcategories(category_id);
    // };
 
-   // const handleCategoryChange = (event) => {
-   //    setUpdatedCategoryId(event.target.value);
-   //    getSubcategories(event.target.value);
-   // };
+   const handleCategoryChange = (event) => {
+      setUpdatedCategoryId(event.target.value);
+      getSubcategories(event.target.value);
+   };
 
-   // const getSubcategories = async (categoryId) => {
-   //    try {
-   //       const res = await fetch(`/api/subject/subcategories?catid=${categoryId}`);
-   //       const data = await res.json();
-   //       console.log('subcategories:', data);
-   //       setSubcategories(data);
-   //    } catch (e) {
-   //       console.log(e);
-   //    };
-   // };
+   const getSubcategories = async (categoryId) => {
+      try {
+         const res = await fetch(`/api/subject/subcategories?catid=${categoryId}`);
+         const data = await res.json();
+         console.log('subcategories:', data);
+         setSubcategories(data);
+      } catch (e) {
+         console.log(e);
+      };
+   };
 
-   // const handleSubcategoryChange = (event) => {
-   //    setUpdatedSubcategoryId(event.target.value);
-   // };
+   const handleSubcategoryChange = (event) => {
+      setUpdatedSubcategoryId(event.target.value);
+   };
 
    const handleClose = () => {
       setOpenName(false);
@@ -228,9 +232,9 @@ const Profile = () => {
       setOpenEducation(false);
       setOpenAbout(false);
       setUpdatedAbout(userInfo.about);
-      // setOpenCategory(false);
-      // setUpdatedCategoryId("");
-      // setUpdatedSubcategoryId("");
+      setOpenCategory(false);
+      setUpdatedCategoryId("");
+      setUpdatedSubcategoryId("");
       setOpenPassword(false);
       setOpenDelete(false);
    };
@@ -437,16 +441,24 @@ const Profile = () => {
         }
    };
 
-   // const handleOpenCategory = async () => {
-   //    setOpenCategory(true);
-   //    getCategories();
-   // };
+   const handleOpenCategory = async () => {
+      setOpenCategory(true);
+      getCategories();
 
-   // const handleCloseAndUpdateCategory = async () => {
-   //    setOpenAbout(false);
-   //    // Refresh Id's
-   //    setUpdatedCategoryId("");
-   //    setUpdatedSubcategoryId("");
+      // thought this could set the categories
+      // getSubcategories(category_id);
+   };
+
+//    const addCategoryInputField = () => {
+//       setCategoryInputFields(prevFields => [...prevFields, <CategoryInputField setCat_SubcatObj={setCat_SubcatObj}/>]);
+//   };
+
+
+   const handleCloseAndUpdateCategory = async () => {
+      setOpenAbout(false);
+      // Refresh Id's
+      setUpdatedCategoryId("");
+      setUpdatedSubcategoryId("");
 
       // try {
       //    const response = await fetch(`/api/${userRole}/${params.id}/profile/category`, {
@@ -468,7 +480,7 @@ const Profile = () => {
       //   } catch (error) {
       //     console.error('Error updating about section:', error);
       //   }
-   // };
+   };
 
    const handleOpenPassword = async () => {
       setOpenPassword(true);
@@ -1238,11 +1250,112 @@ const Profile = () => {
                               Tutoring Subjects:
                            </Typography>
                            </CardContent>
-                           {userInfo.cat_subcat ? (
-                              userInfo.cat_subcat.map(cat_subcat => (
-                                 <CategoryProfile cat_subcat={cat_subcat}/>
-                              )) 
-                           ) : (null) }
+                           {userInfo.cat_subcat ? userInfo.cat_subcat.map(cat_subcat => {
+                              return <>
+                                 <CardContent
+                                    sx={{
+                                       display: "flex",
+                                       justifyContent: "center",
+                                    }}
+                                 >
+                                    <Typography
+                                       component="h6"
+                                       variant="h6"
+                                       sx={{
+                                          color: "#71797E"
+                                       }}
+                                    >
+                                       {cat_subcat.category_name}: {cat_subcat.subcategory_name}
+                                    </Typography>
+                                 </CardContent>
+                                 <Box
+                                    sx={{
+                                       display: "flex",
+                                       justifyContent: "flex-end",
+                                       padding: 1
+                                    }}
+                                 >
+                                    <EditIcon
+                                       onClick={handleOpenCategory}
+                                       sx={{
+                                          color: "#009688",
+                                          '&:hover': {
+                                             color: "#00695f",
+                                          },
+                                       }}
+                                    />
+                                    <Dialog open={openCategory} onClose={handleClose}>
+                                       <DialogTitle>Update Subject</DialogTitle>
+                                       <DialogContent ref={formRef} sx={{dislay: 'flex', flexDirection: 'column'}}>
+                                                <>
+                                                   <Box
+                                                      key={cat_subcat.tutor_cat_id}
+                                                      sx={{
+                                                         display: 'flex'
+                                                      }}
+                                                   >
+                                                      {/* <InputLabel id="categoryLabel">Subject</InputLabel> */}
+                                                      <Select
+                                                         labelId="categoryLabel"
+                                                         id={`category${cat_subcat.tutor_cat_id}`}
+                                                         label="Subject"
+                                                         name={`categoryname${cat_subcat.tutor_cat_id}`}
+                                                         value={updatedCategoryId || cat_subcat.category_id}
+                                                         onChange={(e) => handleCategoryChange(e)}
+                                                      >
+                                                         {categories.map(category => {
+                                                            return (
+                                                               <MenuItem key= {category.category_id} value={category.category_id}>{category.category_name}</MenuItem>
+                                                            )
+                                                         })}
+                                                      </Select>
+                                                      {/* <InputLabel id="subcategoryLabel">Topic</InputLabel> */}
+                                                      {/* {console.log(cat_subcat)} */}
+                                                      <Select
+                                                         labelId="subcategoryLabel"
+                                                         id={`subcategory${cat_subcat.tutor_cat_id}`}
+                                                         label="subcategory"
+                                                         name={`subcategoryname${cat_subcat.tutor_cat_id}`}
+                                                         value={updatedSubcategoryId || cat_subcat.subcategory_id}
+                                                         onChange={(e) => handleSubcategoryChange(e)}
+                                                      >
+                                                         {subcategories.map(subcategory => {
+                                                            return (
+                                                               <MenuItem key= {subcategory.subcategory_id} value={subcategory.subcategory_id}>{subcategory.subcategory_name}</MenuItem>
+                                                            )
+                                                         })};
+                                                      </Select>
+                                                   </Box>
+                                                </>                                          
+                                       </DialogContent>
+                                       <DialogActions>
+                                          <Button
+                                             onClick={handleClose}
+                                             sx={{
+                                                color: "#009688",
+                                                '&:hover': {
+                                                   color: "#00695f",
+                                                },
+                                             }}
+                                          >
+                                             Cancel
+                                          </Button>
+                                          <Button
+                                             onClick={handleCloseAndUpdateCategory}
+                                             sx={{
+                                                color: "#009688",
+                                                '&:hover': {
+                                                   color: "#00695f",
+                                                },
+                                             }}
+                                          >
+                                             Update
+                                          </Button>
+                                       </DialogActions>
+                                    </Dialog>
+                                 </Box>
+                                 </>
+                              }): null }
                      </CardActionArea>
                   </Card>
                </>

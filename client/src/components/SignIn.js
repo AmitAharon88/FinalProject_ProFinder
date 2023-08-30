@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from 'react';
+import { useState, createContext, useContext, useEffect } from 'react';
 import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -13,6 +13,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Stack from "@mui/material/Stack";
+import Alert from '@mui/material/Alert';
 
 const defaultTheme = createTheme();
 
@@ -27,9 +29,19 @@ const SignIn = () => {
   const { userLN, setUserLN } = useContext(AppContext);
   const { userId, setUserId } = useContext(AppContext);
   const { userRole, setUserRole } = useContext(AppContext);
-
+  const { successRegisterMsg, setSuccessRegisterMsg } = useContext(AppContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Clear success message after a certain time
+    if (successRegisterMsg) {
+      const timer = setTimeout(() => {
+        setSuccessRegisterMsg("");
+      }, 5000); // Clear after 5 seconds
+      return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+    }
+  }, []);
 
   const handleChange = (event) => {
     setRole(event.target.value);
@@ -193,6 +205,20 @@ const SignIn = () => {
           </Box>
         </Box>
       </Container>
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: "20px",
+          left: "2vw",
+          width: '80vw'
+        }}
+      >
+        <Stack sx={{ width: '60%', marginTop: 2 }}>
+          {successRegisterMsg ? (
+            <Alert severity="success">{successRegisterMsg}</Alert>
+          ) : (null)}
+        </Stack>
+      </Box>
     </ThemeProvider>
   );
 }

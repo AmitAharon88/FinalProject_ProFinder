@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -25,6 +26,8 @@ const StudentRegister = () => {
     // for uploading files
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState(null);
+
+    const { successRegisterMsg, setSuccessRegisterMsg } = useContext(AppContext);
 
     const navigate = useNavigate();
 
@@ -84,6 +87,7 @@ const StudentRegister = () => {
             if (res.ok) {
                 const response = await res.json();
                 console.log(response.msg);
+                setSuccessRegisterMsg(response.msg)
                 navigate('/signin');
             } else {
                 const errorResponse = await res.json();
