@@ -135,7 +135,7 @@ const SignIn = () => {
           <Avatar sx={{ m: 1, bgcolor: "#009688" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography handleOpenUserMenu variant="h5">
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -175,7 +175,7 @@ const SignIn = () => {
               </Select>
             </FormControl>
             {msg && (
-              <Typography component="body1" variant="p" color="red">
+              <Typography variant="body1" color="red">
                 * {msg}
               </Typography>
             )}

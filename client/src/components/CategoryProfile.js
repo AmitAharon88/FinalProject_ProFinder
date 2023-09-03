@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { useContext, useState, useEffect, useRef } from 'react';
 import { AppContext } from '../App';
+import { useParams } from 'react-router-dom';
+
 
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -15,20 +18,26 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 
-const CategoryProfile = (cat_subcat) => {
-    const { category_id, category_name, subcategory_id, subcategory_name, tutor_cat_id } = cat_subcat.cat_subcat;
-
-    const[categories, setCategories] = useState([]);
-    const [updatedCategoryId, setUpdatedCategoryId] = useState("");
-    const [updatedSubcategoryId, setUpdatedSubcategoryId] = useState("");
+const CategoryProfile = ({cat_subcat, getProfileInfo}) => {
+    const { category_id, category_name, subcategory_id, subcategory_name, tutor_cat_id } = cat_subcat;
+    const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
     const [openCategory, setOpenCategory] = useState(false);
+    const [refreshSubcatId, setRefreshSubcatId] = useState("");
+    const [openDeleteCategory, setOpenDeleteCategory] = useState(false);
 
     const formRef = useRef();
+    const catId = useRef();
+    const subId = useRef();
+
+    const params = useParams();
 
     useEffect(() => {
-        getCategories()
-        getSubcategories(category_id)
+        catId.current = category_id;
+        subId.current = subcategory_id;
+        setRefreshSubcatId(subcategory_id);
+        getCategories();
+        getSubcategories(category_id);
      }, []);
 
      const getCategories = async () => {
@@ -42,8 +51,9 @@ const CategoryProfile = (cat_subcat) => {
      };
   
      const handleCategoryChange = (event) => {
-        console.log('handle category change: cat_id', event.target.value)
-        setUpdatedCategoryId(event.target.value);
+        console.log("handle category change: cat_id", event.target.value)
+        catId.current = event.target.value
+        subId.current = ""
         getSubcategories(event.target.value);
      };
   
@@ -52,56 +62,97 @@ const CategoryProfile = (cat_subcat) => {
            const res = await fetch(`/api/subject/subcategories?catid=${categoryId}`);
            const data = await res.json();
            setSubcategories(data);
-           console.log('subcategories:', data);
         } catch (e) {
            console.log(e);
         };
      };
-  
+
      const handleSubcategoryChange = (event) => {
-        setUpdatedSubcategoryId(event.target.value);
+        console.log('handle subcategory change: subcat_id', event.target.value)
+        subId.current = event.target.value
+        setRefreshSubcatId(event.target.value)
      };
 
      const handleClose = () => {
         setOpenCategory(false);
-        setUpdatedCategoryId("");
-        setUpdatedSubcategoryId("");
+        catId.current = category_id;
+        setRefreshSubcatId(subcategory_id)
+        console.log('refreshSubcarId:', refreshSubcatId)
+        getSubcategories(category_id)
+
+        setOpenDeleteCategory(false);
      };
+  
 
      const handleOpenCategory = async () => {
         setOpenCategory(true);
         getCategories();
+        subId.current = refreshSubcatId;
      };
-  
+
      const handleCloseAndUpdateCategory = async () => {
         setOpenCategory(false);
-        // Refresh Id's
-        setUpdatedCategoryId("");
-        setUpdatedSubcategoryId("");
-
-        // try {
-        //    const response = await fetch(`/api/${userRole}/${params.id}/profile/category`, {
-        //      method: 'PATCH',
-        //      headers: {
-        //        'Content-Type': 'application/json',
-        //      },
-        //      body: JSON.stringify({  }),
-        //    });
+        // Refresh Id's 
+        console.log('category_id', catId.current);
+        console.log('subcategory_id', subId.current);
+        console.log('tutor_cat', tutor_cat_id);
+          
+        try {
+           const response = await fetch(`/api/tutors/${params.id}/profile/catsubcat`, {
+             method: 'PATCH',
+             headers: {
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({ 
+                category_id: catId.current,
+                subcategory_id: subId.current,
+                tutor_cat_id: tutor_cat_id
+            }),
+           });
   
-        //    if (response.ok) {
-        //       setUserInfo((prevInfo) => ({
-        //         ...prevInfo,
-        //         about: updatedAbout,
-        //       }));
-        //     } else {
-        //       console.error('Update failed');
-        //     }
-        //   } catch (error) {
-        //     console.error('Error updating about section:', error);
-        //   }
+           if (response.ok) {
+              getProfileInfo()
+            } else {
+              console.error('Update failed');
+            }
+          } catch (error) {
+            console.error('Error updating subjects', error);
+          }
      };
+
+     const handleOpenDeleteCategory = async () => {
+        setOpenDeleteCategory(true);
+     };
+
+    const handleCloseAndDeleteCategory = async () => {
+        setOpenDeleteCategory(false);
+        console.log(tutor_cat_id)
+      
+        try {
+            const response = await fetch(`/api/tutors/${params.id}/profile/catsubcat/delete/${tutor_cat_id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+      
+            if (response.ok) {
+                const res = await response.json();
+                console.log('res msg:',res.msg);
+                getProfileInfo()
+
+                // setSuccessDeleteMsg(res.msg);
+            } else {
+                console.error('Delete failed');
+                // setErrorMsg("Error deleting your account");
+            }
+        } catch (error) {
+            console.error('Error deleting category:', error);
+        }
+    };
+            
+            
 return (
-    // userInfo.userInfo.cat_subcat ? userInfo.userInfo.cat_subcat.map(cat_subcat => {
         <>
             <CardContent
                 sx={{
@@ -110,7 +161,6 @@ return (
                 }}
             >
                 <Typography
-                    component="h6"
                     variant="h6"
                     sx={{
                         color: "#71797E"
@@ -133,6 +183,7 @@ return (
                         '&:hover': {
                         color: "#00695f",
                         },
+                        mr: 2
                     }}
                 />
                 <Dialog open={openCategory} onClose={handleClose}>
@@ -150,35 +201,36 @@ return (
                                         id={`category${tutor_cat_id}`}
                                         label="Subject"
                                         name={`categoryname${tutor_cat_id}`}
-                                        value={updatedCategoryId || category_id}
+                                        value={catId.current}
                                         onChange={(e) => handleCategoryChange(e)}
                                         sx={{
                                             marginRight: 1
                                         }}
                                     >
-                                        {categories ? (
+                                        {categories.length > 0 &&
                                             categories.map(category => {
                                                 return (
                                                     <MenuItem key= {category.category_id} value={category.category_id}>{category.category_name}</MenuItem>
                                                 )
                                             })
-                                        ) : (null) }
+                                        }
                                     </Select>
                                     <Select
                                         labelId="subcategoryLabel"
                                         id={`subcategory${tutor_cat_id}`}
                                         label="subcategory"
                                         name={`subcategoryname${tutor_cat_id}`}
-                                        value={updatedSubcategoryId || subcategory_id}
+                                        value={subId.current}
+
                                         onChange={(e) => handleSubcategoryChange(e)}
                                     >
-                                        {subcategories ? (
+                                        {subcategories.length > 0 && 
                                             subcategories.map(subcategory => {
                                                 return (
                                                     <MenuItem key= {subcategory.subcategory_id} value={subcategory.subcategory_id}>{subcategory.subcategory_name}</MenuItem>
                                                 )
-                                            })
-                                        ) : (null) };
+                                            }
+                                        ) };
                                     </Select>
                                 </Box>
                             </>                                          
@@ -208,8 +260,33 @@ return (
                         </Button>
                     </DialogActions>
                 </Dialog>
+
+                <HighlightOffIcon
+                    onClick={handleOpenDeleteCategory}
+                    sx={{
+                        color: "#009688",
+                        '&:hover': {
+                        color: "#00695f",
+                        },
+                    }}
+                />
+                <Dialog open={openDeleteCategory} onClose={handleClose}>
+                  <DialogTitle>Delete Subject</DialogTitle>
+                  <DialogContent>
+                     Are you sue you want to delete this subject?
+                  </DialogContent>
+                  <DialogActions>
+                     <Button onClick={handleClose}>No</Button>
+                     <Button 
+                        onClick={handleCloseAndDeleteCategory}
+                     >
+                        Yes, delete
+                     </Button>
+                  </DialogActions>
+               </Dialog>
             </Box>
         </>
     );
 };
+
 export default CategoryProfile;

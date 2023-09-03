@@ -7,6 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 
 const Tutors = () => {
    const[filteredTutors, setFilteredTutors] = useState([]);
@@ -113,7 +114,6 @@ const Tutors = () => {
           variant="h2"
           align="center"
           color="text.secondary"
-          component="h2"
           sx={{
             mt: 4,
             mb: 4,
@@ -183,25 +183,27 @@ const Tutors = () => {
                                     alignItems: "center", // Center vertically
                                  }}
                               >
-                                 <Typography gutterBottom variant="h5" component="div" color="text.secondary" sx={{fontWeight: 'bold', mb: 2}}>
+                                 <Typography gutterBottom variant="h5" color="text.secondary" sx={{fontWeight: 'bold', mb: 2}}>
                                     {tutor.first_name} {tutor.last_name}
                                  </Typography>
 
 
-                                 {tutor.cat_subcat.map((subject,i) => {
+                                 {tutor.cat_subcat.map((subject) => {
                                     return (
-                                       <>
-                                          <Typography gutterBottom variant="body2" component="div" color="text.secondary" sx={{fontSize: '18px', textAlign: 'center', mb: 2 }}>
+                                       
+                                          <Typography key={uuidv4()} gutterBottom variant="body2" color="text.secondary" sx={{fontSize: '18px', textAlign: 'center', mb: 2 }}>
                                              {subject[0]}: {subject[1]}
                                           </Typography>
-                                       </>
+                                       
                                     )
                                  })}
                                  <Typography variant="body2" color="text.secondary">
                                     {tutor.location_name}
                                  </Typography>   
                               </CardContent>
-                              <CardActions>
+                              <CardActions
+                                 // key={`button${tutor.tutor_id}`}
+                              >
                                  <Link to={`/${tutor.tutor_id}`}>
                                     <Button 
                                        variant="outlined"

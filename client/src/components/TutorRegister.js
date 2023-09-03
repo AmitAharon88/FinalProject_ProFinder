@@ -126,7 +126,6 @@ const TutorRegister = () => {
     return (
         <>
             <Typography 
-                component="h2"
                 variant="h2"
                 color="#71797E"
                 fontWeight="bold"
@@ -151,7 +150,6 @@ const TutorRegister = () => {
                         >
                             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                                 <Typography 
-                                    component="h5"
                                     variant="h5"
                                     color="#71797E"
                                     fontWeight="bold"
@@ -228,7 +226,7 @@ const TutorRegister = () => {
                                     </FormControl>
                                 </Box>
                                 <Stack direction="row" alignItems="center" spacing={2} sx={{ mt:2 }}>
-                                    <Typography component="p" variant="body1" color="#71797E">
+                                    <Typography variant="body1" color="#71797E">
                                         Set a profile picture:
                                     </Typography>
 
@@ -250,7 +248,6 @@ const TutorRegister = () => {
                                     </Button>
                                 </Stack>
                                 <Typography 
-                                    component="h5"
                                     variant="h5"
                                     color="#71797E"
                                     fontWeight="bold"
@@ -282,7 +279,6 @@ const TutorRegister = () => {
                                     placeholder="Tell us about yourself"
                                 />
                                 <Typography
-                                    component="p"
                                     variant="body1"
                                     color="#71797E"
                                     sx={{ 
@@ -304,7 +300,6 @@ const TutorRegister = () => {
                                     <AddCircleIcon />
                                 </IconButton>
                                 <Typography 
-                                    component="h5"
                                     variant="h5"
                                     color="#71797E"
                                     fontWeight="bold"
@@ -328,7 +323,7 @@ const TutorRegister = () => {
                                     onChange={(e) => {setSelectedPassword(e.target.value)}}
                                 />
                                 {requiredFields ? (
-                                <Typography component="p" variant="body1" color="red">
+                                <Typography variant="body1" color="red">
                                         * Fill in all required field
                                 </Typography> ) : null}
                                 <Button

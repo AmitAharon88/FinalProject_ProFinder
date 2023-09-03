@@ -184,7 +184,18 @@ export const updateProfileAbout = (body, id) => {
   .returning(['tutor_id', 'about'])
 };
 
+export const updateProfileCategory = (body) => {
+  return db('tutor_categories')
+  .update({category_id: body.category_id, subcategory_id: body.subcategory_id,})
+  .where({tutor_cat_id: body.tutor_cat_id})
+  .returning(['tutor_id', 'category_id', 'subcategory_id', 'tutor_cat_id'])
+};
 
+export const deleteProfileCategory = (id, tutor_cat_id) => {
+  return db('tutor_categories')
+  .where({tutor_id: id, tutor_cat_id: tutor_cat_id})
+  .del()
+};
 
 
 export const updateProfilePassword = (body, id) => {

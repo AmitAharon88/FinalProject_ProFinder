@@ -88,7 +88,6 @@ const Tutor = () => {
              const tutorArray = Object.values(tutorObj);
              console.log('tutorArray:', tutorArray);
              setTutor(tutorArray);
-
             });
       } catch (e) {
           console.log(e);
@@ -177,7 +176,6 @@ const Tutor = () => {
                   </Grid>
                   <Grid item xs={9}>
                         <Typography 
-                           component="h4"
                            variant="h4"
                            fontWeight="bold"
                            sx={{
@@ -186,21 +184,17 @@ const Tutor = () => {
                         >
                            {tutor[0] ? tutor[0].first_name + " " + tutor[0].last_name : null}
                         </Typography>
-                        <Typography 
-                           component="p"
-                           variant="body1"
-                           sx={{
-                              color: "#71797E"
-                           }}         
-                        >
-
-                           {tutor[0] ? 
-                           tutor[0].cat_subcat.map(cat_subcat => {
-                              return <> {cat_subcat[0]} tutor specializing in {cat_subcat[1]} <br/> </>
-                           }) : null}
-                        </Typography>
+                        {tutor[0] ? 
+                           tutor[0].cat_subcat.map(cat_subcat => 
+                              <Typography
+                                 key={uuidv4()}
+                                 variant="body1"
+                                 sx={{
+                                    color: "#71797E"
+                                 }}         
+                              > {cat_subcat[0]} tutor specializing in {cat_subcat[1]} <br/> </Typography>
+                           ) : null}
                         <Typography
-                           component="p"
                            variant="body1"
                            sx={{
                               color: "#71797E",
@@ -210,8 +204,7 @@ const Tutor = () => {
                            {tutor[0] ? 
                               `Located in ${tutor[0].location_name}` : null}
                         </Typography>
-                        <Typography 
-                           component="p"
+                        <Typography
                            variant="body1"
                            sx={{
                               color: "#71797E",
@@ -233,7 +226,6 @@ const Tutor = () => {
          >
             <CardContent>
                <Typography 
-                  component="h5"
                   variant="h5"
                   fontWeight="bold"
                   marginBottom={2}
@@ -244,7 +236,6 @@ const Tutor = () => {
                   About Me:
                </Typography>
                <Typography 
-                  component="p"
                   variant="body1"
                   sx={{
                      color: "#71797E"
@@ -273,7 +264,6 @@ const Tutor = () => {
                   }}
                >
                   <Typography 
-                     component="h5"
                      variant="h5"
                      fontWeight="bold"
                      sx={{
@@ -306,7 +296,6 @@ const Tutor = () => {
                         key={review_id}
                         >
                            <Typography
-                              component="p"
                               variant="body1"
                               sx={{
                                  color: "#71797E"
@@ -315,7 +304,6 @@ const Tutor = () => {
                               {review.first_name} {review.last_name}
                            </Typography>
                            <Typography
-                              component="p"
                               variant="body1"
                               marginTop={1}
                               sx={{
@@ -350,7 +338,6 @@ const Tutor = () => {
                               }}
                            >
                               <Typography
-                                 component="p"
                                  variant="body1"
                                  sx={{
                                     color: "#71797E"
@@ -368,7 +355,6 @@ const Tutor = () => {
                   })
                ) : (
                   <Typography
-                     component="p"
                      variant="body1"
                      sx={{
                         color: "#71797E"
@@ -429,7 +415,7 @@ const Tutor = () => {
                </Button>
             )
          )}
-         {showContactForm ? <ContactForm tutor_id={tutor.tutor_id} tutorFN={tutor.first_name} student_id={userId} /> : null}
+         {showContactForm ? <ContactForm tutor_id={tutor[0].tutor_id} tutorFN={tutor[0].first_name} student_id={userId} /> : null}
       </Box>
     );
 };   

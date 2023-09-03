@@ -29,12 +29,10 @@ const Register = () => {
                 variant="h2"
                 color="#71797E"
                 fontWeight="bold"
-                component="h2"
             >Welcome to ProFiner</Typography>
             <Typography
                 variant="h4"
                 color="#71797E"
-                component="h4"
                 sx= {{ mb: 4}}
             >What role whould you like to register as?</Typography>
             <Stack direction="row" alignItems="center" spacing={2}>

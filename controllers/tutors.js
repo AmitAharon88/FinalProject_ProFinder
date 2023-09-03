@@ -13,7 +13,8 @@ import {
     updateProfileLocation,
     updateProfileEducation,
     updateProfileAbout,
-    // updateProfileCatSubcat,
+    updateProfileCategory,
+    deleteProfileCategory,
     updateProfilePassword,
     deleteTutor
 } from "../models/tutors.js";
@@ -96,17 +97,6 @@ export const _signInTutor = async (req, res) => {
         res.status(404).json({msg: 'Something went wrong'})
     };
 };
-    
-
-// export const _deleteTutor = async (req, res) => {
-//     try {
-//         const data = await deleteTutor(req.params.tutor_id)
-//         res.json(data);
-//     } catch (e) {
-//         console.log(e);
-//         res.status(404).json({ msg: e.message });
-//     }
-// };
 
 // READ - GET - get reviews
 export const _getReviews = async (req, res) => {
@@ -215,15 +205,26 @@ export const _updateProfileAbout = async (req, res) => {
     }
 };
 
-// export const _updateProfileCatSubcat = async (req, res) => {
-//     try {
-//         const data = await updateProfileAbout(req.body, req.params.id);
-//         res.status(200).json({ data: data, msg: "Your subjects have been updated!" });
-//     } catch (e) {
-//         console.log(e);
-//         res.status(404).json({ msg: e.message });
-//     }
-// };
+export const _updateProfileCategory = async (req, res) => {
+    try {
+        const data = await updateProfileCategory(req.body);
+        res.status(200).json({ data: data, msg: "Your subject have been updated!" });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
+export const _deleteProfileCategory = async (req, res) => {
+    console.log('hi')
+    try {
+        const data = await deleteProfileCategory(req.params.id, req.params.tutor_cat_id);
+        res.status(200).json({ data: data, msg: "Your subject has been deleted!" });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
 
 export const _updateProfilePassword = async (req, res) => {
     // Extract the password from req.body

@@ -14,7 +14,8 @@ import {
     _updateProfileLocation,
     _updateProfileEducation,
     _updateProfileAbout,
-    // _updateProfileCatSubcat,
+    _updateProfileCategory,
+    _deleteProfileCategory,
     _updateProfilePassword,
     _deleteTutor
 } from "../controllers/tutors.js";
@@ -35,10 +36,12 @@ trouter.patch('/:id/profile/name', _updateProfileName);
 trouter.patch('/:id/profile/email', _updateProfileEmail);
 trouter.patch('/:id/profile/date', _updateProfileDate);
 trouter.patch('/:id/profile/location', _updateProfileLocation);
-trouter.patch('/:id/profile/Education', _updateProfileEducation);
-trouter.patch('/:id/profile/About', _updateProfileAbout);
-// trouter.patch('/:id/profile/CatSubcat', _updateProfileCatSubcat);
+trouter.patch('/:id/profile/education', _updateProfileEducation);
+trouter.patch('/:id/profile/about', _updateProfileAbout);
+trouter.patch('/:id/profile/catsubcat/', _updateProfileCategory);
+trouter.delete('/:id/profile/catsubcat/delete/:tutor_cat_id', _deleteProfileCategory);
 trouter.patch('/:id/profile/password', _updateProfilePassword);
+
 trouter.delete('/:id/delete', _deleteTutor);
 
 export default trouter;

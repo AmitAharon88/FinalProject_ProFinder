@@ -9,7 +9,6 @@ import srouter from "./routes/students.js";
 import subjectrouter from "./routes/subject.js";
 import lrouter from "./routes/location.js";
 import logoutrouter from "./routes/location.js";
-import frouter from "./routes/upload.js";
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -33,7 +32,6 @@ app.use("/api/students", srouter);
 app.use("/api/subject", subjectrouter);
 app.use("/api/location", lrouter);
 app.use("/api/logout", logoutrouter);
-app.use("/api/upload", frouter);
 
 app.use(express.static(path.join(__dirname, "client/build")));
 

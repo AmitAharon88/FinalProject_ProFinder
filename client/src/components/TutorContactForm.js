@@ -19,7 +19,10 @@ const ContactForm = ({ tutor_id, tutorFN, student_id }) => {
     const { userLN, setUserLN } = useContext(AppContext);
     const { userId, setUserId } = useContext(AppContext);  
 
-
+    console.log('tutor_id:', tutor_id)
+    console.log('tutor_FN:', tutorFN)
+    console.log('student_id:', student_id)
+    
     const params = useParams();
     console.log(`Params: ${params.id}`);
 
@@ -36,7 +39,7 @@ const ContactForm = ({ tutor_id, tutorFN, student_id }) => {
         messageData.tutor_id = tutor_id
         messageData.student_id = student_id
         messageData.sender = `${userFN} ${userLN}`
-        console.log(messageData)
+        console.log('message data:', messageData)
 
         try {
             const res = await fetch(`/api/tutors/${params.id}/messageboard/write`, {
@@ -73,7 +76,6 @@ const ContactForm = ({ tutor_id, tutorFN, student_id }) => {
                 {!messageSent ? (
                     <>
                         <Typography 
-                            component="h2"
                             variant="h2"
                             color="#71797E"
                             fontWeight="bold"
@@ -107,7 +109,7 @@ const ContactForm = ({ tutor_id, tutorFN, student_id }) => {
                                             placeholder={`Hello ${tutorFN} :)`}
                                     />
                                         {requiredFields ? (
-                                    <Typography component="p" variant="body1" color="red">
+                                    <Typography variant="body1" color="red">
                                             * Fill in all required field
                                     </Typography> ) : null}
                                     <Button
@@ -142,7 +144,6 @@ const ContactForm = ({ tutor_id, tutorFN, student_id }) => {
                             }}
                         >
                             <Typography 
-                                component="p"
                                 variant="body1"
                                 sx = {{
                                     color: "#009688"
@@ -151,7 +152,6 @@ const ContactForm = ({ tutor_id, tutorFN, student_id }) => {
                                 {resMessage}
                             </Typography>
                             <Typography 
-                                component="p"
                                 variant="body1"
                                 sx = {{
                                     color: "#009688"

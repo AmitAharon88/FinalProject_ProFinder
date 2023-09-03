@@ -10,13 +10,10 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import SchoolIcon from '@mui/icons-material/School';
 import { styled } from "@mui/system";
-import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import SvgIcon from '@mui/material/SvgIcon';
@@ -73,58 +70,74 @@ const Nav = () => {
         }
     };
 
+    const handleHome = () => {
+        if (isAuthenticated) {
+            setIsAuthenticated(true);
+            navigate("/");
+        } else {
+            navigate("/");
+        };
+    };
+
     return (
         <AppBar position="static" sx={{ backgroundColor: "#00695f" }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                <SchoolIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="a"
-                    href="/"  // link home
+                <Box 
                     sx={{
-                    mr: 2,
-                    display: { xs: 'none', md: 'flex' },
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    letterSpacing: '.3rem',
-                    color: 'inherit',
-                    textDecoration: 'none',
+                        display: "flex",
+                        alignItems: "center",
+                        display: "flex",
+                        textDecoration: 'none',
+                        cursor: 'pointer', // Change the cursor to an arrow
                     }}
+                    onClick = {handleHome}
                 >
-                    ProFinder
-                </Typography>
-                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                    <IconButton
-                        size="large"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleOpenNavMenu}
-                        color="inherit"
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorElNav}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
-                        open={Boolean(anchorElNav)}
-                        onClose={handleCloseNavMenu}
+                    <SchoolIcon sx={{ mr: 1, color: "white", }} />
+                    <Typography
+                        variant="h6"
+                        noWrap
                         sx={{
-                            display: { xs: 'block', md: 'none'},
+                            mr: 2,
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'white',
                         }}
                     >
-                        {!isAuthenticated ? (
+                        ProFinder
+                    </Typography>
+                </Box>
+                {!isAuthenticated ? (
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, flexDirection: 'row-reverse' }}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleOpenNavMenu}
+                            color="inherit"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElNav}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            open={Boolean(anchorElNav)}
+                            onClose={handleCloseNavMenu}
+                            sx={{
+                                display: { xs: 'block', md: 'none'},
+                            }}
+                        >
                             <Box>
                                 <MenuItem key="signin" onClick={handleCloseNavMenu}>
                                     <StyledLink to="/signin">
@@ -137,34 +150,9 @@ const Nav = () => {
                                     </StyledLink> 
                                 </MenuItem>
                             </Box>
-                        ) : 
-                            <MenuItem key="home" onClick={handleCloseNavMenu}>
-                                <StyledLink to="/">
-                                    <Typography textAlign="center">Home</Typography>
-                                </StyledLink>
-                            </MenuItem>
-                        }
-                    </Menu>
-                </Box>
-                <SchoolIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                <Typography
-                    variant="h5"
-                    noWrap
-                    component="a"
-                    href="/"
-                    sx={{
-                    mr: 2,
-                    display: { xs: 'flex', md: 'none' },
-                    flexGrow: 1,
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    letterSpacing: '.3rem',
-                    color: 'inherit',
-                    textDecoration: 'none',
-                    }}
-                >
-                    ProFinder
-                </Typography>
+                        </Menu>
+                    </Box>
+                ) : null }
                 <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, flexDirection: "row-reverse" }}>
                     {!isAuthenticated ? (
                         <>
@@ -191,34 +179,18 @@ const Nav = () => {
                     }   
                 </Box>
                 {isAuthenticated ? (
-                    <>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                mr: 3
-                            }}
-                        
-                        >
-                            <Typography component="body1" variant="p">
-                                Welcome
-                            </Typography>
-                            <Typography component="body1" variant="p">
-                                {userFN}
-                            </Typography>
-                        </Box>
+                    <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+
+                        <Typography variant="body1" marginRight={3}>
+                            Welcome {userFN}
+                        </Typography>
                         <ThemeProvider theme={theme}>
                             <StyledLink to={`/${userId}/messageboard`}>
-                                {/* <Badge badgeContent={4} color="primary" sx= {{ mr: 3 }}> */}
-                                    <MailIcon sx={{ color: 'white', mr: 3 }} />
-                                {/* </Badge> */}
+                                <MailIcon sx={{ color: 'white', mr: 3 }} />
                             </StyledLink>
                         </ThemeProvider>
                         <Box sx={{ flexGrow: 0 }}>
-                            <SvgIcon fontSize="large" onClick={handleOpenUserMenu}>
-                                {/* credit: plus icon from https://heroicons.com/ */}
+                            <SvgIcon sx={{ cursor: 'pointer' }} fontSize="large" onClick={handleOpenUserMenu}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -259,7 +231,7 @@ const Nav = () => {
                                 </MenuItem>
                             </Menu>
                         </Box>
-                    </>
+                    </Box>
                     ) : null } 
                 </Toolbar>
             </Container>

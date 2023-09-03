@@ -98,7 +98,6 @@ const MessageBoard = () => {
                 }}
             >
                 <Typography
-                    component="h2"
                     variant="h2"
                     sx={{
                         color: "#71797E",
@@ -119,16 +118,6 @@ const MessageBoard = () => {
             noValidate
             autoComplete="off"
          >
-            {/* <Typography
-                component="h5"
-                variant="h5"
-                sx={{
-                    color: "#71797E",
-                    mt: 4
-                }}        
-            >
-                Contacts
-            </Typography> */}
             <TextField id="outlined-basic" name="messageSearch" label="Search by contact name" variant="outlined" onChange={onSearchChange}  />
          </Box>
          <Box        
@@ -140,9 +129,8 @@ const MessageBoard = () => {
             {filteredContacts.length > 0 ? (
                 filteredContacts.map((contact, i) => {
                     return (
-                            <Link to={`/${params.id}/messageboard/${contact.contactId}`}>
+                            <Link key={i} to={`/${params.id}/messageboard/${contact.contactId}`}>
                                 <Button
-                                    key={i}
                                     type="submit"
                                     variant="outlined"
                                     sx={{
@@ -166,7 +154,6 @@ const MessageBoard = () => {
                 })
             ) : (
                 <Typography
-                     component="p"
                      variant="body1"
                      sx={{
                         color: "#71797E"

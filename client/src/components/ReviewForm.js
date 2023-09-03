@@ -60,7 +60,6 @@ const ReviewForm = ({tutorFN, handleReviewFormSubmission}) => {
           }}
         >
             <Typography 
-                component="h1"
                 variant="h5"
                 color="#71797E"
                 fontWeight="bold"

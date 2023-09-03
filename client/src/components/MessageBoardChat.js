@@ -104,7 +104,6 @@ const MessageBoardChat = () => {
                            key={message_board_id}
                         >
                            <Typography
-                              component="p"
                               variant="body1"
                               sx={{
                                  color: "#71797E"
@@ -113,7 +112,6 @@ const MessageBoardChat = () => {
                               {message.sender}
                            </Typography>
                            <Typography
-                              component="p"
                               variant="body1"
                               marginTop={1}
                               sx={{
@@ -130,7 +128,6 @@ const MessageBoardChat = () => {
                               }}
                            >
                               <Typography
-                                 component="p"
                                  variant="body1"
                                  sx={{
                                     color: "#71797E"
@@ -147,7 +144,6 @@ const MessageBoardChat = () => {
                   })
                ) : (
                   <Typography
-                     component="p"
                      variant="body1"
                      sx={{
                         color: "#71797E"

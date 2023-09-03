@@ -97,7 +97,7 @@ const MessageContactForm = ({ tutor_id, student_id, handelFormSubmission }) => {
                         onChange={(e) => setMessageValue(e.target.value)}
                     />
                     {requiredFields ? (
-                        <Typography component="p" variant="body1" color="red">
+                        <Typography variant="body1" color="red">
                             * Don't forget to send a message
                         </Typography>
                     ) : null}
@@ -119,7 +119,6 @@ const MessageContactForm = ({ tutor_id, student_id, handelFormSubmission }) => {
                 </Box>
                 {messageSent && (
                     <Typography 
-                        component="p"
                         variant="body1"
                         sx = {{
                             color: "#009688"

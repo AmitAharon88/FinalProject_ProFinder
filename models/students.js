@@ -107,4 +107,4 @@ export const deleteStudent = (id) => {
   return db('students')
   .where({student_id: id})
   .del()
-}
+};

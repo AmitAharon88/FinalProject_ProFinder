@@ -3,6 +3,7 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import { AppContext } from '../App';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import CategoryProfile from "./CategoryProfile"
+import { v4 as uuidv4 } from 'uuid';
 
 import CategoryInputField from "./CategoryInputField"
 
@@ -189,36 +190,6 @@ const Profile = () => {
       };
    };
 
-   // const getCategories = async () => {
-   //    try {
-   //       const res = await fetch(`/api/subject/categories`);
-   //       const data = await res.json();
-   //       setCategories(data);
-   //    } catch (e) {
-   //       console.log(e);
-   //    };
-   // };
-
-   // const handleCategoryChange = (event) => {
-   //    setUpdatedCategoryId(event.target.value);
-   //    getSubcategories(event.target.value);
-   // };
-
-   // const getSubcategories = async (categoryId) => {
-   //    try {
-   //       const res = await fetch(`/api/subject/subcategories?catid=${categoryId}`);
-   //       const data = await res.json();
-   //       console.log('subcategories:', data);
-   //       setSubcategories(data);
-   //    } catch (e) {
-   //       console.log(e);
-   //    };
-   // };
-
-   // const handleSubcategoryChange = (event) => {
-   //    setUpdatedSubcategoryId(event.target.value);
-   // };
-
    const handleClose = () => {
       setOpenName(false);
       setOpenEmail(false);
@@ -228,9 +199,6 @@ const Profile = () => {
       setOpenEducation(false);
       setOpenAbout(false);
       setUpdatedAbout(userInfo.about);
-      // setOpenCategory(false);
-      // setUpdatedCategoryId("");
-      // setUpdatedSubcategoryId("");
       setOpenPassword(false);
       setOpenDelete(false);
    };
@@ -539,7 +507,6 @@ const Profile = () => {
          >
             <Typography
                variant="h2"
-               component="h2"
                fontWeight="bold"
                sx={{
                   color: "#71797E"
@@ -571,7 +538,6 @@ const Profile = () => {
                         }}
                      >
                         <Typography
-                           component="p"
                            variant="body1"
                            sx={{
                               color: "#71797E",
@@ -633,7 +599,6 @@ const Profile = () => {
                         }}
                      >
                         <Typography
-                           component="p"
                            variant="body1"
                            sx={{
                               color: "#71797E",
@@ -643,7 +608,6 @@ const Profile = () => {
                            Name:
                         </Typography>
                         <Typography
-                           component="h6"
                            variant="h6"
                            sx={{
                               color: "#71797E"
@@ -741,7 +705,6 @@ const Profile = () => {
                         }}
                      >
                         <Typography
-                           component="p"
                            variant="body1"
                            sx={{
                               color: "#71797E",
@@ -751,7 +714,6 @@ const Profile = () => {
                            Email:
                         </Typography>
                         <Typography
-                           component="h6"
                            variant="h6"
                            sx={{
                               color: "#71797E"
@@ -837,7 +799,6 @@ const Profile = () => {
                         }}
                      >
                         <Typography
-                           component="p"
                            variant="body1"
                            sx={{
                               color: "#71797E",
@@ -847,7 +808,6 @@ const Profile = () => {
                            Date of Birth:
                         </Typography>
                         <Typography
-                           component="h6"
                            variant="h6"
                            sx={{
                               color: "#71797E"
@@ -932,7 +892,6 @@ const Profile = () => {
                         }}
                      >
                         <Typography
-                           component="p"
                            variant="body1"
                            sx={{
                               color: "#71797E",
@@ -942,7 +901,6 @@ const Profile = () => {
                            Location:
                         </Typography>
                         <Typography
-                           component="h6"
                            variant="h6"
                            sx={{
                               color: "#71797E"
@@ -1033,7 +991,6 @@ const Profile = () => {
                            }}
                         >
                            <Typography
-                              component="p"
                               variant="body1"
                               sx={{
                                  color: "#71797E",
@@ -1043,7 +1000,6 @@ const Profile = () => {
                               Education:
                            </Typography>
                            <Typography
-                              component="h6"
                               variant="h6"
                               sx={{
                                  color: "#71797E"
@@ -1128,7 +1084,6 @@ const Profile = () => {
                            }}
                         >
                            <Typography
-                              component="p"
                               variant="body1"
                               sx={{
                                  color: "#71797E",
@@ -1138,7 +1093,6 @@ const Profile = () => {
                               About Me:
                            </Typography>
                            <Typography
-                              component="h6"
                               variant="h6"
                               sx={{
                                  color: "#71797E"
@@ -1228,7 +1182,6 @@ const Profile = () => {
                            }}
                         >
                            <Typography
-                              component="p"
                               variant="body1"
                               sx={{
                                  color: "#71797E",
@@ -1239,8 +1192,8 @@ const Profile = () => {
                            </Typography>
                            </CardContent>
                            {userInfo.cat_subcat ? (
-                              userInfo.cat_subcat.map(cat_subcat => (
-                                 <CategoryProfile cat_subcat={cat_subcat}/>
+                              userInfo.cat_subcat.map((cat_subcat) => (
+                                 <CategoryProfile key={uuidv4()} cat_subcat={cat_subcat} getProfileInfo={getProfileInfo}/>
                               )) 
                            ) : (null) }
                      </CardActionArea>
@@ -1261,7 +1214,6 @@ const Profile = () => {
                         }}
                      >
                         <Typography
-                           component="h6"
                            variant="h6"
                            sx={{
                               color: "#71797E"
@@ -1348,7 +1300,7 @@ const Profile = () => {
                <Dialog open={openDelete} onClose={handleClose}>
                   <DialogTitle>Delete Account</DialogTitle>
                   <DialogContent>
-                     Are you sue you wand to delete your account
+                     Are you sue you want to delete your account?
                   </DialogContent>
                   <DialogActions>
                      <Button onClick={handleClose}>No</Button>
@@ -1358,7 +1310,7 @@ const Profile = () => {
                         Yes, delete
                      </Button>
                   </DialogActions>
-            </Dialog>
+               </Dialog>
          </Box>
          <Box
             sx={{
