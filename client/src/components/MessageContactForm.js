@@ -1,22 +1,44 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../App';
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+
 
 const MessageContactForm = ({ tutor_id, student_id, handelFormSubmission }) => {
-    const [resMessage, setResMessage] = useState('');
+    const [successMsg, setSuccessMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
     const [requiredFields, setRequiredFields] = useState(false);
-    const [messageSent, setmessageSent] = useState(false);
     const [messageValue, setMessageValue] = useState('');
-
 
     const { userFN, setUserFN } = useContext(AppContext);
     const { userLN, setUserLN } = useContext(AppContext);
     const { userId, setUserId } = useContext(AppContext);  
     const { userRole, setUserRole } = useContext(AppContext);
+
+    useEffect(() => {
+        // Clear success message after a certain time
+        if (successMsg) {
+          const timer = setTimeout(() => {
+            setSuccessMsg("");
+          }, 5000); // Clear after 5 seconds
+          return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+        }
+      }, [successMsg]);
+
+      useEffect(() => {
+        // Clear success message after a certain time
+        if (errorMsg) {
+          const timer = setTimeout(() => {
+            setErrorMsg("");
+          }, 5000); // Clear after 5 seconds
+          return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+        }
+      }, [errorMsg]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -57,12 +79,12 @@ const MessageContactForm = ({ tutor_id, student_id, handelFormSubmission }) => {
             if (res.ok) {
                 const newMessage = await res.json();
                 handelFormSubmission(newMessage.data);
-                setResMessage(newMessage.msg);
-                setmessageSent(true);
+                setSuccessMsg(newMessage.msg);
                 setMessageValue(''); // Reset the message field
             } else {
                 const errorResponse = await res.json();
-                console.log('Error:', errorResponse.msg); 
+                console.log('Error:', errorResponse.msg);
+                setErrorMsg('Error sending message')
                 setRequiredFields(true);
             }
         } catch (e) {
@@ -117,7 +139,7 @@ const MessageContactForm = ({ tutor_id, student_id, handelFormSubmission }) => {
                         Send
                     </Button>
                 </Box>
-                {messageSent && (
+                {/* {messageSent && (
                     <Typography 
                         variant="body1"
                         sx = {{
@@ -126,7 +148,24 @@ const MessageContactForm = ({ tutor_id, student_id, handelFormSubmission }) => {
                     >
                         {resMessage}
                     </Typography>
-                )}
+                )} */}
+                <Box
+                    sx={{
+                    position: "fixed",
+                    bottom: "20px",
+                    left: "2vw",
+                    width: '80vw'
+                    }}
+                >
+                    <Stack sx={{ width: '60%', marginTop: 2 }}>
+                    {successMsg ? (
+                        <Alert severity="success">{successMsg}</Alert>
+                    ) : (null)}
+                    {errorMsg ? (
+                        <Alert severity="error">{errorMsg}</Alert>
+                        ) : (null)}
+                    </Stack>
+                </Box>
         </Container> 
 
     );

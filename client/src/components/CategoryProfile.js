@@ -16,7 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-
+import { v4 as uuidv4 } from 'uuid';
 
 const CategoryProfile = ({cat_subcat, getProfileInfo}) => {
     const { category_id, category_name, subcategory_id, subcategory_name, tutor_cat_id } = cat_subcat;
@@ -76,23 +76,30 @@ const CategoryProfile = ({cat_subcat, getProfileInfo}) => {
      const handleClose = () => {
         setOpenCategory(false);
         catId.current = category_id;
-        setRefreshSubcatId(subcategory_id)
-        console.log('refreshSubcarId:', refreshSubcatId)
         getSubcategories(category_id)
+        setRefreshSubcatId(subcategory_id)
+        // subId.current = subcategory_id
+
+        console.log('category_id:', category_id)
+        console.log('subcategory_id:', subcategory_id)
+        console.log('subId_current:', subId.current) // set to the changed subcat this need to be reset
+        console.log('refreshSubcarId:', refreshSubcatId)
 
         setOpenDeleteCategory(false);
      };
   
 
      const handleOpenCategory = async () => {
+        console.log('category_id', catId.current);
+        console.log('subcategory_id', subId.current);
+        console.log('refreshSubcarId:', refreshSubcatId)
         setOpenCategory(true);
         getCategories();
-        subId.current = refreshSubcatId;
+        subId.current = refreshSubcatId||'';
      };
 
      const handleCloseAndUpdateCategory = async () => {
         setOpenCategory(false);
-        // Refresh Id's 
         console.log('category_id', catId.current);
         console.log('subcategory_id', subId.current);
         console.log('tutor_cat', tutor_cat_id);
@@ -177,7 +184,14 @@ return (
                 }}
             >
                 <EditIcon
-                    onClick={handleOpenCategory}
+                    onClick={()=>{
+                        console.log('category_id:', category_id)
+        console.log('subcategory_id:', subcategory_id)
+        console.log('subId_current:', subId.current) // set to the changed subcat this need to be reset
+        // setRefreshSubcatId(subcategory_id)
+        console.log('refreshSubcarId:', refreshSubcatId)
+                        handleOpenCategory();
+                    }}
                     sx={{
                         color: "#009688",
                         '&:hover': {
@@ -210,7 +224,7 @@ return (
                                         {categories.length > 0 &&
                                             categories.map(category => {
                                                 return (
-                                                    <MenuItem key= {category.category_id} value={category.category_id}>{category.category_name}</MenuItem>
+                                                    <MenuItem key={uuidv4()} value={category.category_id}>{category.category_name}</MenuItem>
                                                 )
                                             })
                                         }
@@ -221,13 +235,12 @@ return (
                                         label="subcategory"
                                         name={`subcategoryname${tutor_cat_id}`}
                                         value={subId.current}
-
                                         onChange={(e) => handleSubcategoryChange(e)}
                                     >
                                         {subcategories.length > 0 && 
                                             subcategories.map(subcategory => {
                                                 return (
-                                                    <MenuItem key= {subcategory.subcategory_id} value={subcategory.subcategory_id}>{subcategory.subcategory_name}</MenuItem>
+                                                    <MenuItem key={uuidv4()} value={subcategory.subcategory_id}>{subcategory.subcategory_name}</MenuItem>
                                                 )
                                             }
                                         ) };

@@ -164,7 +164,7 @@ const TutorRegister = () => {
                                     <TextField
                                         margin="normal"
                                         required
-                                        fullWidth
+                                        fullWidth="true"
                                         name="first_name"
                                         label="First name"
                                         type="text"
@@ -173,7 +173,7 @@ const TutorRegister = () => {
                                     <TextField
                                         margin="normal"
                                         required
-                                        fullWidth
+                                        fullWidth="true"
                                         name="last_name"
                                         label="Last name"
                                         type="text"
@@ -183,7 +183,7 @@ const TutorRegister = () => {
                                 <TextField
                                 margin="normal"
                                 required
-                                fullWidth
+                                fullWidth="true"
                                 id="email"
                                 label="Email Address"
                                 name="email"
@@ -206,7 +206,7 @@ const TutorRegister = () => {
                                         sx={{ minWidth: 220 }} 
                                         margin="normal"
                                         required
-                                        fullwidth
+                                        fullwidth="true"
                                     >
                                         <InputLabel required id="locationLabel">Location</InputLabel>
                                         <Select
@@ -262,7 +262,7 @@ const TutorRegister = () => {
                                 <TextField
                                     margin="normal"
                                     required
-                                    fullWidth
+                                    fullWidth="true"
                                     id="education"
                                     label="Education"
                                     name="education"
@@ -270,7 +270,7 @@ const TutorRegister = () => {
                                 <TextField
                                     margin="normal"
                                     required
-                                    fullWidth
+                                    fullWidth="true"
                                     id="about"
                                     label="About"
                                     name="about"
@@ -314,7 +314,7 @@ const TutorRegister = () => {
                                 <TextField
                                     margin="normal"
                                     required
-                                    fullWidth
+                                    fullWidth="true"
                                     name="password"
                                     label="Password"
                                     type="password"
@@ -328,7 +328,7 @@ const TutorRegister = () => {
                                 </Typography> ) : null}
                                 <Button
                                     type="submit"
-                                    fullWidth
+                                    fullWidth="true"
                                     variant="contained"
                                     sx={{ 
                                         mt: 3, 

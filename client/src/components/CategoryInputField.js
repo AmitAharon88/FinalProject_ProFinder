@@ -59,7 +59,7 @@ const CategoryInputField = ({setCat_SubcatObj}) => {
                             sx={{ minWidth: 200 }} 
                             margin="normal"
                             required
-                            fullwidth
+                            fullwidth="true"
                         >
                             <InputLabel required id="categoryLabel">Subject</InputLabel>
                             <Select
@@ -82,7 +82,7 @@ const CategoryInputField = ({setCat_SubcatObj}) => {
                                 sx={{ minWidth: 200 }} 
                                 margin="normal"
                                 required
-                                fullwidth
+                                fullwidth="true"
                             >
                                 <InputLabel required id="subcategoryLabel">Topic</InputLabel>
                                 <Select
