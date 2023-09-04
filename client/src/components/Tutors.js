@@ -153,8 +153,6 @@ const Tutors = () => {
                           }}
                         >
                            <CardActionArea 
-                              component={Link}
-                              to={`/${tutor.tutor_id}`}
                               sx={{
                                  display: "flex",
                                  flexDirection: "column",
@@ -202,9 +200,7 @@ const Tutors = () => {
                                  </Typography>   
                               </CardContent>
                               <CardActions
-                                 // key={`button${tutor.tutor_id}`}
                               >
-                                 <Link to={`/${tutor.tutor_id}`}>
                                     <Button 
                                        variant="outlined"
                                        sx={{ 
@@ -217,10 +213,11 @@ const Tutors = () => {
                                              borderColor: "#00695f",
                                           },
                                        }}
+                                       component={Link}
+                                       to={`/${tutor.tutor_id}`}
                                     >
                                        More Info
                                     </Button>
-                                 </Link>
                               </CardActions>
                            </CardActionArea>
                         </Card>

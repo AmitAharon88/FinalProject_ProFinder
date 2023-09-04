@@ -127,7 +127,7 @@ const StudentRegister = () => {
                                     <TextField
                                         margin="normal"
                                         required
-                                        fullWidth="true"
+                                        fullWidth={true}
                                         name="first_name"
                                         label="First name"
                                         type="text"
@@ -136,7 +136,7 @@ const StudentRegister = () => {
                                     <TextField
                                         margin="normal"
                                         required
-                                        fullWidth="true"
+                                        fullWidth={true}
                                         name="last_name"
                                         label="Last name"
                                         type="text"
@@ -146,7 +146,7 @@ const StudentRegister = () => {
                                 <TextField
                                 margin="normal"
                                 required
-                                fullWidth="true"
+                                fullWidth={true}
                                 id="email"
                                 label="Email Address"
                                 name="email"
@@ -168,7 +168,7 @@ const StudentRegister = () => {
                                         sx={{ minWidth: 220 }} 
                                         margin="normal"
                                         required
-                                        fullwidth="true"
+                                        // fullWidth={true}
                                     >
                                         <InputLabel required id="locationLabel">Location</InputLabel>
                                         <Select
@@ -208,7 +208,7 @@ const StudentRegister = () => {
                                 <TextField
                                     margin="normal"
                                     required
-                                    fullWidth="true"
+                                    fullWidth={true}
                                     name="password"
                                     label="Password"
                                     type="password"
@@ -222,7 +222,7 @@ const StudentRegister = () => {
                                 </Typography> ) : null}
                                 <Button
                                     type="submit"
-                                    fullWidth="true"
+                                    fullWidth={true}
                                     variant="contained"
                                     sx={{ 
                                         mt: 3, 

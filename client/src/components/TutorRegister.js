@@ -28,8 +28,6 @@ const TutorRegister = () => {
     const [categoryInputFields, setCategoryInputFields] = useState([]);
     const [cat_SubcatObj, setCat_SubcatObj] = useState([]);
     const [requiredFields, setRequiredFields] = useState(false);
-    // added for upload
-    // const [file, setFile] = useState(null);
 
     const { successRegisterMsg, setSuccessRegisterMsg } = useContext(AppContext);
 
@@ -66,19 +64,6 @@ const TutorRegister = () => {
         const formattedDate = `${year}/${month}/${day}`;
         return formattedDate;
     };
-
-    // const uploadFile = async () => {
-    //     const formImage = new FormData();
-    //     formImage.append("file", file);
-    //     try {
-    //       const res = await fetch (`/api/upload/`, {
-
-    //       });
-    //       setFileData(res.data);
-    //     } catch (e) {
-    //       console.log(e.response.data.msg);
-    //     }
-    //   };
 
 
     const handleSubmit = async (event) => {
@@ -164,7 +149,7 @@ const TutorRegister = () => {
                                     <TextField
                                         margin="normal"
                                         required
-                                        fullWidth="true"
+                                        fullWidth={true}
                                         name="first_name"
                                         label="First name"
                                         type="text"
@@ -173,7 +158,7 @@ const TutorRegister = () => {
                                     <TextField
                                         margin="normal"
                                         required
-                                        fullWidth="true"
+                                        fullWidth={true}
                                         name="last_name"
                                         label="Last name"
                                         type="text"
@@ -183,7 +168,7 @@ const TutorRegister = () => {
                                 <TextField
                                 margin="normal"
                                 required
-                                fullWidth="true"
+                                fullWidth={true}
                                 id="email"
                                 label="Email Address"
                                 name="email"
@@ -206,7 +191,6 @@ const TutorRegister = () => {
                                         sx={{ minWidth: 220 }} 
                                         margin="normal"
                                         required
-                                        fullwidth="true"
                                     >
                                         <InputLabel required id="locationLabel">Location</InputLabel>
                                         <Select
@@ -262,7 +246,7 @@ const TutorRegister = () => {
                                 <TextField
                                     margin="normal"
                                     required
-                                    fullWidth="true"
+                                    fullWidth={true}
                                     id="education"
                                     label="Education"
                                     name="education"
@@ -270,7 +254,7 @@ const TutorRegister = () => {
                                 <TextField
                                     margin="normal"
                                     required
-                                    fullWidth="true"
+                                    fullWidth={true}
                                     id="about"
                                     label="About"
                                     name="about"
@@ -314,7 +298,7 @@ const TutorRegister = () => {
                                 <TextField
                                     margin="normal"
                                     required
-                                    fullWidth="true"
+                                    fullWidth={true}
                                     name="password"
                                     label="Password"
                                     type="password"
@@ -328,7 +312,7 @@ const TutorRegister = () => {
                                 </Typography> ) : null}
                                 <Button
                                     type="submit"
-                                    fullWidth="true"
+                                    fullWidth={true}
                                     variant="contained"
                                     sx={{ 
                                         mt: 3, 

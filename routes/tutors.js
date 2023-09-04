@@ -15,6 +15,7 @@ import {
     _updateProfileEducation,
     _updateProfileAbout,
     _updateProfileCategory,
+    _addProfileCategory,
     _deleteProfileCategory,
     _updateProfilePassword,
     _deleteTutor
@@ -38,7 +39,8 @@ trouter.patch('/:id/profile/date', _updateProfileDate);
 trouter.patch('/:id/profile/location', _updateProfileLocation);
 trouter.patch('/:id/profile/education', _updateProfileEducation);
 trouter.patch('/:id/profile/about', _updateProfileAbout);
-trouter.patch('/:id/profile/catsubcat/', _updateProfileCategory);
+trouter.patch('/:id/profile/catsubcat', _updateProfileCategory);
+trouter.post('/:id/profile/catsubcat/add', _addProfileCategory);
 trouter.delete('/:id/profile/catsubcat/delete/:tutor_cat_id', _deleteProfileCategory);
 trouter.patch('/:id/profile/password', _updateProfilePassword);
 

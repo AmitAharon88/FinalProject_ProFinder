@@ -191,6 +191,16 @@ export const updateProfileCategory = (body) => {
   .returning(['tutor_id', 'category_id', 'subcategory_id', 'tutor_cat_id'])
 };
 
+export const addProfileCategory = async (body, tutor_id) => {
+  const newTutorCategory = await db("tutor_categories")
+    .insert({
+      tutor_id: tutor_id,
+      category_id: body.cat_id,
+      subcategory_id: body.sub_id,
+    })
+    return { newTutorCategory }
+};
+
 export const deleteProfileCategory = (id, tutor_cat_id) => {
   return db('tutor_categories')
   .where({tutor_id: id, tutor_cat_id: tutor_cat_id})

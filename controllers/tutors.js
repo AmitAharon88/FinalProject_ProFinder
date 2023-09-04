@@ -14,6 +14,7 @@ import {
     updateProfileEducation,
     updateProfileAbout,
     updateProfileCategory,
+    addProfileCategory,
     deleteProfileCategory,
     updateProfilePassword,
     deleteTutor
@@ -215,8 +216,17 @@ export const _updateProfileCategory = async (req, res) => {
     }
 };
 
+export const _addProfileCategory = async (req, res) => {
+    try {
+        const data = await addProfileCategory(req.body, req.params.id);
+        res.status(200).json({ data: data, msg: "New subject added!" });
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({ msg: e.message });
+    }
+};
+
 export const _deleteProfileCategory = async (req, res) => {
-    console.log('hi')
     try {
         const data = await deleteProfileCategory(req.params.id, req.params.tutor_cat_id);
         res.status(200).json({ data: data, msg: "Your subject has been deleted!" });

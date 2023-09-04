@@ -5,7 +5,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import CategoryProfile from "./CategoryProfile"
 import { v4 as uuidv4 } from 'uuid';
 
-import CategoryInputField from "./CategoryInputField"
+import CategoryInputFieldProfile from "./CategoryInputFieldProfile"
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -44,16 +44,11 @@ const Profile = () => {
    const [updatedLocationId, setUpdatedLocationId] = useState("");
    const [updatedEducation, setUpdatedEducation] = useState("");
    const [updatedAbout, setUpdatedAbout] = useState("");
-   // const [updatedCatSubcat, setUpdatedCatSubcat] = useState([]);
+   const [categoryInputFields, setCategoryInputFields] = useState([]);
+   const [cat_SubcatObj, setCat_SubcatObj] = useState([]);
    const [updatedPassword, setUpdatedPassword] = useState("");
    const [successMsg, setSuccessMsg] = useState("");
    const [errorMsg, setErrorMsg] = useState("");
-   // const[categories, setCategories] = useState([]);
-   // const [updatedCategoryId, setUpdatedCategoryId] = useState("");
-   // const [updatedSubcategoryId, setUpdatedSubcategoryId] = useState("");
-   // const [subcategories, setSubcategories] = useState([]);
-
-
 
    const [openName, setOpenName] = useState(false);
    const [openEmail, setOpenEmail] = useState(false);
@@ -61,7 +56,6 @@ const Profile = () => {
    const [openLocation, setOpenLocation] = useState(false);
    const [openEducation, setOpenEducation] = useState(false);
    const [openAbout, setOpenAbout] = useState(false);
-   // const [openCategory, setOpenCategory] = useState(false);
    const [openPassword, setOpenPassword] = useState(false);
    const [openDelete, setOpenDelete] = useState(false);
 
@@ -80,7 +74,7 @@ const Profile = () => {
    useEffect(() => {
       getProfileInfo()
       getLocation()
-      // getCategories()
+      console.log(cat_SubcatObj)      
    }, []);
 
    useEffect(() => {
@@ -405,38 +399,38 @@ const Profile = () => {
         }
    };
 
-   // const handleOpenCategory = async () => {
-   //    setOpenCategory(true);
-   //    getCategories();
-   // };
+   const addCategoryInputField = () => {
+      setCategoryInputFields(prevFields => [...prevFields, <CategoryInputFieldProfile setCat_SubcatObj={setCat_SubcatObj}/>]);
+  };
 
-   // const handleCloseAndUpdateCategory = async () => {
-   //    setOpenAbout(false);
-   //    // Refresh Id's
-   //    setUpdatedCategoryId("");
-   //    setUpdatedSubcategoryId("");
+  const handleAddCategory = async () => {
+   console.log(cat_SubcatObj[0]);
 
-      // try {
-      //    const response = await fetch(`/api/${userRole}/${params.id}/profile/category`, {
-      //      method: 'PATCH',
-      //      headers: {
-      //        'Content-Type': 'application/json',
-      //      },
-      //      body: JSON.stringify({  }),
-      //    });
+   try {
+      const response = await fetch(`/api/${userRole}/${params.id}/profile/catsubcat/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify( cat_SubcatObj[0] ),
+      });
 
-      //    if (response.ok) {
-      //       setUserInfo((prevInfo) => ({
-      //         ...prevInfo,
-      //         about: updatedAbout,
-      //       }));
-      //     } else {
-      //       console.error('Update failed');
-      //     }
-      //   } catch (error) {
-      //     console.error('Error updating about section:', error);
-      //   }
-   // };
+      if (response.ok) {
+         const res = await response.json();
+         // setUserInfo((prevInfo) => ({
+         //   ...prevInfo,
+         //   about: updatedAbout,
+         // }));
+         setCat_SubcatObj([])
+         setSuccessMsg(res.msg);
+       } else {
+         console.error('Update failed');
+         setErrorMsg('Error updating your subjects')
+       }
+     } catch (error) {
+       console.error('Error updating about section:', error);
+     }
+  };
 
    const handleOpenPassword = async () => {
       setOpenPassword(true);
@@ -1196,6 +1190,76 @@ const Profile = () => {
                                  <CategoryProfile key={uuidv4()} cat_subcat={cat_subcat} getProfileInfo={getProfileInfo}/>
                               )) 
                            ) : (null) }
+
+
+                           {categoryInputFields.map((field, index) => (
+                                 <Box key={index}>{field}</Box>
+                           ))}
+                           <Box
+                              sx={{
+                                 display: "flex",
+                                 justifyContent: "center"
+                              }}
+                           >
+                              {/* <Button
+                                 type="submit"
+                                 variant="contained"
+                                 sx={{
+                                    mt: 3, 
+                                    mb: 2,
+                                    color: "#009688",
+                                    bgcolor: "white",
+                                    '&:hover': {
+                                       bgcolor: "#00695f",
+                                       color: "white"
+                                    }
+                                 }}
+                                 onClick={addCategoryInputField}
+                              >
+                                 Add
+                              </Button> */}
+                              { cat_SubcatObj.length === 0 ? (
+                                 <Button
+                                    type="submit"
+                                    variant="contained"
+                                    sx={{
+                                       mt: 3, 
+                                       mb: 2,
+                                       color: "#009688",
+                                       bgcolor: "white",
+                                       '&:hover': {
+                                          bgcolor: "#00695f",
+                                          color: "white"
+                                       }
+                                    }}
+                                    onClick={addCategoryInputField}
+                                 >
+                                    Add
+                                 </Button>
+                              ) : (
+                                 <Button
+                                    type="submit"
+                                    variant="contained"
+                                    sx={{
+                                    mt: 3, 
+                                    mb: 2,
+                                    ml: 1,
+                                    color: "#009688",
+                                    bgcolor: "white",
+                                    '&:hover': {
+                                       bgcolor: "#00695f",
+                                       color: "white"
+                                    }
+                                    }}
+                                    onClick={handleAddCategory}
+                                 >
+                                       Submit
+                                 </Button>
+                              )}
+                           </Box>
+
+
+
                      </CardActionArea>
                   </Card>
                </>

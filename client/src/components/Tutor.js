@@ -163,7 +163,9 @@ const Tutor = () => {
          >
             <CardContent>
                <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={3}>
+                  <Grid 
+                  // item 
+                  xs={3}>
                      <CardMedia
                         component="img"
                         // width="100%"
@@ -174,7 +176,9 @@ const Tutor = () => {
                         alt="avitar profile image"
                      />
                   </Grid>
-                  <Grid item xs={9}>
+                  <Grid 
+                  // item 
+                  xs={9}>
                         <Typography 
                            variant="h4"
                            fontWeight="bold"

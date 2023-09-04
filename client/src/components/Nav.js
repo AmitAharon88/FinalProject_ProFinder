@@ -139,12 +139,12 @@ const Nav = () => {
                             }}
                         >
                             <Box>
-                                <MenuItem key="signin" onClick={handleCloseNavMenu}>
+                                <MenuItem key="signinXs" onClick={handleCloseNavMenu}>
                                     <StyledLink to="/signin">
                                         <Typography textAlign="center">Sign In</Typography>
                                     </StyledLink>     
                                 </MenuItem>
-                                <MenuItem key="register" onClick={handleCloseNavMenu}>
+                                <MenuItem key="registerXs" onClick={handleCloseNavMenu}>
                                     <StyledLink to="/register">
                                         <Typography textAlign="center">Register</Typography>
                                     </StyledLink> 
@@ -157,7 +157,7 @@ const Nav = () => {
                     {!isAuthenticated ? (
                         <>
                             <Button
-                                key="signin"
+                                key="signinMd"
                                 onClick={handleCloseNavMenu}
                                 component={Link}
                                 to="/signin"
@@ -166,7 +166,7 @@ const Nav = () => {
                                 Sign In
                             </Button>
                             <Button
-                                key="register"
+                                key="registerMd"
                                 onClick={handleCloseNavMenu}
                                 component={Link}
                                 to="/register"
