@@ -401,6 +401,7 @@ const Profile = () => {
 
    const addCategoryInputField = () => {
       setCategoryInputFields(prevFields => [...prevFields, <CategoryInputFieldProfile setCat_SubcatObj={setCat_SubcatObj}/>]);
+      // setCategoryInputFields(<CategoryInputFieldProfile setCat_SubcatObj={setCat_SubcatObj}/>)
   };
 
   const handleAddCategory = async () => {
@@ -421,7 +422,9 @@ const Profile = () => {
          //   ...prevInfo,
          //   about: updatedAbout,
          // }));
+         getProfileInfo()
          setCat_SubcatObj([])
+         setCategoryInputFields([]);
          setSuccessMsg(res.msg);
        } else {
          console.error('Update failed');
