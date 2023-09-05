@@ -147,11 +147,15 @@ const Profile = () => {
                const tutorArray = Object.values(tutorObj);
 
                const transformedBirthData = new Date(tutorArray[0].birth_date);
-               const formattedBirthDate = formatDate(transformedBirthData)
-               setUserInfo({...tutorArray[0], birth_date: formattedBirthDate})
-               setUpdatedLocationId(tutorArray[0].location_id)
-               setUpdatedAbout(tutorArray[0].about)
-               // setUpdatedCatSubcat(tutorArray[0].cat_subcat)                  
+               const formattedBirthDate = formatDate(transformedBirthData);
+               setUserInfo({...tutorArray[0], birth_date: formattedBirthDate});
+               setUpdatedLocationId(tutorArray[0].location_id);
+               setUpdatedAbout(tutorArray[0].about);
+
+               // sort cat_subcat array by tutor_cat_id
+               const catSubcatArray = tutorArray[0].cat_subcat
+               catSubcatArray.sort((a, b) => a.tutor_cat_id - b.tutor_cat_id);
+
             } else { // IF USER IS A STUDENT
                const transformedBirthData = new Date(data[0].birth_date);
                const formattedBirthDate = formatDate(transformedBirthData)
